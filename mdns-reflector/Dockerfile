@@ -1,0 +1,32 @@
+FROM alpine:3 as buildenv
+
+ENV SOURCE_FILE=mdns-reflector.tar.gz \
+    SOURCE_URL=https://github.com/vfreex/mdns-reflector/archive/refs/tags/v0.0.1-dev.1.tar.gz \
+    SOURCE_SHA1SUM=a78fdcb8c1f850b89fbc548d574c2c8a16cadd52
+
+# Grab iperf3 from Github and compile
+WORKDIR /mdns-reflector
+RUN apk --no-cache upgrade \
+    && apk add --no-cache tar build-base cmake \
+    && wget -O "$SOURCE_FILE" "$SOURCE_URL" \
+    && echo "${SOURCE_SHA1SUM}  ${SOURCE_FILE}" | sha1sum -c - \
+    && tar -xz --strip-components=1 --file="$SOURCE_FILE" \
+    && mkdir build \
+    && cd build \
+    && cmake -DCMAKE_BUILD_TYPE=release .. \
+    && make install
+
+FROM alpine:3
+
+# Copy relevant compiled files to distribution image
+RUN adduser --system mdns-reflector
+COPY --from=buildenv /usr/local/bin/ /usr/local/bin/
+RUN apk --no-cache upgrade
+
+# Switch to 'mdns-reflector' user
+USER mdns-reflector
+
+# Set entrypoint
+ENTRYPOINT ["mdns-reflector"]
+
+LABEL maintainer="matthew@kobayashi.au"
