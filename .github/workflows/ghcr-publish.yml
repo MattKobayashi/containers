@@ -24,9 +24,13 @@ jobs:
       packages: write
 
     steps:
+      # Gives two env variables
+      # One with lowercase repo owner's name
+      # Another with the name of the image
       - name: Set image name
         run: |
-          echo "IMAGE_NAME=iperf2" >> ${GITHUB_ENV}
+          echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV}
+          echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
 
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -58,9 +62,13 @@ jobs:
       packages: write
 
     steps:
+      # Gives two env variables
+      # One with lowercase repo owner's name
+      # Another with the name of the image
       - name: Set image name
         run: |
-          echo "IMAGE_NAME=iperf3" >> ${GITHUB_ENV}
+          echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV}
+          echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
 
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -92,9 +100,13 @@ jobs:
       packages: write
 
     steps:
+      # Gives two env variables
+      # One with lowercase repo owner's name
+      # Another with the name of the image
       - name: Set image name
         run: |
-          echo "IMAGE_NAME=irrd" >> ${GITHUB_ENV}
+          echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV}
+          echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
 
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -126,9 +138,13 @@ jobs:
       packages: write
 
     steps:
+      # Gives two env variables
+      # One with lowercase repo owner's name
+      # Another with the name of the image
       - name: Set image name
         run: |
-          echo "IMAGE_NAME=mdns-reflector" >> ${GITHUB_ENV}
+          echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV}
+          echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
 
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -160,9 +176,13 @@ jobs:
       packages: write
 
     steps:
+      # Gives two env variables
+      # One with lowercase repo owner's name
+      # Another with the name of the image
       - name: Set image name
         run: |
-          echo "IMAGE_NAME=rng-tools" >> ${GITHUB_ENV}
+          echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV}
+          echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
 
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -194,9 +214,13 @@ jobs:
       packages: write
 
     steps:
+      # Gives two env variables
+      # One with lowercase repo owner's name
+      # Another with the name of the image
       - name: Set image name
         run: |
-          echo "IMAGE_NAME=telegraf" >> ${GITHUB_ENV}
+          echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV}
+          echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
 
       - name: Checkout repository
         uses: actions/checkout@v2
