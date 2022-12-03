@@ -1,8 +1,8 @@
 FROM alpine:3 as buildenv
 
 ENV SOURCE_FILE=iperf3.tar.gz \
-    SOURCE_URL=https://github.com/esnet/iperf/archive/3.11.tar.gz \
-    SOURCE_SHA1SUM=e3d2489a1242c1cdd07039eda75dc7efef5b702a
+    SOURCE_URL=https://github.com/esnet/iperf/archive/3.12.tar.gz \
+    SOURCE_SHA1SUM=a9b7c46bc86d2fc98a2a3edf9c69f0d37ac5d972
 
 # Download source file, extract and compile
 WORKDIR /iperf3
