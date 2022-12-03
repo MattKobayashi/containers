@@ -52,7 +52,7 @@ jobs:
         with:
           context: ./${{ env.IMAGE_NAME }}
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
           
   build-iperf3:
 
@@ -90,7 +90,7 @@ jobs:
         with:
           context: ./${{ env.IMAGE_NAME }}
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
 
   build-irrd:
 
@@ -128,7 +128,7 @@ jobs:
         with:
           context: ./${{ env.IMAGE_NAME }}
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
 
   build-mdns-reflector:
 
@@ -166,7 +166,7 @@ jobs:
         with:
           context: ./${{ env.IMAGE_NAME }}
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
 
   build-rng-tools:
 
@@ -204,7 +204,7 @@ jobs:
         with:
           context: ./${{ env.IMAGE_NAME }}
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
 
   build-telegraf:
 
@@ -242,4 +242,4 @@ jobs:
         with:
           context: ./${{ env.IMAGE_NAME }}
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
