@@ -4,7 +4,7 @@ ENV SOURCE_FILE=mdns-reflector.tar.gz \
     SOURCE_URL=https://github.com/vfreex/mdns-reflector/archive/refs/tags/v0.0.1-dev.1.tar.gz \
     SOURCE_SHA1SUM=a78fdcb8c1f850b89fbc548d574c2c8a16cadd52
 
-# Grab iperf3 from Github and compile
+# Download source file, extract and compile
 WORKDIR /mdns-reflector
 RUN apk --no-cache upgrade \
     && apk add --no-cache tar build-base cmake \
@@ -23,7 +23,7 @@ RUN adduser --system mdns-reflector
 COPY --from=buildenv /usr/local/bin/ /usr/local/bin/
 RUN apk --no-cache upgrade
 
-# Switch to 'mdns-reflector' user
+# Switch to non-root user
 USER mdns-reflector
 
 # Set entrypoint

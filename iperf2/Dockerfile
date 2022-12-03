@@ -4,7 +4,7 @@ ENV SOURCE_FILE=iperf2.tar.gz \
     SOURCE_URL=https://sourceforge.net/projects/iperf2/files/iperf-2.1.8.tar.gz/download \
     SOURCE_SHA1SUM=7725efffc6ef46fe5247ee326c39e5fa2eadf1eb
 
-# Grab iperf2 from Sourceforge and compile
+# Download source file, extract and compile
 WORKDIR /iperf2
 RUN apk --no-cache upgrade \
     && apk add --no-cache tar build-base \
@@ -24,7 +24,7 @@ RUN adduser --system iperf2 \
 COPY --from=buildenv /usr/local/bin/ /usr/local/bin/
 COPY --from=buildenv /usr/local/share/man/ /usr/local/share/man/
 
-# Switch to 'iperf2' user
+# Switch to non-root user
 USER iperf2
 
 # Set expose port and entrypoint
