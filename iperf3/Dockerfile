@@ -9,7 +9,7 @@ WORKDIR /iperf3
 RUN apk --no-cache upgrade \
     && apk add --no-cache tar build-base \
     && wget -O "$SOURCE_FILE" "$SOURCE_URL" \
-    && echo "${SOURCE_SHA1SUM}}  ${SOURCE_FILE}}" | sha1sum -c - \
+    && echo "${SOURCE_SHA1SUM}  ${SOURCE_FILE}" | sha1sum -c - \
     && tar -xz --strip-components=1 --file="$SOURCE_FILE" \
     && ./configure \
     && make \
