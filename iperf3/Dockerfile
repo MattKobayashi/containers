@@ -7,7 +7,7 @@ ENV SOURCE_FILE=iperf3.tar.gz \
 # Download source file, extract and compile
 WORKDIR /iperf3
 RUN apk --no-cache upgrade \
-    && apk add --no-cache tar build-base \
+    && apk --no-cache add tar build-base \
     && wget -O "$SOURCE_FILE" "$SOURCE_URL" \
     && echo "${SOURCE_SHA1SUM}  ${SOURCE_FILE}" | sha1sum -c - \
     && tar -xz --strip-components=1 --file="$SOURCE_FILE" \
@@ -18,13 +18,13 @@ RUN apk --no-cache upgrade \
 FROM alpine:3
 
 # Copy relevant compiled files to distribution image
-RUN adduser --system iperf3
+RUN adduser --system iperf3 \
+    && ldconfig -n /usr/local/lib \
+    && apk --no-cache upgrade
 COPY --from=buildenv /usr/local/lib/ /usr/local/lib/
 COPY --from=buildenv /usr/local/bin/ /usr/local/bin/
 COPY --from=buildenv /usr/local/include/ /usr/local/include/
 COPY --from=buildenv /usr/local/share/man/ /usr/local/share/man/
-RUN ldconfig -n /usr/local/lib \
-    && apk --no-cache upgrade
 
 # Switch to non-root user
 USER iperf3
@@ -33,4 +33,4 @@ USER iperf3
 EXPOSE 5201
 ENTRYPOINT ["iperf3"]
 
-LABEL maintainer="matthew@kobayashi.au"
+LABEL org.opencontainers.image.authors="MattKobayashi <matthew@kobayashi.au>"

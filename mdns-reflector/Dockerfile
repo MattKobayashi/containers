@@ -7,7 +7,7 @@ ENV SOURCE_FILE=mdns-reflector.tar.gz \
 # Download source file, extract and compile
 WORKDIR /mdns-reflector
 RUN apk --no-cache upgrade \
-    && apk add --no-cache tar build-base cmake \
+    && apk --no-cache add tar build-base cmake \
     && wget -O "$SOURCE_FILE" "$SOURCE_URL" \
     && echo "${SOURCE_SHA1SUM}  ${SOURCE_FILE}" | sha1sum -c - \
     && tar -xz --strip-components=1 --file="$SOURCE_FILE" \
@@ -19,9 +19,9 @@ RUN apk --no-cache upgrade \
 FROM alpine:3
 
 # Copy relevant compiled files to distribution image
-RUN adduser --system mdns-reflector
+RUN adduser --system mdns-reflector \
+    && apk --no-cache upgrade
 COPY --from=buildenv /usr/local/bin/ /usr/local/bin/
-RUN apk --no-cache upgrade
 
 # Switch to non-root user
 USER mdns-reflector
@@ -29,4 +29,4 @@ USER mdns-reflector
 # Set entrypoint
 ENTRYPOINT ["mdns-reflector"]
 
-LABEL maintainer="matthew@kobayashi.au"
+LABEL org.opencontainers.image.authors="MattKobayashi <matthew@kobayashi.au>"

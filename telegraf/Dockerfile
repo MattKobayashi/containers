@@ -1,18 +1,26 @@
 FROM alpine:3
 
+# Set working directory
 WORKDIR /opt/docker-telegraf
-COPY requirements.txt .
-COPY entrypoint.sh .
-RUN apk --no-cache upgrade \
-    && apk add --update --no-cache telegraf smartmontools jq curl lm-sensors wget python3 \
-    && python3 -m ensurepip \
-    && python3 -m pip install --no-cache -r requirements.txt \
-    && chmod +x entrypoint.sh
 
+# Install Python and requirements
+COPY requirements.txt .
+RUN apk --no-cache upgrade \
+    && apk --no-cache add python3 \
+    && python3 -m ensurepip \
+    && python3 -m pip install --no-cache -r requirements.txt
+
+# Install other dependencies
+RUN apk --no-cache upgrade \
+    && apk --no-cache add telegraf smartmontools jq curl lm-sensors wget
+
+# Install Ookla Speedtest CLI utility
 WORKDIR /opt/ookla 
 RUN wget -O - https://install.speedtest.net/app/cli/ookla-speedtest-1.2.0-linux-x86_64.tgz | tar xz
 
 # Set entrypoint
+COPY entrypoint.sh .
+RUN chmod +x entrypoint.sh
 ENTRYPOINT ["/opt/docker-telegraf/entrypoint.sh"]
 
-LABEL maintainer="matthew@kobayashi.com.au"
+LABEL org.opencontainers.image.authors="MattKobayashi <matthew@kobayashi.au>"
