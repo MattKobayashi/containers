@@ -1,0 +1,5 @@
+
+alpine: INCLUDE = -Iskein/Optimized_32bit -I/usr/include -I/usr/include/lua5.4  
+alpine: $(OBJS)
+	cd skein; $(MAKE)                                                       
+	$(CXX) $(OBJS) $(CURDIR)/skein/skein.a -o PtokaX -lstdc++ -lpthread -lm -lz -llua -ltinyxml
