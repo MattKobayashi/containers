@@ -1,0 +1,45 @@
+FROM ubuntu:latest
+
+ENV SOURCE_FILE=verlihub.tar.gz \
+    SOURCE_URL=https://github.com/Verlihub/verlihub/archive/refs/tags/1.4.0.0.tar.gz \
+    SOURCE_SHA1SUM=55bf87d0b95c580ca73d67e9b2c7109e297d4c50
+
+# Download source file, extract and compile
+WORKDIR /verlihub/
+RUN sed -i 's|http://archive.|http://au.archive.|g' /etc/apt/sources.list \
+    && apt update \
+    && apt -y full-upgrade \
+    && apt update && apt -y full-upgrade \
+    && apt -y install wget make cmake g++ libpcre3-dev libssl-dev mysql-client libmysqlclient-dev libmaxminddb-dev libmaxminddb0 libicu-dev gettext libasprintf-dev \
+    && wget -O "$SOURCE_FILE" "$SOURCE_URL" \
+    && echo "${SOURCE_SHA1SUM}  ${SOURCE_FILE}" | sha1sum -c - \
+    && tar -xz --strip-components=1 --file="$SOURCE_FILE" \
+    && mkdir build \
+    && cd build \
+    && cmake .. \
+    && make \
+    && make install
+
+# Finished compiling, configure image for distribution
+RUN adduser --system verlihub \
+    && mkdir /home/verlihub/.config /home/verlihub/.config/verlihub \
+    && chown -R verlihub /home/verlihub/ \
+    && apt -y remove wget make cmake g++ \
+    && apt -y autoremove
+
+# Copy entrypoint.sh to image
+COPY entrypoint.sh .
+
+# Switch to non-root user
+USER verlihub
+
+# Set TERM environment variable
+ENV TERM=xterm
+
+# Set volume
+VOLUME /home/verlihub/.config/verlihub
+
+# Set entrypoint
+ENTRYPOINT ["vh-daemon", "/usr/bin/verlihub"]
+
+LABEL org.opencontainers.image.authors="MattKobayashi <matthew@kobayashi.au>"

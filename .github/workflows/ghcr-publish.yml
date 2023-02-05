@@ -282,7 +282,7 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
 
-  build-ptokax:
+  build-verlihub:
 
     runs-on: ubuntu-latest
     permissions:
