@@ -15,11 +15,11 @@ This is a list of environment variables you can pass to the container to configu
 
 To run ptokax:
 
-`docker run -d --name ptokax -e "HUB=DC++ Hub" -e "HUB_ADDR=A place" --volume /path/to/your/Settings.pxt:/config/cfg/Settings.pxt --expose 1209:1209/tcp --expose 411:411/tcp ghcr.io/mattkobayashi/ptokax`
+`docker run -d --name ptokax -e "HUB=DC++ Hub" -e "HUB_ADDR=A place" --expose 1209:1209/tcp --expose 411:411/tcp ghcr.io/mattkobayashi/ptokax`
 
 Optionally, bind a RegisteredUsers.xml file (example file available in the repo):
 
-`docker run -d --name ptokax -e "HUB=DC++ Hub" -e "HUB_ADDR=A place" --volume /path/to/your/Settings.pxt:/config/cfg/Settings.pxt --volume /path/to/your/RegisteredUsers.xml:/config/cfg/RegisteredUsers.xml --expose 1209:1209/tcp --expose 411:411/tcp ghcr.io/mattkobayashi/ptokax`
+`docker run -d --name ptokax -e "HUB=DC++ Hub" -e "HUB_ADDR=A place" --volume /path/to/your/RegisteredUsers.xml:/config/cfg/RegisteredUsers.xml --expose 1209:1209/tcp --expose 411:411/tcp ghcr.io/mattkobayashi/ptokax`
 
 As a Compose file:
 
@@ -36,9 +36,6 @@ services:
          - 'MAX_USERS=500' # Optional
          - 'ADMIN_NICK=Admin' # Optional
       volumes:
-         - type: bind
-           source: /path/to/your/Settings.pxt
-           target: /config/cfg/Settings.pxt
          # OPTIONAL: bind a RegisteredUsers.xml file
          - type: bind
            soource: /path/to/your/RegisteredUsers.xml
