@@ -18,7 +18,8 @@ RUN sed -i 's|http://archive.|http://au.archive.|g' /etc/apt/sources.list \
     && cd build \
     && cmake .. \
     && make \
-    && make install
+    && make install \
+    && rm -R /verlihub/*
 
 # Finished compiling, configure image for distribution
 RUN adduser --system verlihub \
@@ -40,6 +41,6 @@ ENV TERM=xterm
 VOLUME /home/verlihub/.config/verlihub
 
 # Set entrypoint
-ENTRYPOINT ["vh-daemon", "/usr/bin/verlihub"]
+ENTRYPOINT ["./entrypoint.sh"]
 
 LABEL org.opencontainers.image.authors="MattKobayashi <matthew@kobayashi.au>"
