@@ -1,0 +1,102 @@
+FROM ubuntu:latest as build
+
+ENV SOURCE_FILE=verlihub.tar.gz \
+    SOURCE_URL=https://github.com/Verlihub/verlihub/archive/refs/tags/1.4.0.0.tar.gz \
+    SOURCE_SHA1SUM=55bf87d0b95c580ca73d67e9b2c7109e297d4c50
+
+# Download source file, extract and compile
+WORKDIR /verlihub/
+RUN sed -i 's|http://archive.|http://au.archive.|g' /etc/apt/sources.list \
+    && apt-get update \
+    && apt-get -y full-upgrade \
+    && apt-get -y install wget make cmake g++ libpcre3-dev libssl-dev mysql-client libmysqlclient-dev libmaxminddb-dev libmaxminddb0 libicu-dev gettext libasprintf-dev bash-static \
+    && wget -O "$SOURCE_FILE" "$SOURCE_URL" \
+    && echo "${SOURCE_SHA1SUM}  ${SOURCE_FILE}" | sha1sum -c - \
+    && tar -xz --strip-components=1 --file="$SOURCE_FILE" \
+    && sed -i -e 's/{CMAKE_EXE_FLAGS} -undefined warning -flat_namespace/{CMAKE_EXE_FLAGS} -undefined warning -flat_namespace -static/' CMakeLists.txt \
+    && sed -i -e '/openssl\")/a set(CMAKE_FIND_LIBRARY_SUFFIXES ".a")' CMakeLists.txt \
+    && sed -i -e '/.a\")/a set(BUILD_SHARED_LIBS OFF)' CMakeLists.txt \
+    && mkdir build \
+    && cd build \
+    && cmake .. \
+    && make \
+    && make install \
+    && rm -R /verlihub/*
+
+# Copy compiled files to final image
+FROM gcr.io/distroless/base-debian11:latest
+
+# Copy shared libraries
+COPY --from=build /usr/lib/x86_64-linux-gnu/libcrypto.so /usr/lib/x86_64-linux-gnu/
+COPY --from=build /usr/lib/x86_64-linux-gnu/libmysqlclient.so /usr/lib/x86_64-linux-gnu/
+COPY --from=build /usr/lib/x86_64-linux-gnu/libz.so /usr/lib/x86_64-linux-gnu/
+COPY --from=build /usr/lib/x86_64-linux-gnu/libmaxminddb.so /usr/lib/x86_64-linux-gnu/
+COPY --from=build /usr/lib/x86_64-linux-gnu/libicudata.so /usr/lib/x86_64-linux-gnu/
+COPY --from=build /usr/lib/x86_64-linux-gnu/libicui18n.so /usr/lib/x86_64-linux-gnu/
+COPY --from=build /usr/lib/x86_64-linux-gnu/libicuuc.so /usr/lib/x86_64-linux-gnu/
+COPY --from=build /usr/lib/x86_64-linux-gnu/libicuio.so /usr/lib/x86_64-linux-gnu/
+COPY --from=build /usr/lib/x86_64-linux-gnu/libdl.a /usr/lib/x86_64-linux-gnu/
+COPY --from=build /usr/lib/x86_64-linux-gnu/libpcreposix.so /usr/lib/x86_64-linux-gnu/
+COPY --from=build /usr/lib/x86_64-linux-gnu/libasprintf.so /usr/lib/x86_64-linux-gnu/
+
+# Copy binary dependencies
+COPY --from=build /usr/bin/msgmerge /usr/bin/
+COPY --from=build /usr/bin/ldd /usr/bin/
+
+# Copy libraries
+COPY --from=build /usr/local/lib/libvhapi.so /usr/local/lib/
+COPY --from=build /usr/local/lib/libverlihub.so /usr/local/lib/
+COPY --from=build /usr/local/lib/libplug_pi.so /usr/local/lib/
+
+# Copy binaries
+COPY --from=build /usr/local/bin/verlihub /usr/local/bin/
+COPY --from=build /usr/local/bin/verlihub_config /usr/local/bin/
+COPY --from=build /usr/local/bin/vh_daemon /usr/local/bin/
+COPY --from=build /usr/local/bin/vh_lib /usr/local/bin/
+COPY --from=build /usr/local/bin/vh_gui /usr/local/bin/
+COPY --from=build /usr/local/bin/vh /usr/local/bin/
+COPY --from=build /usr/local/bin/vhm /usr/local/bin/
+COPY --from=build /usr/local/bin/vh_regimporter /usr/local/bin/
+COPY --from=build /usr/local/bin/vh_migration_0.9.8eto1.0 /usr/local/bin/
+
+# Copy includes
+COPY --from=build /usr/local/include/verlihub/ /usr/local/include/
+
+# Copy share
+COPY --from=build /usr/local/share/verlihub/ /usr/local/share/
+
+# Copy locales
+COPY --from=build /usr/local/share/locale/cs_CZ/LC_MESSAGES/verlihub.mo /usr/local/share/locale/cs_CZ/LC_MESSAGES/
+COPY --from=build /usr/local/share/locale/hu_HU/LC_MESSAGES/verlihub.mo /usr/local/share/locale/hu_HU/LC_MESSAGES/
+COPY --from=build /usr/local/share/locale/pl_PL/LC_MESSAGES/verlihub.mo /usr/local/share/locale/pl_PL/LC_MESSAGES/
+COPY --from=build /usr/local/share/locale/ro_RO/LC_MESSAGES/verlihub.mo /usr/local/share/locale/ro_RO/LC_MESSAGES/
+COPY --from=build /usr/local/share/locale/sk_SK/LC_MESSAGES/verlihub.mo /usr/local/share/locale/sk_SK/LC_MESSAGES/
+COPY --from=build /usr/local/share/locale/bg_BG/LC_MESSAGES/verlihub.mo /usr/local/share/locale/bg_BG/LC_MESSAGES/
+COPY --from=build /usr/local/share/locale/ru_RU/LC_MESSAGES/verlihub.mo /usr/local/share/locale/ru_RU/LC_MESSAGES/
+COPY --from=build /usr/local/share/locale/de_DE/LC_MESSAGES/verlihub.mo /usr/local/share/locale/de_DE/LC_MESSAGES/
+COPY --from=build /usr/local/share/locale/es_ES/LC_MESSAGES/verlihub.mo /usr/local/share/locale/es_ES/LC_MESSAGES/
+COPY --from=build /usr/local/share/locale/fr_FR/LC_MESSAGES/verlihub.mo /usr/local/share/locale/fr_FR/LC_MESSAGES/
+COPY --from=build /usr/local/share/locale/it_IT/LC_MESSAGES/verlihub.mo /usr/local/share/locale/it_IT/LC_MESSAGES/
+COPY --from=build /usr/local/share/locale/nl_NL/LC_MESSAGES/verlihub.mo /usr/local/share/locale/nl_NL/LC_MESSAGES/
+COPY --from=build /usr/local/share/locale/sv_SE/LC_MESSAGES/verlihub.mo /usr/local/share/locale/sv_SE/LC_MESSAGES/
+COPY --from=build /usr/local/share/locale/tr_TR/LC_MESSAGES/verlihub.mo /usr/local/share/locale/tr_TR/LC_MESSAGES/
+COPY --from=build /usr/local/share/locale/lt_LT/LC_MESSAGES/verlihub.mo /usr/local/share/locale/lt_LT/LC_MESSAGES/
+COPY --from=build /usr/local/share/locale/zh_CN/LC_MESSAGES/verlihub.mo /usr/local/share/locale/zh_CN/LC_MESSAGES/
+
+# Copy man
+COPY --from=build /usr/local/share/man/man1/verlihub.1 /usr/local/share/man/man1/
+COPY --from=build /usr/local/share/man/man1/vh.1 /usr/local/share/man/man1/
+COPY --from=build /usr/local/share/man/man1/vh_regimporter.1 /usr/local/share/man/man1/
+COPY --from=build /usr/local/share/man/man1/vhm.1 /usr/local/share/man/man1/
+
+# Copy bash
+COPY --from=build /bin/bash-static /usr/bin/bash
+
+# Copy entrypoint.sh to image
+WORKDIR /verlihub/
+COPY entrypoint.sh .
+
+# Set entrypoint
+ENTRYPOINT ["/verlihub/entrypoint.sh"]
+
+LABEL org.opencontainers.image.authors="MattKobayashi <matthew@kobayashi.au>"
