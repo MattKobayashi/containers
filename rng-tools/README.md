@@ -6,7 +6,7 @@ rng-tools in an Alpine-based Docker image. Small, lightweight and designed for u
 
 To run docker-rngtools from the command line:
 
-`docker run -d --name docker-rng-tools ghcr.io/mattkobayashi/docker-rng-tools`
+`docker run -d --name docker-rng-tools ghcr.io/mattkobayashi/rng-tools`
 
 ## Docker Compose
 
@@ -15,8 +15,8 @@ An example Compose script:
 ```
 services:
   docker-rng-tools:
-    container_name: docker-rng-tools
-      image: "ghcr.io/mattkobayashi/docker-rng-tools"
+    container_name: rng-tools
+      image: "ghcr.io/mattkobayashi/rng-tools"
       restart: unless-stopped
       cap_add:
         - SYS_ADMIN
