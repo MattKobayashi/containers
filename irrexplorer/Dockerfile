@@ -1,6 +1,8 @@
 FROM python:3.11-alpine
 
-RUN adduser --system irrexplorer
+RUN adduser --system irrexplorer \
+    && apk --no-cache upgrade \
+    && apk --no-cache add tar build-base python3-dev poetry npm yarn
 
 USER irrexplorer
 
@@ -10,16 +12,13 @@ ENV SOURCE_FILE=irrexplorer.tar.gz \
 
 # Download source file, extract and compile
 WORKDIR /irrexplorer
-RUN apk --no-cache upgrade \
-    && apk --no-cache add tar build-base python3-dev poetry npm yarn \
-    && wget -O "$SOURCE_FILE" "$SOURCE_URL" \
+RUN wget -O "$SOURCE_FILE" "$SOURCE_URL" \
     && echo "${SOURCE_SHA1SUM}  ${SOURCE_FILE}" | sha1sum -c - \
     && tar -xz --strip-components=1 --file="$SOURCE_FILE" \
     && poetry install \
     && poetry run frontend-install \
     && poetry run frontend-build \
     && poetry run alembic upgrade head
-
 
 # Set expose ports and entrypoint
 EXPOSE 8000/tcp
