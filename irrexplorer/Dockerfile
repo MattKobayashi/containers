@@ -12,16 +12,16 @@ ENV SOURCE_FILE=irrexplorer.tar.gz \
 
 # Download source file, extract and compile
 WORKDIR /irrexplorer
+COPY entrypoint.sh .
 RUN wget -O "$SOURCE_FILE" "$SOURCE_URL" \
     && echo "${SOURCE_SHA1SUM}  ${SOURCE_FILE}" | sha1sum -c - \
     && tar -xz --strip-components=1 --file="$SOURCE_FILE" \
     && poetry install \
     && poetry run frontend-install \
-    && poetry run frontend-build \
-    && poetry run alembic upgrade head
+    && poetry run frontend-build
 
 # Set expose ports and entrypoint
 EXPOSE 8000/tcp
-ENTRYPOINT poetry run http
+ENTRYPOINT ["/irrexplorer/entrypoint.sh"]
 
 LABEL org.opencontainers.image.authors="MattKobayashi <matthew@kobayashi.au>"
