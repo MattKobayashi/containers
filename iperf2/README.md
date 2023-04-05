@@ -1,10 +1,10 @@
-# docker-iperf2
+# iperf2
 
-iPerf2 in an Alpine-based Docker image. Small, lightweight and (most importantly) up-to-date with source.
+iperf2 in an Alpine-based Docker image. Small, lightweight and (most importantly) up-to-date with source.
 
 ## Running as a server
 
-To run docker-iperf2 as a server in the foreground:
+To run iperf2 as a server in the foreground:
 
 `docker run -it --rm --network=host ghcr.io/mattkobayashi/iperf2 --server`
 
@@ -20,7 +20,7 @@ There's a few ways to do this, but the basic gist is:
 
 ## Explanatory notes
 
-- iPerf2 has a lot of tunables and options available (especially on the client side). These are all documented [here](https://iperf2.sourceforge.io/iperf-manpage.html).
+- iperf2 has a lot of tunables and options available (especially on the client side). These are all documented [here](https://iperf2.sourceforge.io/iperf-manpage.html).
 
 - The use of `network=host` is recommended so as to avoid the Docker network proxy and ensure the best possible throughput for test conditions. It is possible to port forward with the Docker proxy, however performance may be affected. For example, you can run a server like this:
 
