@@ -1,10 +1,10 @@
-# docker-iperf3
+# iperf3
 
-iPerf3 in an Alpine-based Docker image. Small, lightweight and (most importantly) up-to-date with source.
+iperf3 in an Alpine-based Docker image. Small, lightweight and (most importantly) up-to-date with source.
 
 ## Running as a server
 
-To run docker-iperf3 as a server in the foreground:
+To run iperf3 as a server in the foreground:
 
 `docker run -it --rm --network=host ghcr.io/mattkobayashi/iperf3 --server`
 
@@ -20,7 +20,7 @@ There's a few ways to do this, but the basic gist is:
 
 ## Explanatory notes
 
-- iPerf3 has a lot of tunables and options available (especially on the client side). These are all documented [here](https://iperf.fr/iperf-doc.php#3doc).
+- iperf3 has a lot of tunables and options available (especially on the client side). These are all documented [here](https://iperf.fr/iperf-doc.php#3doc).
 
 - The use of `network=host` is recommended so as to avoid the Docker network proxy and ensure the best possible throughput for test conditions. It is possible to port forward with the Docker proxy, however performance may be affected. For example, you can run a server like this:
 
