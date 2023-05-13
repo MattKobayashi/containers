@@ -1,4 +1,4 @@
-FROM alpine:3 as build
+FROM alpine:3.17 as build
 
 ENV SOURCE_FILE=verlihub.tar.gz \
     SOURCE_URL=https://github.com/MattKobayashi/verlihub/archive/refs/tags/v1.4.1.0.tar.gz \
@@ -19,7 +19,7 @@ RUN apk --no-cache add bash build-base cmake gettext gettext-dev icu-dev libmaxm
     && rm -R /verlihub/*
 
 # Copy compiled files to final image
-FROM alpine:3
+FROM alpine:3.17
 
 # Install runtime dependencies
 RUN apk --no-cache add bash icu-data-full mariadb-connector-c mysql-client ncurses \
