@@ -1,4 +1,4 @@
-FROM alpine:3.17 as build
+FROM alpine:3 as build
 
 ENV SOURCE_FILE=verlihub.tar.gz \
     SOURCE_URL=https://github.com/MattKobayashi/verlihub/archive/refs/tags/v1.4.1.0.tar.gz \
@@ -19,7 +19,7 @@ RUN apk --no-cache add bash build-base cmake gettext gettext-dev icu-dev libmaxm
     && rm -R /verlihub/*
 
 # Copy compiled files to final image
-FROM alpine:3.17
+FROM alpine:3
 
 # Install runtime dependencies
 RUN apk --no-cache add bash icu-data-full mariadb-connector-c mysql-client ncurses \
@@ -41,20 +41,20 @@ COPY --from=build /usr/local/bin/vhm /usr/local/bin/
 COPY --from=build /usr/local/include/verlihub/ /usr/local/include/verlihub/
 
 # Copy lib
-COPY --from=build /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=build /lib/libssl.so.3 /lib/
-COPY --from=build /lib/libz.so.1 /lib/
-COPY --from=build /usr/lib/libasprintf.so.0 /usr/lib/
-COPY --from=build /usr/lib/libcrypto.so.3 /usr/lib/
-COPY --from=build /usr/lib/libexecinfo.so.1 /usr/lib/
-COPY --from=build /usr/lib/libgcc_s.so.1 /usr/lib/
-COPY --from=build /usr/lib/libicudata.so.72 /usr/lib/
-COPY --from=build /usr/lib/libicui18n.so.72 /usr/lib/
-COPY --from=build /usr/lib/libicuuc.so.72 /usr/lib/
-COPY --from=build /usr/lib/libintl.so.8 /usr/lib/
-COPY --from=build /usr/lib/libmaxminddb.so.0 /usr/lib/
-COPY --from=build /usr/lib/libpcre.so.1 /usr/lib/
-COPY --from=build /usr/lib/libstdc++.so.6 /usr/lib/
+COPY --from=build /lib/ld-musl-x86_64.so* /lib/
+COPY --from=build /lib/libssl.so* /lib/
+COPY --from=build /lib/libz.so* /lib/
+COPY --from=build /usr/lib/libasprintf.so* /usr/lib/
+COPY --from=build /usr/lib/libcrypto.so* /usr/lib/
+COPY --from=build /usr/lib/libexecinfo.so* /usr/lib/
+COPY --from=build /usr/lib/libgcc_s.so* /usr/lib/
+COPY --from=build /usr/lib/libicudata.so* /usr/lib/
+COPY --from=build /usr/lib/libicui18n.so* /usr/lib/
+COPY --from=build /usr/lib/libicuuc.so* /usr/lib/
+COPY --from=build /usr/lib/libintl.so* /usr/lib/
+COPY --from=build /usr/lib/libmaxminddb.so* /usr/lib/
+COPY --from=build /usr/lib/libpcre.so* /usr/lib/
+COPY --from=build /usr/lib/libstdc++.so* /usr/lib/
 COPY --from=build /usr/local/lib/libplug_pi.so /usr/local/lib/
 COPY --from=build /usr/local/lib/libverlihub.so /usr/local/lib/
 COPY --from=build /usr/local/lib/libvhapi.so /usr/local/lib/
