@@ -1,14 +1,15 @@
+---
 name: Publish images to GHCR.io
 
 on:
   schedule:
     - cron: '0 3 * * SAT'
   push:
-    branches: [ main ]
+    branches: [main]
     # Publish semver tags as releases.
-    tags: [ 'v*.*.*' ]
+    tags: ['v*.*.*']
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 env:
   # Use docker.io for Docker Hub if empty
@@ -90,7 +91,7 @@ jobs:
           context: ./${{ env.IMAGE_NAME }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
-          
+
   build-iperf3:
 
     runs-on: ubuntu-latest
