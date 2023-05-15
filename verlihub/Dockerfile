@@ -6,7 +6,7 @@ ENV SOURCE_FILE=verlihub.tar.gz \
 
 # Download source file, extract and compile
 WORKDIR /verlihub/
-RUN apk --no-cache add bash build-base cmake gettext gettext-dev icu-libs icu-dev libmaxminddb-dev mariadb-dev openssl-dev pcre-dev \
+RUN apk --no-cache add bash build-base cmake gettext gettext-dev icu-dev libmaxminddb-dev mariadb-dev openssl-dev pcre-dev \
     && apk --no-cache add libexecinfo-dev --repository=https://dl-cdn.alpinelinux.org/alpine/v3.15/main/ \
     && wget -O "$SOURCE_FILE" "$SOURCE_URL" \
     && echo "${SOURCE_SHA1SUM}  ${SOURCE_FILE}" | sha1sum -c - \
@@ -41,20 +41,20 @@ COPY --from=build /usr/local/bin/vhm /usr/local/bin/
 COPY --from=build /usr/local/include/verlihub/ /usr/local/include/verlihub/
 
 # Copy lib
-COPY --from=build /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=build /lib/libssl.so.3 /lib/
-COPY --from=build /lib/libz.so.1 /lib/
-COPY --from=build /usr/lib/libasprintf.so.0 /usr/lib/
-COPY --from=build /usr/lib/libcrypto.so.3 /usr/lib/
-COPY --from=build /usr/lib/libexecinfo.so.1 /usr/lib/
-COPY --from=build /usr/lib/libgcc_s.so.1 /usr/lib/
-COPY --from=build /usr/lib/libicudata.so.72 /usr/lib/
-COPY --from=build /usr/lib/libicui18n.so.72 /usr/lib/
-COPY --from=build /usr/lib/libicuuc.so.72 /usr/lib/
-COPY --from=build /usr/lib/libintl.so.8 /usr/lib/
-COPY --from=build /usr/lib/libmaxminddb.so.0 /usr/lib/
-COPY --from=build /usr/lib/libpcre.so.1 /usr/lib/
-COPY --from=build /usr/lib/libstdc++.so.6 /usr/lib/
+COPY --from=build /lib/ld-musl-x86_64.so* /lib/
+COPY --from=build /lib/libssl.so* /lib/
+COPY --from=build /lib/libz.so* /lib/
+COPY --from=build /usr/lib/libasprintf.so* /usr/lib/
+COPY --from=build /usr/lib/libcrypto.so* /usr/lib/
+COPY --from=build /usr/lib/libexecinfo.so* /usr/lib/
+COPY --from=build /usr/lib/libgcc_s.so* /usr/lib/
+COPY --from=build /usr/lib/libicudata.so* /usr/lib/
+COPY --from=build /usr/lib/libicui18n.so* /usr/lib/
+COPY --from=build /usr/lib/libicuuc.so* /usr/lib/
+COPY --from=build /usr/lib/libintl.so* /usr/lib/
+COPY --from=build /usr/lib/libmaxminddb.so* /usr/lib/
+COPY --from=build /usr/lib/libpcre.so* /usr/lib/
+COPY --from=build /usr/lib/libstdc++.so* /usr/lib/
 COPY --from=build /usr/local/lib/libplug_pi.so /usr/local/lib/
 COPY --from=build /usr/local/lib/libverlihub.so /usr/local/lib/
 COPY --from=build /usr/local/lib/libvhapi.so /usr/local/lib/
