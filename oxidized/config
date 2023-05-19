@@ -18,7 +18,7 @@ vars:
     - password
     - keyboard-interactive
   remove_secret: false
-groups {}
+groups: {}
 group_map: {}
 pid: "/home/oxidized/.config/oxidized/pid"
 crash:
