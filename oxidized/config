@@ -1,0 +1,65 @@
+---
+username:
+password:
+model: junos
+resolve_dns: true
+interval: 3600
+use_syslog: true
+debug: false
+threads: 30
+use_max_threads: false
+timeout: 20
+retries: 3
+prompt: !ruby/regexp /^([\w.@-]+[#>]\s?)$/
+rest: 0.0.0.0:8888
+next_adds_job: false
+vars:
+  auth_methods:
+    - password
+    - keyboard-interactive
+  remove_secret: false
+groups {}
+group_map: {}
+pid: "/home/oxidized/.config/oxidized/pid"
+crash:
+  directory: "/home/oxidized/.config/oxidized/crashes"
+  hostnames: false
+stats:
+  history_size: 10
+input:
+  default: ssh
+  debug: false
+  ssh:
+    secure: false
+  utf8_encoded: true
+output:
+  default: git
+  git:
+    user:
+    email:
+    repo:
+    single_repo: true
+source:
+  default: csv
+  csv:
+    file: 
+    delimiter: ":"
+    map:
+      name: 0
+      ip: 1
+      group: 2
+      model: 3
+model_map:
+  juniper: junos
+  cisco: ios
+  mikrotik: routeros
+  arista: eos
+  brocade: ironware
+  extreme: xos
+hooks:
+  push_to_remote:
+    type: githubrepo
+    events: [post_store]
+    remote_repo:
+    username:
+    password:
