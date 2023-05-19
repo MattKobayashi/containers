@@ -68,7 +68,7 @@ else
 	yq -i '.hooks.push_to_remote.remote_repo = strenv(OX_GITHUB_URL)' /home/oxidized/.config/oxidized/config
 fi
 
-if [ -n ${OX_CONFIG_RELOAD_INTERVAL} ]; then
+if [ ${OX_CONFIG_RELOAD_INTERVAL+set} = set ]; then
 	yq -i '.interval = env(OX_CONFIG_RELOAD_INTERVAL)' /home/oxidized/.config/oxidized/config
 fi
 
