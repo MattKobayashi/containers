@@ -1,0 +1,26 @@
+---
+services:
+  oxidized:
+    image: "ghcr.io/mattkobayashi/oxidized:latest"
+    restart: "unless-stopped"
+    volumes:
+      - type: volume
+        source: oxidized_data
+        target: /home/oxidized/.config/oxidized
+    environment:
+      - 'OX_DEVICE_USER='
+      - 'OX_DEVICE_PASS='
+      # - 'OX_ROUTER_DB='
+      # - 'OX_GIT_REPO_DIR='
+      - 'OX_GIT_USER='
+      - 'OX_GIT_EMAIL='
+      - 'OX_GITHUB_USER='
+      - 'OX_GITHUB_TOKEN='
+      - 'OX_GITHUB_ORG='
+      - 'OX_GITHUB_REPO='
+      # - 'OX_CONFIG_RELOAD_INTERVAL='
+    ports:
+      - target: 8888
+        published: 8888
+        protocol: tcp
+        mode: host
