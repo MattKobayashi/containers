@@ -11,13 +11,13 @@ RUN wget "$SUPERCRONIC_URL" \
     && chmod +x "$SUPERCRONIC" \
     && mv "$SUPERCRONIC" "/usr/local/bin/${SUPERCRONIC}" \
     && ln -s "/usr/local/bin/${SUPERCRONIC}" /usr/local/bin/supercronic \
-    && addgroup ansible && adduser ansible -G ansible \
+    && addgroup -S ansible && adduser -S ansible -G ansible \
     && apk --no-cache upgrade \
-    && apk add --no-cache ansible-core git py3-pip build-base python3-dev libssh-dev \
-    && su ansible -c 'pip3 install ansible-pylibssh' \
-    && su ansible -c 'ansible-galaxy collection install community.general' \
-    && su ansible -c 'ansible-galaxy collection install cisco.ios cisco.iosxr junipernetworks.junos community.routeros' \
-    && apk del py3-pip build-base python3-dev libssh-dev
+    && apk add --no-cache ansible-core git py3-pip build-base python3-dev libssh-dev sudo \
+    && sudo -u ansible pip3 install ansible-pylibssh \
+    && sudo -u ansible ansible-galaxy collection install community.general \
+    && sudo -u ansible ansible-galaxy collection install cisco.ios cisco.iosxr junipernetworks.junos community.routeros \
+    && apk del py3-pip build-base python3-dev libssh-dev sudo
 
 USER ansible
 
