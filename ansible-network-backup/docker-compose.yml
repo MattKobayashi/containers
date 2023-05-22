@@ -1,0 +1,17 @@
+---
+services:
+  ansible-network-backup:
+    image: 'ghcr.io/mattkobayashi/ansible-network-backup:latest'
+    restart: unless-stopped
+    environment:
+      - 'TZ='
+      - 'GIT_USER='
+      - 'GIT_EMAIL='
+      - 'DEVICE_USER='
+      - 'DEVICE_PASS='
+      - 'GITHUB_REPO='
+      - 'GITHUB_TOKEN='
+    volumes:
+      - type: bind
+        source: /path/to/hosts.yaml
+        target: /ansible/hosts.yaml
