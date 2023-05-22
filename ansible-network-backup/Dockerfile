@@ -24,7 +24,7 @@ USER ansible
 COPY ansible-cron ./crontab/ansible-cron
 COPY config_backup.yaml .
 
-ENV TZ=UTC
+ENV TZ=UTC \
 	GIT_USER=Ansible
 
 ENTRYPOINT ["supercronic", "./crontab/ansible-cron"]
