@@ -1,0 +1,132 @@
+---
+- name: Configure inventory file
+  hosts: localhost
+
+  tasks:
+    - name: Set device username/password
+      ansible.builtin.shell: |
+        yq -i '.all.children.*.vars.ansible_user = strenv(DEVICE_USER)' hosts.yaml
+        yq -i '.all.children.*.vars.ansible_ssh_pass = strenv(DEVICE_PASS)' hosts.yaml
+      delegate_to: localhost
+      run_once: true
+
+- name: Clone/update Git repository
+  hosts: localhost
+
+  tasks:
+    - name: Clone/update Git repository
+      ansible.builtin.git:
+        repo: https://${GITHUB_TOKEN}@github.com/${GITHUB_REPO}
+        dest: /repo/
+
+    - name: Configure Git username
+      community.general.git_config:
+        repo: /repo/
+        name: user.name
+        value: "{{ lookup('ansible.builtin.env', 'GIT_USER') }}"
+
+    - name: Configure Git user email
+      community.general.git_config:
+        repo: /repo/
+        name: user.email
+        value: "{{ lookup('ansible.builtin.env', 'GIT_EMAIL') }}"
+
+- name: Back up IOS devices
+  hosts: ios
+  gather_facts: false
+
+  tasks:
+    - name: Get IOS configuration
+      cisco.ios.ios_command:
+        commands: show running-config
+      register: show_run_ios
+
+    - name: Ensure backup directory exists
+      ansible.builtin.file:
+        path: /repo/backups/ios/
+        state: directory
+
+    - name: Save IOS configuration
+      ansible.builtin.copy:
+        content: "{{ show_run_ios.stdout[0] }}"
+        dest: "/repo/backups/ios/{{ inventory_hostname }}.txt"
+
+- name: Back up IOS-XR devices
+  hosts: iosxr
+  gather_facts: false
+
+  tasks:
+    - name: Get IOS-XR configuration
+      cisco.iosxr.iosxr_command:
+        commands: show running-config
+      register: show_run_iosxr
+
+    - name: Ensure backup directory exists
+      ansible.builtin.file:
+        path: /repo/backups/iosxr/
+        state: directory
+
+    - name: Save IOS-XR configuration
+      ansible.builtin.copy:
+        content: "{{ show_run_iosxr.stdout[0] }}"
+        dest: "/repo/backups/iosxr/{{ inventory_hostname }}.txt"
+
+- name: Back up JunOS devices
+  hosts: junos
+  gather_facts: false
+
+  tasks:
+    - name: Get JunOS configuration
+      junipernetworks.junos.junos_command:
+        commands: show configuration | display set
+      register: show_conf_set
+
+    - name: Ensure backup directory exists
+      ansible.builtin.file:
+        path: /repo/backups/junos/
+        state: directory
+
+    - name: Save JunOS configuration
+      ansible.builtin.copy:
+        content: "{{ show_conf_set.stdout[0] }}"
+        dest: "/repo/backups/junos/{{ inventory_hostname }}.txt"
+
+- name: Back up RouterOS devices
+  hosts: routeros
+  gather_facts: false
+
+  tasks:
+    - name: Get RouterOS configuration
+      community.routeros.command:
+        commands: export show-sensitive
+      register: export_sensitive
+
+    - name: Ensure backup directory exists
+      ansible.builtin.file:
+        path: /repo/backups/routeros/
+        state: directory
+
+    - name: Save RouterOS configuration
+      ansible.builtin.copy:
+        content: "{{ export_sensitive.stdout[0] }}"
+        dest: "/repo/backups/routeros/{{ inventory_hostname }}.txt"
+
+    - name: Remove configuration timestamp
+      ansible.builtin.lineinfile:
+        path: "/repo/backups/routeros/{{ inventory_hostname }}.txt"
+        regexp: ".*by RouterOS.*"
+        state: absent
+
+- name: Commit to Git repository
+  hosts: localhost
+
+  tasks:
+    - name: Add/commit/push to Git repository
+      ansible.builtin.shell: |
+        git add .
+        git commit -m "Updates"
+        git push
+      args:
+        chdir: /repo
+      delegate_to: localhost
+      run_once: true

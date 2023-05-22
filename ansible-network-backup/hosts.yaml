@@ -1,0 +1,13 @@
+---
+all:
+  children:
+    routeros:
+      hosts:
+        example.router.com:
+          ansible_host: 192.168.0.1
+      vars:
+        ansible_connection: ansible.netcommon.network_cli
+        ansible_network_os: community.routeros.routeros
+        ansible_user:
+        ansible_ssh_pass:
+        ansible_ssh_host_key_checking: false
