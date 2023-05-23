@@ -18,7 +18,9 @@
     - name: Get IOS configuration
       cisco.ios.ios_command:
         commands: show running-config
-      register: show_run_ios
+      register: ios_show_run
+      async: 60
+      poll: 10
 
     - name: Ensure backup directory exists
       ansible.builtin.file:
@@ -27,7 +29,7 @@
 
     - name: Save IOS configuration
       ansible.builtin.copy:
-        content: "{{ show_run_ios.stdout[0] }}"
+        content: "{{ ios_show_run.stdout[0] }}"
         dest: "/repo/backups/ios/{{ inventory_hostname }}.txt"
 
 - name: Back up IOS-XR devices
@@ -38,7 +40,9 @@
     - name: Get IOS-XR configuration
       cisco.iosxr.iosxr_command:
         commands: show running-config
-      register: show_run_iosxr
+      register: iosxr_show_run
+      async: 60
+      poll: 10
 
     - name: Ensure backup directory exists
       ansible.builtin.file:
@@ -47,7 +51,7 @@
 
     - name: Save IOS-XR configuration
       ansible.builtin.copy:
-        content: "{{ show_run_iosxr.stdout[0] }}"
+        content: "{{ iosxr_show_run.stdout[0] }}"
         dest: "/repo/backups/iosxr/{{ inventory_hostname }}.txt"
 
 - name: Back up JunOS devices
@@ -58,7 +62,9 @@
     - name: Get JunOS configuration
       junipernetworks.junos.junos_command:
         commands: show configuration | display set
-      register: show_conf_set
+      register: junos_show_conf
+      async: 60
+      poll: 10
 
     - name: Ensure backup directory exists
       ansible.builtin.file:
@@ -67,8 +73,30 @@
 
     - name: Save JunOS configuration
       ansible.builtin.copy:
-        content: "{{ show_conf_set.stdout[0] }}"
+        content: "{{ junos_show_conf.stdout[0] }}"
         dest: "/repo/backups/junos/{{ inventory_hostname }}.txt"
+
+- name: Back up EXOS devices
+  hosts: exos
+  gather_facts: false
+
+  tasks:
+    - name: Get EXOS configuration
+      community.network.exos_command:
+        commands: show configuration
+      register: exos_show_conf
+      async: 60
+      poll: 10
+
+    - name: Ensure backup directory exists
+      ansible.builtin.file:
+        path: /repo/backups/junos/
+        state: directory
+
+    - name: Save EXOS configuration
+      ansible.builtin.copy:
+        content: "{{ exos_show_conf.stdout[0] }}"
+        dest: "/repo/backups/exos/{{ inventory_hostname }}.txt"
 
 - name: Back up RouterOS devices
   hosts: routeros
@@ -78,7 +106,9 @@
     - name: Get RouterOS configuration
       community.routeros.command:
         commands: export show-sensitive
-      register: export_sensitive
+      register: routeros_export_sensitive
+      async: 60
+      poll: 10
 
     - name: Ensure backup directory exists
       ansible.builtin.file:
@@ -87,7 +117,7 @@
 
     - name: Save RouterOS configuration
       ansible.builtin.copy:
-        content: "{{ export_sensitive.stdout[0] }}"
+        content: "{{ routeros_export_sensitive.stdout[0] }}"
         dest: "/repo/backups/routeros/{{ inventory_hostname }}.txt"
 
     - name: Remove configuration timestamp

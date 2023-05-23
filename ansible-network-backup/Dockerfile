@@ -24,18 +24,19 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then ARCH=amd64; elif [ "$TARGETPL
     && apk add --no-cache ansible-core git yq libssh py3-pip build-base python3-dev libssh-dev sudo \
     && sudo -u ansible pip3 install ansible-pylibssh \
     && sudo -u ansible ansible-galaxy collection install community.general \
-    && sudo -u ansible ansible-galaxy collection install cisco.ios cisco.iosxr junipernetworks.junos community.routeros \
+    && sudo -u ansible ansible-galaxy collection install cisco.ios cisco.iosxr junipernetworks.junos community.network community.routeros \
     && apk del py3-pip build-base python3-dev libssh-dev sudo
 
 USER ansible
 
-COPY --chown=ansible ansible-cron ./crontab/ansible-cron
-COPY --chown=ansible config-backup.yaml .
-COPY --chown=ansible clone-repo.yaml .
+COPY --chown=ansible --chmod=0744 entrypoint.sh /ansible/entrypoint.sh
+COPY --chown=ansible ansible-cron /ansible/crontab/ansible-cron
+COPY --chown=ansible config-backup.yaml /ansible/config-backup.yaml
+COPY --chown=ansible clone-repo.yaml /ansible/clone-repo.yaml
 
 ENV TZ=UTC \
 	GIT_USER=Ansible
 
-ENTRYPOINT ["supercronic", "./crontab/ansible-cron"]
+ENTRYPOINT ["./entrypoint.sh"]
 
 LABEL org.opencontainers.image.authors="MattKobayashi <matthew@kobayashi.au>"

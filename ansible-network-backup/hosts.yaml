@@ -38,10 +38,21 @@ all:
         ansible_ssh_pass:
         ansible_ssh_host_key_checking: false
         ansible_host_key_auto_add: true
+    exos:
+      hosts:
+        example4.router.com:
+          ansible_host: 192.168.3.1
+      vars:
+        ansible_connection: ansible.netcommon.network_cli
+        ansible_network_os: community.network.exos
+        ansible_user:
+        ansible_ssh_pass:
+        ansible_ssh_host_key_checking: false
+        ansible_host_key_auto_add: true
     routeros:
       hosts:
-        example.router.com:
-          ansible_host: 192.168.3.1
+        example5.router.com:
+          ansible_host: 192.168.4.1
       vars:
         ansible_connection: ansible.netcommon.network_cli
         ansible_network_os: community.routeros.routeros
