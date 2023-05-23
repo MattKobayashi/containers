@@ -125,7 +125,7 @@
   tasks:
     - name: Add/commit/push to Git repository
       ansible.builtin.shell: |
-        git add backups/
+        git add --all backups/
         git commit -m "Updates"
         git push
       args:
