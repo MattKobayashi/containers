@@ -1,10 +1,40 @@
 ---
 all:
   children:
+    ios:
+      hosts:
+        example1.router.com:
+          ansible_host: 192.168.0.1
+      vars:
+        ansible_connection: ansible.netcommon.network_cli
+        ansible_network_os: cisco.ios.ios
+        ansible_user:
+        ansible_ssh_pass:
+        ansible_ssh_host_key_checking: false
+    iosxr:
+      hosts:
+        example2.router.com:
+          ansible_host: 192.168.1.1
+      vars:
+        ansible_connection: ansible.netcommon.network_cli
+        ansible_network_os: cisco.iosxr.iosxr
+        ansible_user:
+        ansible_ssh_pass:
+        ansible_ssh_host_key_checking: false
+    junos:
+      hosts:
+        example3.router.com:
+          ansible_host: 192.168.2.1
+      vars:
+        ansible_connection: ansible.netcommon.network_cli
+        ansible_network_os: junipernetworks.junos.junos
+        ansible_user:
+        ansible_ssh_pass:
+        ansible_ssh_host_key_checking: false
     routeros:
       hosts:
         example.router.com:
-          ansible_host: 192.168.0.1
+          ansible_host: 192.168.3.1
       vars:
         ansible_connection: ansible.netcommon.network_cli
         ansible_network_os: community.routeros.routeros
