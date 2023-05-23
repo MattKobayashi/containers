@@ -1,1 +1,1 @@
-0 */15 * * * * * ansible-playbook clone-repo.yaml && ansible-playbook -i /repo/hosts.yaml config-backup.yaml
+0 */15 * * * * * ansible-playbook -i /repo/hosts.yaml config-backup.yaml
