@@ -8,9 +8,12 @@ all:
       vars:
         ansible_connection: ansible.netcommon.network_cli
         ansible_network_os: cisco.ios.ios
+        ansible_become: true
+        ansible_become_method: enable
         ansible_user:
         ansible_ssh_pass:
         ansible_ssh_host_key_checking: false
+        ansible_host_key_auto_add: true
     iosxr:
       hosts:
         example2.router.com:
@@ -18,9 +21,12 @@ all:
       vars:
         ansible_connection: ansible.netcommon.network_cli
         ansible_network_os: cisco.iosxr.iosxr
+        ansible_become: true
+        ansible_become_method: enable
         ansible_user:
         ansible_ssh_pass:
         ansible_ssh_host_key_checking: false
+        ansible_host_key_auto_add: true
     junos:
       hosts:
         example3.router.com:
@@ -31,6 +37,7 @@ all:
         ansible_user:
         ansible_ssh_pass:
         ansible_ssh_host_key_checking: false
+        ansible_host_key_auto_add: true
     routeros:
       hosts:
         example.router.com:
@@ -41,3 +48,4 @@ all:
         ansible_user:
         ansible_ssh_pass:
         ansible_ssh_host_key_checking: false
+        ansible_host_key_auto_add: true
