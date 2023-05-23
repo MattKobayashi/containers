@@ -12,6 +12,7 @@ RUN wget "$SUPERCRONIC_URL" \
     && mv "$SUPERCRONIC" "/usr/local/bin/${SUPERCRONIC}" \
     && ln -s "/usr/local/bin/${SUPERCRONIC}" /usr/local/bin/supercronic \
     && addgroup -S ansible && adduser -S ansible -G ansible \
+    && mkdir /repo && chown -R ansible /repo \
     && apk --no-cache upgrade \
     && apk add --no-cache ansible-core git yq py3-pip build-base python3-dev libssh-dev sudo \
     && sudo -u ansible pip3 install ansible-pylibssh \
