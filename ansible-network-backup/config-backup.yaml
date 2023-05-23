@@ -19,6 +19,8 @@
       cisco.ios.ios_command:
         commands: show running-config
       register: show_run_ios
+      async: 60
+      poll: 10
 
     - name: Ensure backup directory exists
       ansible.builtin.file:
@@ -39,6 +41,8 @@
       cisco.iosxr.iosxr_command:
         commands: show running-config
       register: show_run_iosxr
+      async: 60
+      poll: 10
 
     - name: Ensure backup directory exists
       ansible.builtin.file:
@@ -59,6 +63,8 @@
       junipernetworks.junos.junos_command:
         commands: show configuration | display set
       register: show_conf_set
+      async: 60
+      poll: 10
 
     - name: Ensure backup directory exists
       ansible.builtin.file:
@@ -79,6 +85,8 @@
       community.routeros.command:
         commands: export show-sensitive
       register: export_sensitive
+      async: 60
+      poll: 10
 
     - name: Ensure backup directory exists
       ansible.builtin.file:
