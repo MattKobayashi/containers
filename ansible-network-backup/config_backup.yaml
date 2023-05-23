@@ -23,12 +23,14 @@
       community.general.git_config:
         repo: /repo/
         name: user.name
+        scope: local
         value: "{{ lookup('ansible.builtin.env', 'GIT_USER') }}"
 
     - name: Configure Git user email
       community.general.git_config:
         repo: /repo/
         name: user.email
+        scope: local
         value: "{{ lookup('ansible.builtin.env', 'GIT_EMAIL') }}"
 
 - name: Back up IOS devices
