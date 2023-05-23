@@ -26,8 +26,8 @@
   tasks:
     - name: Set device username/password
       ansible.builtin.shell: |
-        yq -i '.all.children.*.vars.ansible_user = strenv(DEVICE_USER)' hosts.yaml
-        yq -i '.all.children.*.vars.ansible_ssh_pass = strenv(DEVICE_PASS)' hosts.yaml
+        yq -i '.all.children.*.vars.ansible_user = strenv(DEVICE_USER)' /repo/hosts.yaml
+        yq -i '.all.children.*.vars.ansible_ssh_pass = strenv(DEVICE_PASS)' /repo/hosts.yaml
       delegate_to: localhost
       run_once: true
 
