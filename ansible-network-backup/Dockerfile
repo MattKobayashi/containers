@@ -14,7 +14,7 @@ RUN wget "$SUPERCRONIC_URL" \
     && addgroup -S ansible && adduser -S ansible -G ansible \
     && mkdir /repo && chown -R ansible /repo \
     && apk --no-cache upgrade \
-    && apk add --no-cache ansible-core git yq py3-pip build-base python3-dev libssh-dev sudo \
+    && apk add --no-cache ansible-core git yq libssh py3-pip build-base python3-dev libssh-dev sudo \
     && sudo -u ansible pip3 install ansible-pylibssh \
     && sudo -u ansible ansible-galaxy collection install community.general \
     && sudo -u ansible ansible-galaxy collection install cisco.ios cisco.iosxr junipernetworks.junos community.routeros \
