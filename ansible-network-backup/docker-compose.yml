@@ -11,7 +11,3 @@ services:
       - 'DEVICE_PASS='
       - 'GITHUB_REPO='
       - 'GITHUB_TOKEN='
-    volumes:
-      - type: bind
-        source: /path/to/hosts.yaml
-        target: /ansible/hosts.yaml
