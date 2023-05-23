@@ -1,0 +1,23 @@
+---
+- name: Clone/update Git repository
+  hosts: localhost
+
+  tasks:
+    - name: Clone/update Git repository
+      ansible.builtin.git:
+        repo: https://${GITHUB_TOKEN}@github.com/${GITHUB_REPO}
+        dest: /repo/
+
+    - name: Configure Git username
+      community.general.git_config:
+        repo: /repo/
+        name: user.name
+        scope: local
+        value: "{{ lookup('ansible.builtin.env', 'GIT_USER') }}"
+
+    - name: Configure Git user email
+      community.general.git_config:
+        repo: /repo/
+        name: user.email
+        scope: local
+        value: "{{ lookup('ansible.builtin.env', 'GIT_EMAIL') }}"
