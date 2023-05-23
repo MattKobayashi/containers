@@ -23,7 +23,8 @@ RUN wget "$SUPERCRONIC_URL" \
 USER ansible
 
 COPY --chown=ansible ansible-cron ./crontab/ansible-cron
-COPY --chown=ansible config_backup.yaml .
+COPY --chown=ansible config-backup.yaml .
+COPY --chown=ansible clone-repo.yaml .
 
 ENV TZ=UTC \
 	GIT_USER=Ansible
