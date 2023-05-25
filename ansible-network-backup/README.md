@@ -11,10 +11,16 @@ Set the following environment variables when creating your Docker container:
 - `TZ=` Your preferred timezone, e.g. `Australia/Brisbane`
 - `GIT_USER=` Your preferred user name for Git commits (optional, default: `Ansible`)
 - `GIT_EMAIL=` Your preferred user email for Git commits
-- `DEVICE_USER=` Your devices' SSH username for backups (recommended to be a read-only user)
-- `DEVICE_PASS=` Your devices' SSH password for backups (recommended to be a read-only user)
+- `DEVICE_USER=` Your devices' SSH username for backups (recommended to be a locally-configured read-only user)
+- `DEVICE_PASS=` Your devices' SSH password for backups (recommended to be a locally-configured read-only user)
 - `GITHUB_REPO=` The short-form name of your GitHub backups repository, e.g. `MattKobayashi/containers`
 - `GITHUB_TOKEN=` A GitHub personal access token with read-write permissions for your GitHub backups repository
+- `NOTIFY_TELEGRAM=` Boolean flag for Telegram notifications (optional, default: `false`)
+- `NOTIFY_TELEGRAM_TOKEN=` Your Telegram bot token (required if `NOTIFY_TELEGRAM=true`)
+- `NOTIFY_TELEGRAM_CHAT_ID=` Your Telegram chat ID (required if `NOTIFY_TELEGRAM=true`)
+- `NOTIFY_SLACK=` Boolean flag for Slack notifications (optional, default: `false`)
+- `NOTIFY_SLACK_TOKEN=` Your Slack bot token (required if `NOTIFY_SLACK=true`)
+- `NOTIFY_SLACK_CHANNEL=` Your Slack channel ID (required if `NOTIFY_SLACK=true`)
 
 ## Running
 

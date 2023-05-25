@@ -1,6 +1,7 @@
 ---
 - name: Configure inventory file
   hosts: localhost
+  gather_facts: false
 
   tasks:
     - name: Set device username/password
@@ -9,6 +10,8 @@
         yq -i '.all.children.*.vars.ansible_ssh_pass = strenv(DEVICE_PASS)' /repo/hosts.yaml
       delegate_to: localhost
       run_once: true
+      register: set_user_pass
+      ignore_errors: true
 
 - name: Back up IOS devices
   hosts: ios
@@ -18,7 +21,8 @@
     - name: Get IOS configuration
       cisco.ios.ios_command:
         commands: show running-config
-      register: ios_show_run
+      register: ios_conf
+      ignore_errors: true
       async: 60
       poll: 10
 
@@ -26,11 +30,46 @@
       ansible.builtin.file:
         path: /repo/backups/ios/
         state: directory
+      ignore_errors: true
 
     - name: Save IOS configuration
       ansible.builtin.copy:
-        content: "{{ ios_show_run.stdout[0] }}"
+        content: "{{ ios_conf.stdout[0] }}"
         dest: "/repo/backups/ios/{{ inventory_hostname }}.txt"
+      register: ios_save
+      ignore_errors: true
+
+    - name: Send result notification to Telegram
+      community.general.telegram:
+        token: "{{ lookup('ansible.builtin.env', 'NOTIFY_TELEGRAM_TOKEN') }}"
+        api_args:
+          chat_id: "{{ lookup('ansible.builtin.env', 'NOTIFY_TELEGRAM_CHAT_ID') }}"
+          parse_mode: "MarkdownV2"
+          text: |
+            *\-\- Network device configuration changed \-\-*
+            Device: {{ inventory_hostname | regex_replace('\.', '\.') }}
+            Lines changed: {{ ios_save.diff | length }}
+          disable_web_page_preview: true
+          protect_content: true
+      when:
+        - notify_telegram
+        - ios_save.changed
+      register: ios_notify_telegram
+      ignore_errors: true
+
+    - name: Send result notification to Slack
+      community.general.slack:
+        token: "{{ lookup('ansible.builtin.env', 'NOTIFY_SLACK_TOKEN') }}"
+        channel: "{{ lookup('ansible.builtin.env', 'NOTIFY_SLACK_CHANNEL') }}"
+        msg: |
+          -- Network device configuration changed --
+          Device: {{ inventory_hostname }}
+          Lines changed: {{ ios_save.diff | length }}
+      when:
+        - notify_slack
+        - ios_save.changed
+      register: ios_notify_slack
+      ignore_errors: true
 
 - name: Back up IOS-XR devices
   hosts: iosxr
@@ -40,7 +79,8 @@
     - name: Get IOS-XR configuration
       cisco.iosxr.iosxr_command:
         commands: show running-config
-      register: iosxr_show_run
+      register: iosxr_conf
+      ignore_errors: true
       async: 60
       poll: 10
 
@@ -48,11 +88,46 @@
       ansible.builtin.file:
         path: /repo/backups/iosxr/
         state: directory
+      ignore_errors: true
 
     - name: Save IOS-XR configuration
       ansible.builtin.copy:
-        content: "{{ iosxr_show_run.stdout[0] }}"
+        content: "{{ iosxr_conf.stdout[0] }}"
         dest: "/repo/backups/iosxr/{{ inventory_hostname }}.txt"
+      register: iosxr_save
+      ignore_errors: true
+
+    - name: Send result notification to Telegram
+      community.general.telegram:
+        token: "{{ lookup('ansible.builtin.env', 'NOTIFY_TELEGRAM_TOKEN') }}"
+        api_args:
+          chat_id: "{{ lookup('ansible.builtin.env', 'NOTIFY_TELEGRAM_CHAT_ID') }}"
+          parse_mode: "MarkdownV2"
+          text: |
+            *\-\- Network device configuration changed \-\-*
+            Device: {{ inventory_hostname | regex_replace('\.', '\.') }}
+            Lines changed: {{ iosxr_save.diff | length }}
+          disable_web_page_preview: true
+          protect_content: true
+      when:
+        - notify_telegram
+        - iosxr_save.changed
+      register: iosxr_notify_telegram
+      ignore_errors: true
+
+    - name: Send result notification to Slack
+      community.general.slack:
+        token: "{{ lookup('ansible.builtin.env', 'NOTIFY_SLACK_TOKEN') }}"
+        channel: "{{ lookup('ansible.builtin.env', 'NOTIFY_SLACK_CHANNEL') }}"
+        msg: |
+          -- Network device configuration changed --
+          Device: {{ inventory_hostname }}
+          Lines changed: {{ iosxr_save.diff | length }}
+      when:
+        - notify_slack
+        - iosxr_save.changed
+      register: iosxr_notify_slack
+      ignore_errors: true
 
 - name: Back up JunOS devices
   hosts: junos
@@ -62,7 +137,8 @@
     - name: Get JunOS configuration
       junipernetworks.junos.junos_command:
         commands: show configuration | display set
-      register: junos_show_conf
+      register: junos_conf
+      ignore_errors: true
       async: 60
       poll: 10
 
@@ -70,11 +146,46 @@
       ansible.builtin.file:
         path: /repo/backups/junos/
         state: directory
+      ignore_errors: true
 
     - name: Save JunOS configuration
       ansible.builtin.copy:
-        content: "{{ junos_show_conf.stdout[0] }}"
+        content: "{{ junos_conf.stdout[0] }}"
         dest: "/repo/backups/junos/{{ inventory_hostname }}.txt"
+      register: junos_save
+      ignore_errors: true
+
+    - name: Send result notification to Telegram
+      community.general.telegram:
+        token: "{{ lookup('ansible.builtin.env', 'NOTIFY_TELEGRAM_TOKEN') }}"
+        api_args:
+          chat_id: "{{ lookup('ansible.builtin.env', 'NOTIFY_TELEGRAM_CHAT_ID') }}"
+          parse_mode: "MarkdownV2"
+          text: |
+            *\-\- Network device configuration changed \-\-*
+            Device: {{ inventory_hostname | regex_replace('\.', '\.') }}
+            Lines changed: {{ junos_save.diff | length }}
+          disable_web_page_preview: true
+          protect_content: true
+      when:
+        - notify_telegram
+        - junos_save.changed
+      register: junos_notify_telegram
+      ignore_errors: true
+
+    - name: Send result notification to Slack
+      community.general.slack:
+        token: "{{ lookup('ansible.builtin.env', 'NOTIFY_SLACK_TOKEN') }}"
+        channel: "{{ lookup('ansible.builtin.env', 'NOTIFY_SLACK_CHANNEL') }}"
+        msg: |
+          -- Network device configuration changed --
+          Device: {{ inventory_hostname }}
+          Lines changed: {{ junos_save.diff | length }}
+      when:
+        - notify_slack
+        - junos_save.changed
+      register: junos_notify_slack
+      ignore_errors: true
 
 - name: Back up EXOS devices
   hosts: exos
@@ -84,7 +195,8 @@
     - name: Get EXOS configuration
       community.network.exos_command:
         commands: show configuration
-      register: exos_show_conf
+      register: exos_conf
+      ignore_errors: true
       async: 60
       poll: 10
 
@@ -92,11 +204,46 @@
       ansible.builtin.file:
         path: /repo/backups/junos/
         state: directory
+      ignore_errors: true
 
     - name: Save EXOS configuration
       ansible.builtin.copy:
-        content: "{{ exos_show_conf.stdout[0] }}"
+        content: "{{ exos_conf.stdout[0] }}"
         dest: "/repo/backups/exos/{{ inventory_hostname }}.txt"
+      register: exos_save
+      ignore_errors: true
+
+    - name: Send result notification to Telegram
+      community.general.telegram:
+        token: "{{ lookup('ansible.builtin.env', 'NOTIFY_TELEGRAM_TOKEN') }}"
+        api_args:
+          chat_id: "{{ lookup('ansible.builtin.env', 'NOTIFY_TELEGRAM_CHAT_ID') }}"
+          parse_mode: "MarkdownV2"
+          text: |
+            *\-\- Network device configuration changed \-\-*
+            Device: {{ inventory_hostname | regex_replace('\.', '\.') }}
+            Lines changed: {{ exos_save.diff | length }}
+          disable_web_page_preview: true
+          protect_content: true
+      when:
+        - notify_telegram
+        - exos_save.changed
+      register: exos_notify_telegram
+      ignore_errors: true
+
+    - name: Send result notification to Slack
+      community.general.slack:
+        token: "{{ lookup('ansible.builtin.env', 'NOTIFY_SLACK_TOKEN') }}"
+        channel: "{{ lookup('ansible.builtin.env', 'NOTIFY_SLACK_CHANNEL') }}"
+        msg: |
+          -- Network device configuration changed --
+          Device: {{ inventory_hostname }}
+          Lines changed: {{ exos_save.diff | length }}
+      when:
+        - notify_slack
+        - exos_save.changed
+      register: exos_notify_slack
+      ignore_errors: true
 
 - name: Back up RouterOS devices
   hosts: routeros
@@ -106,7 +253,8 @@
     - name: Get RouterOS configuration
       community.routeros.command:
         commands: export show-sensitive
-      register: routeros_export_sensitive
+      register: routeros_conf
+      ignore_errors: true
       async: 60
       poll: 10
 
@@ -114,20 +262,50 @@
       ansible.builtin.file:
         path: /repo/backups/routeros/
         state: directory
+      ignore_errors: true
 
     - name: Save RouterOS configuration
       ansible.builtin.copy:
-        content: "{{ routeros_export_sensitive.stdout[0] }}"
+        content: "{{ routeros_conf.stdout_lines[1:] }}"
         dest: "/repo/backups/routeros/{{ inventory_hostname }}.txt"
+      register: routeros_save
+      ignore_errors: true
 
-    - name: Remove configuration timestamp
-      ansible.builtin.lineinfile:
-        path: "/repo/backups/routeros/{{ inventory_hostname }}.txt"
-        regexp: ".*by RouterOS.*"
-        state: absent
+    - name: Send change notification to Telegram
+      community.general.telegram:
+        token: "{{ lookup('ansible.builtin.env', 'NOTIFY_TELEGRAM_TOKEN') }}"
+        api_args:
+          chat_id: "{{ lookup('ansible.builtin.env', 'NOTIFY_TELEGRAM_CHAT_ID') }}"
+          parse_mode: "MarkdownV2"
+          text: |
+            *\-\- Network device configuration changed \-\-*
+            Device: {{ inventory_hostname | regex_replace('\.', '\.') }}
+            Lines changed: {{ routeros_save.diff | length }}
+          disable_web_page_preview: true
+          protect_content: true
+      when:
+        - notify_telegram
+        - routeros_save.changed
+      register: routeros_notify_telegram
+      ignore_errors: true
+
+    - name: Send change notification to Slack
+      community.general.slack:
+        token: "{{ lookup('ansible.builtin.env', 'NOTIFY_SLACK_TOKEN') }}"
+        channel: "{{ lookup('ansible.builtin.env', 'NOTIFY_SLACK_CHANNEL') }}"
+        msg: |
+          -- Network device configuration changed --
+          Device: {{ inventory_hostname }}
+          Lines changed: {{ routeros_save.diff | length }}
+      when:
+        - notify_slack
+        - routeros_save.changed
+      register: routeros_notify_slack
+      ignore_errors: true
 
 - name: Commit to Git repository
   hosts: localhost
+  gather_facts: false
 
   tasks:
     - name: Add/commit/push to Git repository
@@ -139,3 +317,88 @@
         chdir: /repo
       delegate_to: localhost
       run_once: true
+      register: gitpush
+      ignore_errors: true
+
+- name: Failure notifications
+  hosts: localhost
+  gather_facts: false
+
+  tasks:
+    - name: Set failure fact
+      ansible.builtin.set_fact:
+        failure_detected: true
+      when:
+        - set_user_pass.failed
+        - ios_conf.failed
+        - ios_save.failed
+        - iosxr_conf.failed
+        - iosxr_save.failed
+        - junos_conf.failed
+        - junos_save.failed
+        - exos_conf.failed
+        - exos_save.failed
+        - routeros_conf.failed
+        - routeros_save.failed
+        - gitpush.failed
+
+    - name: Send failure notification to Telegram
+      community.general.telegram:
+        token: "{{ lookup('ansible.builtin.env', 'NOTIFY_TELEGRAM_TOKEN') }}"
+        api_args:
+          chat_id: "{{ lookup('ansible.builtin.env', 'NOTIFY_TELEGRAM_CHAT_ID') }}"
+          parse_mode: "MarkdownV2"
+          text: |
+            *\-\- Warning \-\-*
+            A network configuration backup failure has occurred\.
+            Please check the status of ansible\-network\-backup and rectify any issues\.
+          disable_web_page_preview: true
+          disable_notification: true
+          protect_content: true
+      when:
+        - notify_telegram
+        - failure_detected
+
+    - name: Send failure notification to Slack
+      community.general.slack:
+        token: "{{ lookup('ansible.builtin.env', 'NOTIFY_SLACK_TOKEN') }}"
+        channel: "{{ lookup('ansible.builtin.env', 'NOTIFY_SLACK_CHANNEL') }}"
+        msg: |
+            -- Warning --
+            A network configuration backup failure has occurred.
+            Please check the status of ansible-network-backup and rectify any issues.
+      when:
+        - notify_slack
+        - failure_detected
+
+# - name: Success notifications
+#   hosts: localhost
+#   gather_facts: true
+#
+#   tasks:
+#     - name: Send success notification to Telegram
+#       community.general.telegram:
+#         token: "{{ lookup('ansible.builtin.env', 'NOTIFY_TELEGRAM_TOKEN') }}"
+#         api_args:
+#           chat_id: "{{ lookup('ansible.builtin.env', 'NOTIFY_TELEGRAM_CHAT_ID') }}"
+#           parse_mode: "MarkdownV2"
+#           text: |
+#             Network configuration backed up successfully at {{ ansible_date_time.iso8601 | regex_replace('\-', '\-') }}
+#             Repository: https://github\.com/{{ lookup('ansible.builtin.env', 'GITHUB_REPO') | regex_replace('\-', '\-') }}
+#           disable_web_page_preview: true
+#           disable_notification: true
+#           protect_content: true
+#       when:
+#         - notify_telegram
+#         - failure_detected == false
+#
+#     - name: Send success notification to Slack
+#       community.general.slack:
+#         token: "{{ lookup('ansible.builtin.env', 'NOTIFY_SLACK_TOKEN') }}"
+#         channel: "{{ lookup('ansible.builtin.env', 'NOTIFY_SLACK_CHANNEL') }}"
+#         msg: |
+#           Network configuration backed up successfully at {{ ansible_date_time.iso8601 }}
+#           Repository: https://github.com/{{ lookup('ansible.builtin.env', 'GITHUB_REPO') }}
+#       when:
+#         - notify_slack
+#         - failure_detected == false

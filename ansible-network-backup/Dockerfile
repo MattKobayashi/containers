@@ -33,9 +33,12 @@ COPY --chown=ansible --chmod=0744 entrypoint.sh /ansible/entrypoint.sh
 COPY --chown=ansible ansible-cron /ansible/crontab/ansible-cron
 COPY --chown=ansible config-backup.yaml /ansible/config-backup.yaml
 COPY --chown=ansible clone-repo.yaml /ansible/clone-repo.yaml
+COPY --chown=ansible vars.yaml /ansible/vars.yaml
 
 ENV TZ=UTC \
-	GIT_USER=Ansible
+	GIT_USER=Ansible \
+    NOTIFY_TELEGRAM=false \
+    NOTIFY_SLACK=false
 
 ENTRYPOINT ["./entrypoint.sh"]
 

@@ -1,0 +1,6 @@
+---
+all:
+  vars:
+    notify_telegram: "{{ lookup('ansible.builtin.env', 'NOTIFY_TELEGRAM') | bool }}"
+    notify_slack: "{{ lookup('ansible.builtin.env', 'NOTIFY_SLACK') | bool }}"
+    failure_detected: false
