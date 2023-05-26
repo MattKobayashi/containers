@@ -29,10 +29,8 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then ARCH=amd64; elif [ "$TARGETPL
 
 USER ansible
 
-COPY --chown=ansible --chmod=0744 entrypoint.sh /ansible/entrypoint.sh
 COPY --chown=ansible ansible-cron /ansible/crontab/ansible-cron
 COPY --chown=ansible config-backup.yaml /ansible/config-backup.yaml
-COPY --chown=ansible clone-repo.yaml /ansible/clone-repo.yaml
 COPY --chown=ansible vars.yaml /ansible/vars.yaml
 
 ENV TZ=UTC \
