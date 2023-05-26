@@ -40,6 +40,6 @@ ENV TZ=UTC \
     NOTIFY_TELEGRAM=false \
     NOTIFY_SLACK=false
 
-ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT ["supercronic", "/ansible/crontab/ansible-cron"]
 
 LABEL org.opencontainers.image.authors="MattKobayashi <matthew@kobayashi.au>"
