@@ -20,20 +20,6 @@
             dest: /repo/
             force: true
 
-        - name: Configure Git username
-          community.general.git_config:
-            repo: /repo/
-            name: user.name
-            scope: local
-            value: "{{ lookup('ansible.builtin.env', 'GIT_USER') }}"
-
-        - name: Configure Git user email
-          community.general.git_config:
-            repo: /repo/
-            name: user.email
-            scope: local
-            value: "{{ lookup('ansible.builtin.env', 'GIT_EMAIL') }}"
-
       rescue:
         - name: Failure flag
           ansible.builtin.add_host:
