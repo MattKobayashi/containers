@@ -1,1 +1,1 @@
-0 */15 * * * * * ansible-playbook -i /repo/hosts.yaml config-backup.yaml
+0 */15 * * * * * ansible-playbook --diff -i /ansible/vars.yaml -i /repo/hosts.yaml config-backup.yaml

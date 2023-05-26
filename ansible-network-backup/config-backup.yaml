@@ -1,141 +1,468 @@
 ---
-- name: Configure inventory file
+- name: Set shared flags
   hosts: localhost
+  gather_facts: false
 
   tasks:
-    - name: Set device username/password
+    - name: Failure flag
       ansible.builtin.shell: |
-        yq -i '.all.children.*.vars.ansible_user = strenv(DEVICE_USER)' /repo/hosts.yaml
-        yq -i '.all.children.*.vars.ansible_ssh_pass = strenv(DEVICE_PASS)' /repo/hosts.yaml
-      delegate_to: localhost
-      run_once: true
+        export FAILURE=false
+
+- name: Set up Git repository
+  hosts: localhost
+  gather_facts: false
+
+  tasks:
+    - block:
+        - name: Update Git repository
+          ansible.builtin.git:
+            repo: https://${GITHUB_TOKEN}@github.com/${GITHUB_REPO}
+            dest: /repo/
+            force: true
+
+        - name: Configure Git username
+          community.general.git_config:
+            repo: /repo/
+            name: user.name
+            scope: local
+            value: "{{ lookup('ansible.builtin.env', 'GIT_USER') }}"
+
+        - name: Configure Git user email
+          community.general.git_config:
+            repo: /repo/
+            name: user.email
+            scope: local
+            value: "{{ lookup('ansible.builtin.env', 'GIT_EMAIL') }}"
+
+      rescue:
+        - name: Failure flag
+          ansible.builtin.add_host:
+            name: "shared"
+            failure_detected: true
+
+- name: Configure inventory file
+  hosts: localhost
+  gather_facts: false
+
+  tasks:
+    - block:
+        - name: Set device username/password
+          ansible.builtin.shell: |
+            yq -i '.all.children.*.vars.ansible_user = strenv(DEVICE_USER)' /repo/hosts.yaml
+            yq -i '.all.children.*.vars.ansible_ssh_pass = strenv(DEVICE_PASS)' /repo/hosts.yaml
+
+      rescue:
+        - name: Set failure flag
+          ansible.builtin.shell:
+            export FAILURE=true
 
 - name: Back up IOS devices
   hosts: ios
   gather_facts: false
 
   tasks:
-    - name: Get IOS configuration
-      cisco.ios.ios_command:
-        commands: show running-config
-      register: ios_show_run
-      async: 60
-      poll: 10
+    - block:
+        - name: Get IOS configuration
+          cisco.ios.ios_command:
+            commands: show running-config
+          register: ios_conf
+          async: 60
+          poll: 10
 
-    - name: Ensure backup directory exists
-      ansible.builtin.file:
-        path: /repo/backups/ios/
-        state: directory
+        - name: Ensure backup directory exists
+          ansible.builtin.file:
+            path: /repo/backups/ios/
+            state: directory
 
-    - name: Save IOS configuration
-      ansible.builtin.copy:
-        content: "{{ ios_show_run.stdout[0] }}"
-        dest: "/repo/backups/ios/{{ inventory_hostname }}.txt"
+        - name: Save IOS configuration
+          ansible.builtin.copy:
+            content: "{{ ios_conf.stdout[0] }}"
+            dest: "/repo/backups/ios/{{ inventory_hostname }}.txt"
+          register: ios_save
+
+        - name: Send result notification to Telegram
+          community.general.telegram:
+            token: "{{ lookup('ansible.builtin.env', 'NOTIFY_TELEGRAM_TOKEN') }}"
+            api_args:
+              chat_id: "{{ lookup('ansible.builtin.env', 'NOTIFY_TELEGRAM_CHAT_ID') }}"
+              parse_mode: "MarkdownV2"
+              text: |
+                *\-\- Network device configuration changed \-\-*
+                Device: {{ inventory_hostname | regex_replace('\.', '\.') }}
+                Changes: {{ ios_save.diff | length }}
+                [View on GitHub](https://github.com/{{ lookup('ansible.builtin.env', 'GITHUB_REPO') }}/commits/main/backups/ios/{{ inventory_hostname }}.txt)
+              disable_web_page_preview: true
+              protect_content: true
+          when:
+            - notify_telegram
+            - ios_save.changed
+
+        - name: Send result notification to Slack
+          community.general.slack:
+            token: "{{ lookup('ansible.builtin.env', 'NOTIFY_SLACK_TOKEN') }}"
+            channel: "{{ lookup('ansible.builtin.env', 'NOTIFY_SLACK_CHANNEL') }}"
+            blocks:
+              - type: header
+                text:
+                  type: plain_text
+                  text: "Network device configuration changed"
+              - type: divider
+              - type: section
+                text:
+                  type: mrkdwn
+                  text: "Device: {{ inventory_hostname }}\n\nChanges: {{ ios_save.diff | length }}\n\n<https://github.com/{{ lookup('ansible.builtin.env', 'GITHUB_REPO') }}/commits/main/backups/ios/{{ inventory_hostname }}.txt|View on GitHub>"
+              - type: divider
+              - type: context
+                elements:
+                  - type: mrkdwn
+                    text: "This notification brought to you by `ansible-network-backup`"
+          when:
+            - notify_slack
+            - ios_save.changed
+
+      rescue:
+        - name: Set failure flag
+          ansible.builtin.shell:
+            export FAILURE=true
 
 - name: Back up IOS-XR devices
   hosts: iosxr
   gather_facts: false
 
   tasks:
-    - name: Get IOS-XR configuration
-      cisco.iosxr.iosxr_command:
-        commands: show running-config
-      register: iosxr_show_run
-      async: 60
-      poll: 10
+    - block:
+        - name: Get IOS-XR configuration
+          cisco.iosxr.iosxr_command:
+            commands: show running-config
+          register: iosxr_conf
+          async: 60
+          poll: 10
 
-    - name: Ensure backup directory exists
-      ansible.builtin.file:
-        path: /repo/backups/iosxr/
-        state: directory
+        - name: Ensure backup directory exists
+          ansible.builtin.file:
+            path: /repo/backups/iosxr/
+            state: directory
 
-    - name: Save IOS-XR configuration
-      ansible.builtin.copy:
-        content: "{{ iosxr_show_run.stdout[0] }}"
-        dest: "/repo/backups/iosxr/{{ inventory_hostname }}.txt"
+        - name: Save IOS-XR configuration
+          ansible.builtin.copy:
+            content: "{{ iosxr_conf.stdout[0] }}"
+            dest: "/repo/backups/iosxr/{{ inventory_hostname }}.txt"
+          register: iosxr_save
+
+        - name: Send result notification to Telegram
+          community.general.telegram:
+            token: "{{ lookup('ansible.builtin.env', 'NOTIFY_TELEGRAM_TOKEN') }}"
+            api_args:
+              chat_id: "{{ lookup('ansible.builtin.env', 'NOTIFY_TELEGRAM_CHAT_ID') }}"
+              parse_mode: "MarkdownV2"
+              text: |
+                *\-\- Network device configuration changed \-\-*
+                Device: {{ inventory_hostname | regex_replace('\.', '\.') }}
+                Changes: {{ iosxr_save.diff | length }}
+                [View on GitHub](https://github.com/{{ lookup('ansible.builtin.env', 'GITHUB_REPO') }}/commits/main/backups/iosxr/{{ inventory_hostname }}.txt)
+              disable_web_page_preview: true
+              protect_content: true
+          when:
+            - notify_telegram
+            - iosxr_save.changed
+
+        - name: Send result notification to Slack
+          community.general.slack:
+            token: "{{ lookup('ansible.builtin.env', 'NOTIFY_SLACK_TOKEN') }}"
+            channel: "{{ lookup('ansible.builtin.env', 'NOTIFY_SLACK_CHANNEL') }}"
+            blocks:
+              - type: header
+                text:
+                  type: plain_text
+                  text: "Network device configuration changed"
+              - type: divider
+              - type: section
+                text:
+                  type: mrkdwn
+                  text: "Device: {{ inventory_hostname }}\n\nChanges: {{ iosxr_save.diff | length }}\n\n<https://github.com/{{ lookup('ansible.builtin.env', 'GITHUB_REPO') }}/commits/main/backups/iosxr/{{ inventory_hostname }}.txt|View on GitHub>"
+              - type: divider
+              - type: context
+                elements:
+                  - type: mrkdwn
+                    text: "This notification brought to you by `ansible-network-backup`"
+          when:
+            - notify_slack
+            - iosxr_save.changed
+
+      rescue:
+        - name: Set failure flag
+          ansible.builtin.shell:
+            export FAILURE=true
 
 - name: Back up JunOS devices
   hosts: junos
   gather_facts: false
 
   tasks:
-    - name: Get JunOS configuration
-      junipernetworks.junos.junos_command:
-        commands: show configuration | display set
-      register: junos_show_conf
-      async: 60
-      poll: 10
+    - block:
+        - name: Get JunOS configuration
+          junipernetworks.junos.junos_command:
+            commands: show configuration | display set
+          register: junos_conf
+          async: 60
+          poll: 10
 
-    - name: Ensure backup directory exists
-      ansible.builtin.file:
-        path: /repo/backups/junos/
-        state: directory
+        - name: Ensure backup directory exists
+          ansible.builtin.file:
+            path: /repo/backups/junos/
+            state: directory
 
-    - name: Save JunOS configuration
-      ansible.builtin.copy:
-        content: "{{ junos_show_conf.stdout[0] }}"
-        dest: "/repo/backups/junos/{{ inventory_hostname }}.txt"
+        - name: Save JunOS configuration
+          ansible.builtin.copy:
+            content: "{{ junos_conf.stdout[0] }}"
+            dest: "/repo/backups/junos/{{ inventory_hostname }}.txt"
+          register: junos_save
+
+        - name: Send result notification to Telegram
+          community.general.telegram:
+            token: "{{ lookup('ansible.builtin.env', 'NOTIFY_TELEGRAM_TOKEN') }}"
+            api_args:
+              chat_id: "{{ lookup('ansible.builtin.env', 'NOTIFY_TELEGRAM_CHAT_ID') }}"
+              parse_mode: "MarkdownV2"
+              text: |
+                *\-\- Network device configuration changed \-\-*
+                Device: {{ inventory_hostname | regex_replace('\.', '\.') }}
+                Changes: {{ junos_save.diff | length }}
+                [View on GitHub](https://github.com/{{ lookup('ansible.builtin.env', 'GITHUB_REPO') }}/commits/main/backups/junos/{{ inventory_hostname }}.txt)
+              disable_web_page_preview: true
+              protect_content: true
+          when:
+            - notify_telegram
+            - junos_save.changed
+
+        - name: Send result notification to Slack
+          community.general.slack:
+            token: "{{ lookup('ansible.builtin.env', 'NOTIFY_SLACK_TOKEN') }}"
+            channel: "{{ lookup('ansible.builtin.env', 'NOTIFY_SLACK_CHANNEL') }}"
+            blocks:
+              - type: header
+                text:
+                  type: plain_text
+                  text: "Network device configuration changed"
+              - type: divider
+              - type: section
+                text:
+                  type: mrkdwn
+                  text: "Device: {{ inventory_hostname }}\n\nChanges: {{ junos_save.diff | length }}\n\n<https://github.com/{{ lookup('ansible.builtin.env', 'GITHUB_REPO') }}/commits/main/backups/junos/{{ inventory_hostname }}.txt|View on GitHub>"
+              - type: divider
+              - type: context
+                elements:
+                  - type: mrkdwn
+                    text: "This notification brought to you by `ansible-network-backup`"
+          when:
+            - notify_slack
+            - junos_save.changed
+
+      rescue:
+        - name: Set failure flag
+          ansible.builtin.shell:
+            export FAILURE=true
 
 - name: Back up EXOS devices
   hosts: exos
   gather_facts: false
 
   tasks:
-    - name: Get EXOS configuration
-      community.network.exos_command:
-        commands: show configuration
-      register: exos_show_conf
-      async: 60
-      poll: 10
+    - block:
+        - name: Get EXOS configuration
+          community.network.exos_command:
+            commands: show configuration
+          register: exos_conf
+          async: 60
+          poll: 10
 
-    - name: Ensure backup directory exists
-      ansible.builtin.file:
-        path: /repo/backups/junos/
-        state: directory
+        - name: Ensure backup directory exists
+          ansible.builtin.file:
+            path: /repo/backups/junos/
+            state: directory
 
-    - name: Save EXOS configuration
-      ansible.builtin.copy:
-        content: "{{ exos_show_conf.stdout[0] }}"
-        dest: "/repo/backups/exos/{{ inventory_hostname }}.txt"
+        - name: Save EXOS configuration
+          ansible.builtin.copy:
+            content: "{{ exos_conf.stdout[0] }}"
+            dest: "/repo/backups/exos/{{ inventory_hostname }}.txt"
+          register: exos_save
+
+        - name: Send result notification to Telegram
+          community.general.telegram:
+            token: "{{ lookup('ansible.builtin.env', 'NOTIFY_TELEGRAM_TOKEN') }}"
+            api_args:
+              chat_id: "{{ lookup('ansible.builtin.env', 'NOTIFY_TELEGRAM_CHAT_ID') }}"
+              parse_mode: "MarkdownV2"
+              text: |
+                *\-\- Network device configuration changed \-\-*
+                Device: {{ inventory_hostname | regex_replace('\.', '\.') }}
+                Changes: {{ exos_save.diff | length }}
+                [View on GitHub](https://github.com/{{ lookup('ansible.builtin.env', 'GITHUB_REPO') }}/commits/main/backups/exos/{{ inventory_hostname }}.txt)
+              disable_web_page_preview: true
+              protect_content: true
+          when:
+            - notify_telegram
+            - exos_save.changed
+
+        - name: Send result notification to Slack
+          community.general.slack:
+            token: "{{ lookup('ansible.builtin.env', 'NOTIFY_SLACK_TOKEN') }}"
+            channel: "{{ lookup('ansible.builtin.env', 'NOTIFY_SLACK_CHANNEL') }}"
+            blocks:
+              - type: header
+                text:
+                  type: plain_text
+                  text: "Network device configuration changed"
+              - type: divider
+              - type: section
+                text:
+                  type: mrkdwn
+                  text: "Device: {{ inventory_hostname }}\n\nChanges: {{ exos_save.diff | length }}\n\n<https://github.com/{{ lookup('ansible.builtin.env', 'GITHUB_REPO') }}/commits/main/backups/exos/{{ inventory_hostname }}.txt|View on GitHub>"
+              - type: divider
+              - type: context
+                elements:
+                  - type: mrkdwn
+                    text: "This notification brought to you by `ansible-network-backup`"
+          when:
+            - notify_slack
+            - exos_save.changed
+
+      rescue:
+        - name: Set failure flag
+          ansible.builtin.shell:
+            export FAILURE=true
 
 - name: Back up RouterOS devices
   hosts: routeros
   gather_facts: false
 
   tasks:
-    - name: Get RouterOS configuration
-      community.routeros.command:
-        commands: export show-sensitive
-      register: routeros_export_sensitive
-      async: 60
-      poll: 10
+    - block:
+        - name: Get RouterOS configuration
+          community.routeros.command:
+            commands: export show-sensitive
+          register: routeros_conf
+          async: 60
+          poll: 10
 
-    - name: Ensure backup directory exists
-      ansible.builtin.file:
-        path: /repo/backups/routeros/
-        state: directory
+        - name: Ensure backup directory exists
+          ansible.builtin.file:
+            path: /repo/backups/routeros/
+            state: directory
 
-    - name: Save RouterOS configuration
-      ansible.builtin.copy:
-        content: "{{ routeros_export_sensitive.stdout[0] }}"
-        dest: "/repo/backups/routeros/{{ inventory_hostname }}.txt"
+        - name: Save RouterOS configuration
+          ansible.builtin.copy:
+            content: "{{ routeros_conf.stdout[0] | regex_replace('# [a-z]{3}/[0-9]{2}/[0-9]{4} ([0-9]{2}:){2}[0-9]{2} by RouterOS [0-9]{1,2}(.[0-9]{1,2}){0,2}.*') }}"
+            dest: "/repo/backups/routeros/{{ inventory_hostname }}.txt"
+          register: routeros_save
 
-    - name: Remove configuration timestamp
-      ansible.builtin.lineinfile:
-        path: "/repo/backups/routeros/{{ inventory_hostname }}.txt"
-        regexp: ".*by RouterOS.*"
-        state: absent
+        - name: Send change notification to Telegram
+          community.general.telegram:
+            token: "{{ lookup('ansible.builtin.env', 'NOTIFY_TELEGRAM_TOKEN') }}"
+            api_args:
+              chat_id: "{{ lookup('ansible.builtin.env', 'NOTIFY_TELEGRAM_CHAT_ID') }}"
+              parse_mode: "MarkdownV2"
+              text: |
+                *\-\- Network device configuration changed \-\-*
+                Device: {{ inventory_hostname | regex_replace('\.', '\.') }}
+                Changes: {{ routeros_save.diff | length }}
+                [View on GitHub](https://github.com/{{ lookup('ansible.builtin.env', 'GITHUB_REPO') }}/commits/main/backups/routeros/{{ inventory_hostname }}.txt)
+              disable_web_page_preview: true
+              protect_content: true
+          when:
+            - notify_telegram
+            - routeros_save.changed
+
+        - name: Send change notification to Slack
+          community.general.slack:
+            token: "{{ lookup('ansible.builtin.env', 'NOTIFY_SLACK_TOKEN') }}"
+            channel: "{{ lookup('ansible.builtin.env', 'NOTIFY_SLACK_CHANNEL') }}"
+            blocks:
+              - type: header
+                text:
+                  type: plain_text
+                  text: "Network device configuration changed"
+              - type: divider
+              - type: section
+                text:
+                  type: mrkdwn
+                  text: "Device: {{ inventory_hostname }}\n\nChanges: {{ routeros_save.diff | length }}\n\n<https://github.com/{{ lookup('ansible.builtin.env', 'GITHUB_REPO') }}/commits/main/backups/routeros/{{ inventory_hostname }}.txt|View on GitHub>"
+              - type: divider
+              - type: context
+                elements:
+                  - type: mrkdwn
+                    text: "This notification brought to you by `ansible-network-backup`"
+          when:
+            - notify_slack
+            - routeros_save.changed
+
+      rescue:
+        - name: Set failure flag
+          ansible.builtin.shell:
+            export FAILURE=true
 
 - name: Commit to Git repository
   hosts: localhost
+  gather_facts: false
 
   tasks:
-    - name: Add/commit/push to Git repository
-      ansible.builtin.shell: |
-        git add --all backups/
-        git commit -m "Updates"
-        git push
-      args:
-        chdir: /repo
-      delegate_to: localhost
-      run_once: true
+    - block:
+        - name: Add/commit/push to Git repository
+          ansible.builtin.shell: |
+            git add --all backups/
+            git commit -m "Updates"
+            git push
+          args:
+            chdir: /repo/
+
+      rescue:
+        - name: Set failure flag
+          ansible.builtin.shell:
+            export FAILURE=true
+
+- name: Failure notifications
+  hosts: localhost
+  gather_facts: false
+  vars:
+    failure_detected: "{{ lookup('ansible.builtin.env', 'FAILURE') }}"
+
+  tasks:
+    - name: Send failure notification to Telegram
+      community.general.telegram:
+        token: "{{ lookup('ansible.builtin.env', 'NOTIFY_TELEGRAM_TOKEN') }}"
+        api_args:
+          chat_id: "{{ lookup('ansible.builtin.env', 'NOTIFY_TELEGRAM_CHAT_ID') }}"
+          parse_mode: "MarkdownV2"
+          text: |
+            *\-\- Warning \-\-*
+            A network configuration backup failure has occurred\.
+            Please check the status of ansible\-network\-backup and rectify any issues\.
+          disable_web_page_preview: true
+          disable_notification: true
+          protect_content: true
+      when:
+        - notify_telegram
+        - failure_detected
+
+    - name: Send failure notification to Slack
+      community.general.slack:
+        token: "{{ lookup('ansible.builtin.env', 'NOTIFY_SLACK_TOKEN') }}"
+        channel: "{{ lookup('ansible.builtin.env', 'NOTIFY_SLACK_CHANNEL') }}"
+        blocks:
+          - type: header
+            text:
+              type: plain_text
+              text: "Warning!"
+          - type: divider
+          - type: section
+            text:
+              type: mrkdwn
+              text: "A network configuration backup failure has occurred.\n\nPlease check the status of `ansible-network-backup` and rectify any issues."
+          - type: divider
+          - type: context
+            elements:
+              - type: mrkdwn
+                text: "This notification brought to you by `ansible-network-backup`"
+      when:
+        - notify_slack
+        - failure_detected
