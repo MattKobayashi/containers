@@ -34,6 +34,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
       
+      # Add support for more platforms with QEMU (optional)
+      # https://github.com/docker/setup-qemu-action
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      
       # Set up Docker Buildx
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -74,6 +79,11 @@ jobs:
           echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      # Add support for more platforms with QEMU (optional)
+      # https://github.com/docker/setup-qemu-action
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
       
       # Set up Docker Buildx
       - name: Set up Docker Buildx
@@ -115,6 +125,11 @@ jobs:
           echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      # Add support for more platforms with QEMU (optional)
+      # https://github.com/docker/setup-qemu-action
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
       
       # Set up Docker Buildx
       - name: Set up Docker Buildx
@@ -157,6 +172,11 @@ jobs:
 
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      # Add support for more platforms with QEMU (optional)
+      # https://github.com/docker/setup-qemu-action
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
       
       # Set up Docker Buildx
       - name: Set up Docker Buildx
@@ -199,6 +219,11 @@ jobs:
 
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      # Add support for more platforms with QEMU (optional)
+      # https://github.com/docker/setup-qemu-action
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
       
       # Set up Docker Buildx
       - name: Set up Docker Buildx
@@ -241,6 +266,11 @@ jobs:
 
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      # Add support for more platforms with QEMU (optional)
+      # https://github.com/docker/setup-qemu-action
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
       
       # Set up Docker Buildx
       - name: Set up Docker Buildx
@@ -283,6 +313,11 @@ jobs:
 
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      # Add support for more platforms with QEMU (optional)
+      # https://github.com/docker/setup-qemu-action
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
       
       # Set up Docker Buildx
       - name: Set up Docker Buildx
@@ -325,6 +360,11 @@ jobs:
 
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      # Add support for more platforms with QEMU (optional)
+      # https://github.com/docker/setup-qemu-action
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
       
       # Set up Docker Buildx
       - name: Set up Docker Buildx
@@ -367,6 +407,11 @@ jobs:
 
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      # Add support for more platforms with QEMU (optional)
+      # https://github.com/docker/setup-qemu-action
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
       
       # Set up Docker Buildx
       - name: Set up Docker Buildx
@@ -409,6 +454,11 @@ jobs:
 
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      # Add support for more platforms with QEMU (optional)
+      # https://github.com/docker/setup-qemu-action
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
       
       # Set up Docker Buildx
       - name: Set up Docker Buildx
@@ -451,6 +501,11 @@ jobs:
 
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      # Add support for more platforms with QEMU (optional)
+      # https://github.com/docker/setup-qemu-action
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
       
       # Set up Docker Buildx
       - name: Set up Docker Buildx
@@ -493,6 +548,11 @@ jobs:
 
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      # Add support for more platforms with QEMU (optional)
+      # https://github.com/docker/setup-qemu-action
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
       
       # Set up Docker Buildx
       - name: Set up Docker Buildx
