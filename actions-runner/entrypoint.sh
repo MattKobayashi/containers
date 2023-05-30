@@ -18,4 +18,4 @@ cleanup() {
 trap 'cleanup; exit 130' INT
 trap 'cleanup; exit 143' TERM
 
-/actions-runner/entrypoint.sh & wait $!
+/actions-runner/run.sh & wait $!
