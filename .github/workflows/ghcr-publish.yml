@@ -18,7 +18,7 @@ env:
 jobs:
   build-actions-runner:
 
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     permissions:
       contents: read
       packages: write
@@ -33,6 +33,15 @@ jobs:
           echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      # Add support for more platforms with QEMU (optional)
+      # https://github.com/docker/setup-qemu-action
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      # Set up Docker Buildx
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
@@ -55,7 +64,7 @@ jobs:
 
   build-ansible-network-backup:
 
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     permissions:
       contents: read
       packages: write
@@ -70,6 +79,15 @@ jobs:
           echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      # Add support for more platforms with QEMU (optional)
+      # https://github.com/docker/setup-qemu-action
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      # Set up Docker Buildx
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
@@ -92,7 +110,7 @@ jobs:
 
   build-avahi:
 
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     permissions:
       contents: read
       packages: write
@@ -107,6 +125,15 @@ jobs:
           echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      # Add support for more platforms with QEMU (optional)
+      # https://github.com/docker/setup-qemu-action
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      # Set up Docker Buildx
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
@@ -129,7 +156,7 @@ jobs:
 
   build-iperf2:
 
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     permissions:
       contents: read
       packages: write
@@ -145,6 +172,15 @@ jobs:
 
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      # Add support for more platforms with QEMU (optional)
+      # https://github.com/docker/setup-qemu-action
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      # Set up Docker Buildx
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
@@ -167,7 +203,7 @@ jobs:
 
   build-iperf3:
 
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     permissions:
       contents: read
       packages: write
@@ -183,6 +219,15 @@ jobs:
 
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      # Add support for more platforms with QEMU (optional)
+      # https://github.com/docker/setup-qemu-action
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      # Set up Docker Buildx
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
@@ -205,7 +250,7 @@ jobs:
 
   build-irrd:
 
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     permissions:
       contents: read
       packages: write
@@ -221,6 +266,15 @@ jobs:
 
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      # Add support for more platforms with QEMU (optional)
+      # https://github.com/docker/setup-qemu-action
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      # Set up Docker Buildx
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
@@ -243,7 +297,7 @@ jobs:
 
   build-irrexplorer:
 
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     permissions:
       contents: read
       packages: write
@@ -256,8 +310,18 @@ jobs:
         run: |
           echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
           echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
+
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      # Add support for more platforms with QEMU (optional)
+      # https://github.com/docker/setup-qemu-action
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      # Set up Docker Buildx
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
@@ -280,7 +344,7 @@ jobs:
 
   build-mdns-reflector:
 
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     permissions:
       contents: read
       packages: write
@@ -296,6 +360,15 @@ jobs:
 
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      # Add support for more platforms with QEMU (optional)
+      # https://github.com/docker/setup-qemu-action
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      # Set up Docker Buildx
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
@@ -318,7 +391,7 @@ jobs:
 
   build-rng-tools:
 
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     permissions:
       contents: read
       packages: write
@@ -334,6 +407,15 @@ jobs:
 
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      # Add support for more platforms with QEMU (optional)
+      # https://github.com/docker/setup-qemu-action
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      # Set up Docker Buildx
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
@@ -356,7 +438,7 @@ jobs:
 
   build-telegraf:
 
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     permissions:
       contents: read
       packages: write
@@ -372,6 +454,15 @@ jobs:
 
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      # Add support for more platforms with QEMU (optional)
+      # https://github.com/docker/setup-qemu-action
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      # Set up Docker Buildx
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
@@ -394,7 +485,7 @@ jobs:
 
   build-verlihub:
 
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     permissions:
       contents: read
       packages: write
@@ -410,6 +501,15 @@ jobs:
 
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      # Add support for more platforms with QEMU (optional)
+      # https://github.com/docker/setup-qemu-action
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      # Set up Docker Buildx
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
@@ -432,7 +532,7 @@ jobs:
 
   build-xteve:
 
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     permissions:
       contents: read
       packages: write
@@ -448,6 +548,15 @@ jobs:
 
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      # Add support for more platforms with QEMU (optional)
+      # https://github.com/docker/setup-qemu-action
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      # Set up Docker Buildx
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
