@@ -7,7 +7,7 @@ ENV RUNNER_VERSION=2.304.0 \
     RUNNER_HASH_arm64=34c49bd0e294abce6e4a073627ed60dc2f31eee970c13d389b704697724b31c6
 
 RUN adduser --system --group runner \
-    && apt-get update && apt-get -y install curl ca-certificates curl gnupg \
+    && apt-get update && apt-get -y install curl ca-certificates gnupg jq \
     && install -m 0755 -d /etc/apt/keyrings \
     && curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg \
     && chmod a+r /etc/apt/keyrings/docker.gpg \
@@ -26,7 +26,7 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then ARCH=x64; elif [ "$TARGETPLAT
 
 USER root
 RUN ./bin/installdependencies.sh \
-    && apt-get remove -y curl ca-certificates curl gnupg
+    && apt-get remove -y ca-certificates gnupg
 
 COPY --chmod=0744 --chown=runner:runner entrypoint.sh /actions-runner/entrypoint.sh
 
