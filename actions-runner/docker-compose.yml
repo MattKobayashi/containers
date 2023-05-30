@@ -1,0 +1,9 @@
+---
+services:
+  actions-runner:
+    image: 'ghcr.io/mattkobayashi/actions-runner:latest'
+    hostname: 'actions-runner'
+    restart: unless-stopped
+    environment:
+      - 'GITHUB_REPO_URL='
+      - 'GITHUB_TOKEN='
