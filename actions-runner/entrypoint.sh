@@ -1,5 +1,9 @@
 #!/bin/bash
 
+if [ -f /run/secrets/TOKEN ]; then
+	TOKEN=$(</run/secrets/TOKEN)
+fi
+
 REPOSITORY=$REPO
 ACCESS_TOKEN=$TOKEN
 
