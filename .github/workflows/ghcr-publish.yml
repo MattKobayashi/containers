@@ -18,6 +18,7 @@ env:
 jobs:
   build-actions-runner:
 
+    runs-on: self-hosted
     permissions:
       contents: read
       packages: write
@@ -63,7 +64,6 @@ jobs:
 
   build-ansible-network-backup:
 
-    runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
@@ -109,7 +109,6 @@ jobs:
 
   build-avahi:
 
-    runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
@@ -155,7 +154,6 @@ jobs:
 
   build-iperf2:
 
-    runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
@@ -202,7 +200,6 @@ jobs:
 
   build-iperf3:
 
-    runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
@@ -249,7 +246,6 @@ jobs:
 
   build-irrd:
 
-    runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
@@ -296,7 +292,6 @@ jobs:
 
   build-irrexplorer:
 
-    runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
@@ -343,7 +338,6 @@ jobs:
 
   build-mdns-reflector:
 
-    runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
@@ -390,7 +384,6 @@ jobs:
 
   build-rng-tools:
 
-    runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
@@ -437,7 +430,6 @@ jobs:
 
   build-telegraf:
 
-    runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
@@ -484,7 +476,6 @@ jobs:
 
   build-verlihub:
 
-    runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
@@ -531,7 +522,6 @@ jobs:
 
   build-xteve:
 
-    runs-on: self-hosted
     permissions:
       contents: read
       packages: write
