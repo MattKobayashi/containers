@@ -1,5 +1,9 @@
 #!/bin/sh
 
+if [ -f /run/secrets/DEVICE_PASS ]; then
+	DEVICE_PASS=$(</run/secrets/DEVICE_PASS)
+fi
+
 if [ -f /run/secrets/GITHUB_TOKEN ]; then
 	GITHUB_TOKEN=$(</run/secrets/GITHUB_TOKEN)
 fi
