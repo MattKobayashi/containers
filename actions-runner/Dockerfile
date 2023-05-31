@@ -6,7 +6,7 @@ ENV RUNNER_VERSION=2.304.0 \
     RUNNER_HASH_arm=9b988321757805f0d650574f49808ed7c7b31a691551b205f724e68f5ed9b543 \
     RUNNER_HASH_arm64=34c49bd0e294abce6e4a073627ed60dc2f31eee970c13d389b704697724b31c6
 
-RUN apt-get update && apt-get -y install curl jq git ca-certificates gnupg \
+RUN apt-get update && apt-get -y install curl jq git python3-pip ruby-full zlib1g-dev ca-certificates gnupg \
     && install -m 0755 -d /etc/apt/keyrings \
     && curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg \
     && chmod a+r /etc/apt/keyrings/docker.gpg \
