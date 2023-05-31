@@ -8,14 +8,20 @@ services:
       - 'GIT_USER='
       - 'GIT_EMAIL='
       - 'DEVICE_USER='
-      - 'DEVICE_PASS='
       - 'GITHUB_REPO='
       - 'NOTIFY_TELEGRAM='
       - 'NOTIFY_TELEGRAM_CHAT_ID='
       - 'NOTIFY_SLACK='
       - 'NOTIFY_SLACK_CHANNEL='
+    secrets:
+      - DEVICE_PASS
+      - GITHUB_TOKEN
+      - NOTIFY_TELEGRAM_TOKEN
+      - NOTIFY_SLACK_TOKEN
 
 secrets:
+  DEVICE_PASS:
+    file: ${PWD}/secrets/DEVICE_PASS  # Set this to the path on the host to your DEVICE_PASS secret file
   GITHUB_TOKEN:
     file: ${PWD}/secrets/GITHUB_TOKEN  # Set this to the path on the host to your GITHUB_TOKEN secret file
   NOTIFY_TELEGRAM_TOKEN:
