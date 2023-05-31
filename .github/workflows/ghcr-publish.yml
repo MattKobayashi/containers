@@ -74,9 +74,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./${{ env.IMAGE_NAME }}
-          push: |
-            ${{ github.event_name == 'push' }} ||
-            ${{ github.event_name == 'schedule' }}
+          push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
 
   build-avahi:
@@ -136,9 +134,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./${{ env.IMAGE_NAME }}
-          push: |
-            ${{ github.event_name == 'push' }} ||
-            ${{ github.event_name == 'schedule' }}
+          push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
 
   build-iperf2:
@@ -198,9 +194,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./${{ env.IMAGE_NAME }}
-          push: |
-            ${{ github.event_name == 'push' }} ||
-            ${{ github.event_name == 'schedule' }}
+          push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
 
   build-iperf3:
@@ -260,9 +254,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./${{ env.IMAGE_NAME }}
-          push: |
-            ${{ github.event_name == 'push' }} ||
-            ${{ github.event_name == 'schedule' }}
+          push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
 
   build-irrd:
@@ -322,9 +314,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./${{ env.IMAGE_NAME }}
-          push: |
-            ${{ github.event_name == 'push' }} ||
-            ${{ github.event_name == 'schedule' }}
+          push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
 
   build-irrexplorer:
@@ -384,9 +374,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./${{ env.IMAGE_NAME }}
-          push: |
-            ${{ github.event_name == 'push' }} ||
-            ${{ github.event_name == 'schedule' }}
+          push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
 
   build-mdns-reflector:
@@ -446,9 +434,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./${{ env.IMAGE_NAME }}
-          push: |
-            ${{ github.event_name == 'push' }} ||
-            ${{ github.event_name == 'schedule' }}
+          push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
 
   build-rng-tools:
@@ -508,9 +494,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./${{ env.IMAGE_NAME }}
-          push: |
-            ${{ github.event_name == 'push' }} ||
-            ${{ github.event_name == 'schedule' }}
+          push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
 
   build-telegraf:
@@ -570,9 +554,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./${{ env.IMAGE_NAME }}
-          push: |
-            ${{ github.event_name == 'push' }} ||
-            ${{ github.event_name == 'schedule' }}
+          push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
 
   build-verlihub:
@@ -632,9 +614,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./${{ env.IMAGE_NAME }}
-          push: |
-            ${{ github.event_name == 'push' }} ||
-            ${{ github.event_name == 'schedule' }}
+          push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
 
   build-xteve:
@@ -694,9 +674,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./${{ env.IMAGE_NAME }}
-          push: |
-            ${{ github.event_name == 'push' }} ||
-            ${{ github.event_name == 'schedule' }}
+          push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
 
   build-yancobat:
@@ -756,7 +734,5 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./${{ env.IMAGE_NAME }}
-          push: |
-            ${{ github.event_name == 'push' }} ||
-            ${{ github.event_name == 'schedule' }}
+          push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
