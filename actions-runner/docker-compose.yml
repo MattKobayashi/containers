@@ -1,10 +1,23 @@
 ---
 services:
-  actions-runner:
+  service: &actions-runner
     image: 'ghcr.io/mattkobayashi/actions-runner:latest'
-    hostname: 'actions-runner'
     restart: unless-stopped
-    environment:
-      - 'REPO='
     secrets:
       - TOKEN
+    volumes:
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+    group_add:
+      - '999'  # Set this to your host's docker group ID
+
+  # Make a copy of this section for each runner you want to set up
+  runner-1:
+    <<: *actions-runner
+    environment:
+      'REPO=user/repository'
+
+secrets:
+  TOKEN:
+    file: ${PWD}/secrets/TOKEN  # Set this to the path on the host to your TOKEN secret file
