@@ -1,6 +1,6 @@
-# ansible-network-backup
+# YANCoBaT
 
-A customised Ansible network backup playbook in an Alpine-based Docker image. Small, lightweight and (most importantly) up-to-date with source.
+YANCoBaT stands for 'Yet Another Network Configuration Backup Tool'. Because we don't have enough of 'em!
 
 ## Configuration
 
@@ -9,7 +9,7 @@ Create a GitHub repository for your network device backups. Add a `hosts.yaml` f
 Set the following environment variables when creating your Docker container:
 
 - `TZ=` Your preferred timezone, e.g. `Australia/Brisbane`
-- `GIT_USER=` Your preferred user name for Git commits (optional, default: `Ansible`)
+- `GIT_USER=` Your preferred user name for Git commits (optional, default: `YANCoBaT`)
 - `GIT_EMAIL=` Your preferred user email for Git commits
 - `DEVICE_USER=` Your devices' SSH username for backups (recommended to be a locally-configured read-only user)
 - `DEVICE_PASS=` Your devices' SSH password for backups (recommended to be a locally-configured read-only user)
@@ -26,6 +26,6 @@ Set the following environment variables when creating your Docker container:
 
 Simply start the container as a daemon:
 
-`docker run -d --name ansible-network-backup -e 'ENV_VARS=whatever' ghcr.io/mattkobayashi/ansible-network-backup`
+`docker run -d --name yancobat -e 'ENV_VARS=whatever' ghcr.io/mattkobayashi/yancobat`
 
 Or use the example `docker-compose.yml` from this repository to run as a Docker Compose project (recommended).

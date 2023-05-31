@@ -36,7 +36,7 @@ COPY --chown=ansible clone-repo.yaml /ansible/clone-repo.yaml
 COPY --chown=ansible vars.yaml /ansible/vars.yaml
 
 ENV TZ=UTC \
-    GIT_USER=Ansible \
+    GIT_USER=YANCoBaT \
     NOTIFY_TELEGRAM=false \
     NOTIFY_SLACK=false
 
