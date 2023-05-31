@@ -10,6 +10,7 @@ on:
     tags: ['v*.*.*']
   pull_request:
     branches: [main]
+  workflow_dispatch:
 
 env:
   # Use docker.io for Docker Hub if empty
@@ -24,15 +25,13 @@ jobs:
       packages: write
 
     steps:
-      # Gives two env variables
-      # One with lowercase repo owner's name
-      # Another with the name of the image
-      - name: Set image name
-        run: |
-          echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
-          echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      # Login to Docker Hub to avoid pull rate limit
+      # https://github.com/docker/login-action
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       # Add support for more platforms with QEMU (optional)
       # https://github.com/docker/setup-qemu-action
@@ -44,22 +43,30 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
+      # Gives two env variables
+      # One with lowercase repo owner's name
+      # Another with the name of the image
+      - name: Set image name
+        run: |
+          echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
+          echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
+
+      # Checkout repository
+      # https://github.com/actions/checkout
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
       - name: Log into registry ${{ env.REGISTRY }}
-        if: github.event_name != 'pull_request'
+        if: |
+          github.event_name == 'push' ||
+          github.event_name == 'schedule'
         uses: docker/login-action@v2
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
-      # Login to Docker Hub to avoid pull rate limit
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
@@ -67,7 +74,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./${{ env.IMAGE_NAME }}
-          push: ${{ github.event_name != 'pull_request' }}
+          push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
 
   build-avahi:
@@ -78,15 +85,13 @@ jobs:
       packages: write
 
     steps:
-      # Gives two env variables
-      # One with lowercase repo owner's name
-      # Another with the name of the image
-      - name: Set image name
-        run: |
-          echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
-          echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      # Login to Docker Hub to avoid pull rate limit
+      # https://github.com/docker/login-action
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       # Add support for more platforms with QEMU (optional)
       # https://github.com/docker/setup-qemu-action
@@ -98,22 +103,30 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
+      # Gives two env variables
+      # One with lowercase repo owner's name
+      # Another with the name of the image
+      - name: Set image name
+        run: |
+          echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
+          echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
+
+      # Checkout repository
+      # https://github.com/actions/checkout
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
       - name: Log into registry ${{ env.REGISTRY }}
-        if: github.event_name != 'pull_request'
+        if: |
+          github.event_name == 'push' ||
+          github.event_name == 'schedule'
         uses: docker/login-action@v2
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
-      # Login to Docker Hub to avoid pull rate limit
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
@@ -121,7 +134,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./${{ env.IMAGE_NAME }}
-          push: ${{ github.event_name != 'pull_request' }}
+          push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
 
   build-iperf2:
@@ -132,16 +145,13 @@ jobs:
       packages: write
 
     steps:
-      # Gives two env variables
-      # One with lowercase repo owner's name
-      # Another with the name of the image
-      - name: Set image name
-        run: |
-          echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
-          echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
-
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      # Login to Docker Hub to avoid pull rate limit
+      # https://github.com/docker/login-action
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       # Add support for more platforms with QEMU (optional)
       # https://github.com/docker/setup-qemu-action
@@ -153,22 +163,30 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
+      # Gives two env variables
+      # One with lowercase repo owner's name
+      # Another with the name of the image
+      - name: Set image name
+        run: |
+          echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
+          echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
+
+      # Checkout repository
+      # https://github.com/actions/checkout
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
       - name: Log into registry ${{ env.REGISTRY }}
-        if: github.event_name != 'pull_request'
+        if: |
+          github.event_name == 'push' ||
+          github.event_name == 'schedule'
         uses: docker/login-action@v2
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
-      # Login to Docker Hub to avoid pull rate limit
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
@@ -176,7 +194,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./${{ env.IMAGE_NAME }}
-          push: ${{ github.event_name != 'pull_request' }}
+          push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
 
   build-iperf3:
@@ -187,16 +205,13 @@ jobs:
       packages: write
 
     steps:
-      # Gives two env variables
-      # One with lowercase repo owner's name
-      # Another with the name of the image
-      - name: Set image name
-        run: |
-          echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
-          echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
-
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      # Login to Docker Hub to avoid pull rate limit
+      # https://github.com/docker/login-action
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       # Add support for more platforms with QEMU (optional)
       # https://github.com/docker/setup-qemu-action
@@ -208,22 +223,30 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
+      # Gives two env variables
+      # One with lowercase repo owner's name
+      # Another with the name of the image
+      - name: Set image name
+        run: |
+          echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
+          echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
+
+      # Checkout repository
+      # https://github.com/actions/checkout
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
       - name: Log into registry ${{ env.REGISTRY }}
-        if: github.event_name != 'pull_request'
+        if: |
+          github.event_name == 'push' ||
+          github.event_name == 'schedule'
         uses: docker/login-action@v2
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
-      # Login to Docker Hub to avoid pull rate limit
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
@@ -231,7 +254,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./${{ env.IMAGE_NAME }}
-          push: ${{ github.event_name != 'pull_request' }}
+          push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
 
   build-irrd:
@@ -242,16 +265,13 @@ jobs:
       packages: write
 
     steps:
-      # Gives two env variables
-      # One with lowercase repo owner's name
-      # Another with the name of the image
-      - name: Set image name
-        run: |
-          echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
-          echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
-
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      # Login to Docker Hub to avoid pull rate limit
+      # https://github.com/docker/login-action
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       # Add support for more platforms with QEMU (optional)
       # https://github.com/docker/setup-qemu-action
@@ -263,22 +283,30 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
+      # Gives two env variables
+      # One with lowercase repo owner's name
+      # Another with the name of the image
+      - name: Set image name
+        run: |
+          echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
+          echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
+
+      # Checkout repository
+      # https://github.com/actions/checkout
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
       - name: Log into registry ${{ env.REGISTRY }}
-        if: github.event_name != 'pull_request'
+        if: |
+          github.event_name == 'push' ||
+          github.event_name == 'schedule'
         uses: docker/login-action@v2
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
-      # Login to Docker Hub to avoid pull rate limit
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
@@ -286,7 +314,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./${{ env.IMAGE_NAME }}
-          push: ${{ github.event_name != 'pull_request' }}
+          push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
 
   build-irrexplorer:
@@ -297,16 +325,13 @@ jobs:
       packages: write
 
     steps:
-      # Gives two env variables
-      # One with lowercase repo owner's name
-      # Another with the name of the image
-      - name: Set image name
-        run: |
-          echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
-          echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
-
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      # Login to Docker Hub to avoid pull rate limit
+      # https://github.com/docker/login-action
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       # Add support for more platforms with QEMU (optional)
       # https://github.com/docker/setup-qemu-action
@@ -318,22 +343,30 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
+      # Gives two env variables
+      # One with lowercase repo owner's name
+      # Another with the name of the image
+      - name: Set image name
+        run: |
+          echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
+          echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
+
+      # Checkout repository
+      # https://github.com/actions/checkout
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
       - name: Log into registry ${{ env.REGISTRY }}
-        if: github.event_name != 'pull_request'
+        if: |
+          github.event_name == 'push' ||
+          github.event_name == 'schedule'
         uses: docker/login-action@v2
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
-      # Login to Docker Hub to avoid pull rate limit
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
@@ -341,7 +374,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./${{ env.IMAGE_NAME }}
-          push: ${{ github.event_name != 'pull_request' }}
+          push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
 
   build-mdns-reflector:
@@ -352,16 +385,13 @@ jobs:
       packages: write
 
     steps:
-      # Gives two env variables
-      # One with lowercase repo owner's name
-      # Another with the name of the image
-      - name: Set image name
-        run: |
-          echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
-          echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
-
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      # Login to Docker Hub to avoid pull rate limit
+      # https://github.com/docker/login-action
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       # Add support for more platforms with QEMU (optional)
       # https://github.com/docker/setup-qemu-action
@@ -373,22 +403,30 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
+      # Gives two env variables
+      # One with lowercase repo owner's name
+      # Another with the name of the image
+      - name: Set image name
+        run: |
+          echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
+          echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
+
+      # Checkout repository
+      # https://github.com/actions/checkout
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
       - name: Log into registry ${{ env.REGISTRY }}
-        if: github.event_name != 'pull_request'
+        if: |
+          github.event_name == 'push' ||
+          github.event_name == 'schedule'
         uses: docker/login-action@v2
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
-      # Login to Docker Hub to avoid pull rate limit
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
@@ -396,7 +434,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./${{ env.IMAGE_NAME }}
-          push: ${{ github.event_name != 'pull_request' }}
+          push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
 
   build-rng-tools:
@@ -407,16 +445,13 @@ jobs:
       packages: write
 
     steps:
-      # Gives two env variables
-      # One with lowercase repo owner's name
-      # Another with the name of the image
-      - name: Set image name
-        run: |
-          echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
-          echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
-
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      # Login to Docker Hub to avoid pull rate limit
+      # https://github.com/docker/login-action
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       # Add support for more platforms with QEMU (optional)
       # https://github.com/docker/setup-qemu-action
@@ -428,22 +463,30 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
+      # Gives two env variables
+      # One with lowercase repo owner's name
+      # Another with the name of the image
+      - name: Set image name
+        run: |
+          echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
+          echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
+
+      # Checkout repository
+      # https://github.com/actions/checkout
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
       - name: Log into registry ${{ env.REGISTRY }}
-        if: github.event_name != 'pull_request'
+        if: |
+          github.event_name == 'push' ||
+          github.event_name == 'schedule'
         uses: docker/login-action@v2
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
-      # Login to Docker Hub to avoid pull rate limit
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
@@ -451,7 +494,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./${{ env.IMAGE_NAME }}
-          push: ${{ github.event_name != 'pull_request' }}
+          push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
 
   build-telegraf:
@@ -462,16 +505,13 @@ jobs:
       packages: write
 
     steps:
-      # Gives two env variables
-      # One with lowercase repo owner's name
-      # Another with the name of the image
-      - name: Set image name
-        run: |
-          echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
-          echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
-
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      # Login to Docker Hub to avoid pull rate limit
+      # https://github.com/docker/login-action
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       # Add support for more platforms with QEMU (optional)
       # https://github.com/docker/setup-qemu-action
@@ -483,22 +523,30 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
+      # Gives two env variables
+      # One with lowercase repo owner's name
+      # Another with the name of the image
+      - name: Set image name
+        run: |
+          echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
+          echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
+
+      # Checkout repository
+      # https://github.com/actions/checkout
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
       - name: Log into registry ${{ env.REGISTRY }}
-        if: github.event_name != 'pull_request'
+        if: |
+          github.event_name == 'push' ||
+          github.event_name == 'schedule'
         uses: docker/login-action@v2
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
-      # Login to Docker Hub to avoid pull rate limit
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
@@ -506,7 +554,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./${{ env.IMAGE_NAME }}
-          push: ${{ github.event_name != 'pull_request' }}
+          push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
 
   build-verlihub:
@@ -517,16 +565,13 @@ jobs:
       packages: write
 
     steps:
-      # Gives two env variables
-      # One with lowercase repo owner's name
-      # Another with the name of the image
-      - name: Set image name
-        run: |
-          echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
-          echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
-
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      # Login to Docker Hub to avoid pull rate limit
+      # https://github.com/docker/login-action
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       # Add support for more platforms with QEMU (optional)
       # https://github.com/docker/setup-qemu-action
@@ -538,22 +583,30 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
+      # Gives two env variables
+      # One with lowercase repo owner's name
+      # Another with the name of the image
+      - name: Set image name
+        run: |
+          echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
+          echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
+
+      # Checkout repository
+      # https://github.com/actions/checkout
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
       - name: Log into registry ${{ env.REGISTRY }}
-        if: github.event_name != 'pull_request'
+        if: |
+          github.event_name == 'push' ||
+          github.event_name == 'schedule'
         uses: docker/login-action@v2
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
-      # Login to Docker Hub to avoid pull rate limit
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
@@ -561,7 +614,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./${{ env.IMAGE_NAME }}
-          push: ${{ github.event_name != 'pull_request' }}
+          push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
 
   build-xteve:
@@ -572,16 +625,13 @@ jobs:
       packages: write
 
     steps:
-      # Gives two env variables
-      # One with lowercase repo owner's name
-      # Another with the name of the image
-      - name: Set image name
-        run: |
-          echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
-          echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
-
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      # Login to Docker Hub to avoid pull rate limit
+      # https://github.com/docker/login-action
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       # Add support for more platforms with QEMU (optional)
       # https://github.com/docker/setup-qemu-action
@@ -593,22 +643,30 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
+      # Gives two env variables
+      # One with lowercase repo owner's name
+      # Another with the name of the image
+      - name: Set image name
+        run: |
+          echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
+          echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
+
+      # Checkout repository
+      # https://github.com/actions/checkout
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
       - name: Log into registry ${{ env.REGISTRY }}
-        if: github.event_name != 'pull_request'
+        if: |
+          github.event_name == 'push' ||
+          github.event_name == 'schedule'
         uses: docker/login-action@v2
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
-      # Login to Docker Hub to avoid pull rate limit
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
@@ -616,7 +674,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./${{ env.IMAGE_NAME }}
-          push: ${{ github.event_name != 'pull_request' }}
+          push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
 
   build-yancobat:
@@ -627,15 +685,13 @@ jobs:
       packages: write
 
     steps:
-      # Gives two env variables
-      # One with lowercase repo owner's name
-      # Another with the name of the image
-      - name: Set image name
-        run: |
-          echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
-          echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      # Login to Docker Hub to avoid pull rate limit
+      # https://github.com/docker/login-action
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       # Add support for more platforms with QEMU (optional)
       # https://github.com/docker/setup-qemu-action
@@ -647,22 +703,30 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
+      # Gives two env variables
+      # One with lowercase repo owner's name
+      # Another with the name of the image
+      - name: Set image name
+        run: |
+          echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
+          echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
+
+      # Checkout repository
+      # https://github.com/actions/checkout
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
       - name: Log into registry ${{ env.REGISTRY }}
-        if: github.event_name != 'pull_request'
+        if: |
+          github.event_name == 'push' ||
+          github.event_name == 'schedule'
         uses: docker/login-action@v2
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
-      # Login to Docker Hub to avoid pull rate limit
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
@@ -670,5 +734,5 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./${{ env.IMAGE_NAME }}
-          push: ${{ github.event_name != 'pull_request' }}
+          push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
