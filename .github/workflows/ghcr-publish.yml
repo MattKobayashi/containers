@@ -10,6 +10,7 @@ on:
     tags: ['v*.*.*']
   pull_request:
     branches: [main]
+  workflow_dispatch:
 
 env:
   # Use docker.io for Docker Hub if empty
@@ -49,13 +50,18 @@ jobs:
         run: |
           echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
           echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
+
+      # Checkout repository
+      # https://github.com/actions/checkout
       - name: Checkout repository
         uses: actions/checkout@v3
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
       - name: Log into registry ${{ env.REGISTRY }}
-        if: github.event_name != 'pull_request'
+        if: |
+          github.event_name == 'push' ||
+          github.event_name == 'schedule'
         uses: docker/login-action@v2
         with:
           registry: ${{ env.REGISTRY }}
@@ -68,7 +74,9 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./${{ env.IMAGE_NAME }}
-          push: ${{ github.event_name != 'pull_request' }}
+          push: |
+            ${{ github.event_name == 'push' }} ||
+            ${{ github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
 
   build-avahi:
@@ -104,13 +112,18 @@ jobs:
         run: |
           echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
           echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
+
+      # Checkout repository
+      # https://github.com/actions/checkout
       - name: Checkout repository
         uses: actions/checkout@v3
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
       - name: Log into registry ${{ env.REGISTRY }}
-        if: github.event_name != 'pull_request'
+        if: |
+          github.event_name == 'push' ||
+          github.event_name == 'schedule'
         uses: docker/login-action@v2
         with:
           registry: ${{ env.REGISTRY }}
@@ -123,7 +136,9 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./${{ env.IMAGE_NAME }}
-          push: ${{ github.event_name != 'pull_request' }}
+          push: |
+            ${{ github.event_name == 'push' }} ||
+            ${{ github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
 
   build-iperf2:
@@ -159,13 +174,18 @@ jobs:
         run: |
           echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
           echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
+
+      # Checkout repository
+      # https://github.com/actions/checkout
       - name: Checkout repository
         uses: actions/checkout@v3
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
       - name: Log into registry ${{ env.REGISTRY }}
-        if: github.event_name != 'pull_request'
+        if: |
+          github.event_name == 'push' ||
+          github.event_name == 'schedule'
         uses: docker/login-action@v2
         with:
           registry: ${{ env.REGISTRY }}
@@ -178,7 +198,9 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./${{ env.IMAGE_NAME }}
-          push: ${{ github.event_name != 'pull_request' }}
+          push: |
+            ${{ github.event_name == 'push' }} ||
+            ${{ github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
 
   build-iperf3:
@@ -214,13 +236,18 @@ jobs:
         run: |
           echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
           echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
+
+      # Checkout repository
+      # https://github.com/actions/checkout
       - name: Checkout repository
         uses: actions/checkout@v3
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
       - name: Log into registry ${{ env.REGISTRY }}
-        if: github.event_name != 'pull_request'
+        if: |
+          github.event_name == 'push' ||
+          github.event_name == 'schedule'
         uses: docker/login-action@v2
         with:
           registry: ${{ env.REGISTRY }}
@@ -233,7 +260,9 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./${{ env.IMAGE_NAME }}
-          push: ${{ github.event_name != 'pull_request' }}
+          push: |
+            ${{ github.event_name == 'push' }} ||
+            ${{ github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
 
   build-irrd:
@@ -269,13 +298,18 @@ jobs:
         run: |
           echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
           echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
+
+      # Checkout repository
+      # https://github.com/actions/checkout
       - name: Checkout repository
         uses: actions/checkout@v3
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
       - name: Log into registry ${{ env.REGISTRY }}
-        if: github.event_name != 'pull_request'
+        if: |
+          github.event_name == 'push' ||
+          github.event_name == 'schedule'
         uses: docker/login-action@v2
         with:
           registry: ${{ env.REGISTRY }}
@@ -288,7 +322,9 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./${{ env.IMAGE_NAME }}
-          push: ${{ github.event_name != 'pull_request' }}
+          push: |
+            ${{ github.event_name == 'push' }} ||
+            ${{ github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
 
   build-irrexplorer:
@@ -324,13 +360,18 @@ jobs:
         run: |
           echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
           echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
+
+      # Checkout repository
+      # https://github.com/actions/checkout
       - name: Checkout repository
         uses: actions/checkout@v3
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
       - name: Log into registry ${{ env.REGISTRY }}
-        if: github.event_name != 'pull_request'
+        if: |
+          github.event_name == 'push' ||
+          github.event_name == 'schedule'
         uses: docker/login-action@v2
         with:
           registry: ${{ env.REGISTRY }}
@@ -343,7 +384,9 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./${{ env.IMAGE_NAME }}
-          push: ${{ github.event_name != 'pull_request' }}
+          push: |
+            ${{ github.event_name == 'push' }} ||
+            ${{ github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
 
   build-mdns-reflector:
@@ -379,13 +422,18 @@ jobs:
         run: |
           echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
           echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
+
+      # Checkout repository
+      # https://github.com/actions/checkout
       - name: Checkout repository
         uses: actions/checkout@v3
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
       - name: Log into registry ${{ env.REGISTRY }}
-        if: github.event_name != 'pull_request'
+        if: |
+          github.event_name == 'push' ||
+          github.event_name == 'schedule'
         uses: docker/login-action@v2
         with:
           registry: ${{ env.REGISTRY }}
@@ -398,7 +446,9 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./${{ env.IMAGE_NAME }}
-          push: ${{ github.event_name != 'pull_request' }}
+          push: |
+            ${{ github.event_name == 'push' }} ||
+            ${{ github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
 
   build-rng-tools:
@@ -434,13 +484,18 @@ jobs:
         run: |
           echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
           echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
+
+      # Checkout repository
+      # https://github.com/actions/checkout
       - name: Checkout repository
         uses: actions/checkout@v3
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
       - name: Log into registry ${{ env.REGISTRY }}
-        if: github.event_name != 'pull_request'
+        if: |
+          github.event_name == 'push' ||
+          github.event_name == 'schedule'
         uses: docker/login-action@v2
         with:
           registry: ${{ env.REGISTRY }}
@@ -453,7 +508,9 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./${{ env.IMAGE_NAME }}
-          push: ${{ github.event_name != 'pull_request' }}
+          push: |
+            ${{ github.event_name == 'push' }} ||
+            ${{ github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
 
   build-telegraf:
@@ -489,13 +546,18 @@ jobs:
         run: |
           echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
           echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
+
+      # Checkout repository
+      # https://github.com/actions/checkout
       - name: Checkout repository
         uses: actions/checkout@v3
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
       - name: Log into registry ${{ env.REGISTRY }}
-        if: github.event_name != 'pull_request'
+        if: |
+          github.event_name == 'push' ||
+          github.event_name == 'schedule'
         uses: docker/login-action@v2
         with:
           registry: ${{ env.REGISTRY }}
@@ -508,7 +570,9 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./${{ env.IMAGE_NAME }}
-          push: ${{ github.event_name != 'pull_request' }}
+          push: |
+            ${{ github.event_name == 'push' }} ||
+            ${{ github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
 
   build-verlihub:
@@ -544,13 +608,18 @@ jobs:
         run: |
           echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
           echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
+
+      # Checkout repository
+      # https://github.com/actions/checkout
       - name: Checkout repository
         uses: actions/checkout@v3
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
       - name: Log into registry ${{ env.REGISTRY }}
-        if: github.event_name != 'pull_request'
+        if: |
+          github.event_name == 'push' ||
+          github.event_name == 'schedule'
         uses: docker/login-action@v2
         with:
           registry: ${{ env.REGISTRY }}
@@ -563,7 +632,9 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./${{ env.IMAGE_NAME }}
-          push: ${{ github.event_name != 'pull_request' }}
+          push: |
+            ${{ github.event_name == 'push' }} ||
+            ${{ github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
 
   build-xteve:
@@ -599,13 +670,18 @@ jobs:
         run: |
           echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
           echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
+
+      # Checkout repository
+      # https://github.com/actions/checkout
       - name: Checkout repository
         uses: actions/checkout@v3
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
       - name: Log into registry ${{ env.REGISTRY }}
-        if: github.event_name != 'pull_request'
+        if: |
+          github.event_name == 'push' ||
+          github.event_name == 'schedule'
         uses: docker/login-action@v2
         with:
           registry: ${{ env.REGISTRY }}
@@ -618,7 +694,9 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./${{ env.IMAGE_NAME }}
-          push: ${{ github.event_name != 'pull_request' }}
+          push: |
+            ${{ github.event_name == 'push' }} ||
+            ${{ github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
 
   build-yancobat:
@@ -654,13 +732,18 @@ jobs:
         run: |
           echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
           echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
+
+      # Checkout repository
+      # https://github.com/actions/checkout
       - name: Checkout repository
         uses: actions/checkout@v3
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
       - name: Log into registry ${{ env.REGISTRY }}
-        if: github.event_name != 'pull_request'
+        if: |
+          github.event_name == 'push' ||
+          github.event_name == 'schedule'
         uses: docker/login-action@v2
         with:
           registry: ${{ env.REGISTRY }}
@@ -673,5 +756,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./${{ env.IMAGE_NAME }}
-          push: ${{ github.event_name != 'pull_request' }}
+          push: |
+            ${{ github.event_name == 'push' }} ||
+            ${{ github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
