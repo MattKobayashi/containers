@@ -1,7 +1,7 @@
 ---
 services:
-  ansible-network-backup:
-    image: 'ghcr.io/mattkobayashi/ansible-network-backup:latest'
+  yancobat:
+    image: 'ghcr.io/mattkobayashi/yancobat:latest'
     restart: unless-stopped
     environment:
       - 'TZ='
@@ -10,10 +10,15 @@ services:
       - 'DEVICE_USER='
       - 'DEVICE_PASS='
       - 'GITHUB_REPO='
-      - 'GITHUB_TOKEN='
       - 'NOTIFY_TELEGRAM='
-      - 'NOTIFY_TELEGRAM_TOKEN='
       - 'NOTIFY_TELEGRAM_CHAT_ID='
       - 'NOTIFY_SLACK='
-      - 'NOTIFY_SLACK_TOKEN='
       - 'NOTIFY_SLACK_CHANNEL='
+
+secrets:
+  GITHUB_TOKEN:
+    file: ${PWD}/secrets/GITHUB_TOKEN  # Set this to the path on the host to your GITHUB_TOKEN secret file
+  NOTIFY_TELEGRAM_TOKEN:
+    file: ${PWD}/secrets/NOTIFY_TELEGRAM_TOKEN  # Set this to the path on the host to your NOTIFY_TELEGRAM_TOKEN secret file
+  NOTIFY_SLACK_TOKEN:
+    file: ${PWD}/secrets/NOTIFY_SLACK_TOKEN  # Set this to the path on the host to your NOTIFY_SLACK_TOKEN secret file
