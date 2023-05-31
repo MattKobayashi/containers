@@ -9,7 +9,7 @@ Add a self-hosted runner to a repository on GitHub under Settings > Actions > Ru
 Set the following environment variables when creating your Docker container:
 
 - `REPO=` The full URL of your GitHub repository that the self-hosted runner will be added to.
-- `TOKEN=` The self-hosted runner token provided during the self-hosted runner setup. This value can also be passed as a Docker secret.
+- `TOKEN=` The self-hosted runner token provided during the self-hosted runner setup. This value can also be passed as a Docker secret (highly recommended).
 
 ## Running
 
