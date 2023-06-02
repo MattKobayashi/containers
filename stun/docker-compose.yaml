@@ -1,0 +1,14 @@
+---
+services:
+  stun:
+    image: 'ghcr.io/mattkobayashi/stun:latest'
+    restart: unless-stopped
+    ports:
+      - target: 3478
+        published: 3478
+        protocol: tcp
+        mode: host
+      - target: 3478
+        published: 3478
+        protocol: udp
+        mode: host
