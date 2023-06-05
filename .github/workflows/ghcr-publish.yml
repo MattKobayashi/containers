@@ -71,7 +71,7 @@ jobs:
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
       - name: Build and push Docker image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: ./${{ env.IMAGE_NAME }}
           push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
@@ -131,7 +131,7 @@ jobs:
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
       - name: Build and push Docker image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: ./${{ env.IMAGE_NAME }}
           push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
@@ -191,7 +191,7 @@ jobs:
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
       - name: Build and push Docker image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: ./${{ env.IMAGE_NAME }}
           push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
@@ -251,7 +251,7 @@ jobs:
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
       - name: Build and push Docker image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: ./${{ env.IMAGE_NAME }}
           push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
@@ -311,7 +311,7 @@ jobs:
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
       - name: Build and push Docker image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: ./${{ env.IMAGE_NAME }}
           push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
@@ -371,7 +371,7 @@ jobs:
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
       - name: Build and push Docker image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: ./${{ env.IMAGE_NAME }}
           push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
@@ -431,7 +431,7 @@ jobs:
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
       - name: Build and push Docker image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: ./${{ env.IMAGE_NAME }}
           push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
@@ -491,7 +491,67 @@ jobs:
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
       - name: Build and push Docker image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
+        with:
+          context: ./${{ env.IMAGE_NAME }}
+          push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
+          tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
+
+  build-stun:
+
+    runs-on: self-hosted
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      # Login to Docker Hub to avoid pull rate limit
+      # https://github.com/docker/login-action
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # Add support for more platforms with QEMU (optional)
+      # https://github.com/docker/setup-qemu-action
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      # Set up Docker Buildx
+      # https://github.com/docker/setup-buildx-action
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      # Gives two env variables
+      # One with lowercase repo owner's name
+      # Another with the name of the image
+      - name: Set image name
+        run: |
+          echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
+          echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
+
+      # Checkout repository
+      # https://github.com/actions/checkout
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Login against a Docker registry except on PR
+      # https://github.com/docker/login-action
+      - name: Log into registry ${{ env.REGISTRY }}
+        if: |
+          github.event_name == 'push' ||
+          github.event_name == 'schedule'
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Build and push Docker image with Buildx (don't push on PR)
+      # https://github.com/docker/build-push-action
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
         with:
           context: ./${{ env.IMAGE_NAME }}
           push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
@@ -551,7 +611,7 @@ jobs:
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
       - name: Build and push Docker image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: ./${{ env.IMAGE_NAME }}
           push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
@@ -611,7 +671,7 @@ jobs:
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
       - name: Build and push Docker image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: ./${{ env.IMAGE_NAME }}
           push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
@@ -671,7 +731,7 @@ jobs:
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
       - name: Build and push Docker image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: ./${{ env.IMAGE_NAME }}
           push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
@@ -731,7 +791,7 @@ jobs:
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
       - name: Build and push Docker image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: ./${{ env.IMAGE_NAME }}
           push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
