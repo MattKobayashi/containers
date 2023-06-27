@@ -34,8 +34,8 @@
     - block:
         - name: Set device username/password
           ansible.builtin.shell: |
-            yq -i '.all.children.*.vars.ansible_user = {{ device_user }}' /repo/hosts.yaml
-            yq -i '.all.children.*.vars.ansible_ssh_pass = {{ device_pass }}' /repo/hosts.yaml
+            yq -i '.all.children.*.vars.ansible_user = "{{ device_user }}"' /repo/hosts.yaml
+            yq -i '.all.children.*.vars.ansible_ssh_pass = "{{ device_pass }}"' /repo/hosts.yaml
 
       rescue:
         - name: Set failure flag
