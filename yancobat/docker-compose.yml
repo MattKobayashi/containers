@@ -9,10 +9,10 @@ services:
       - 'GIT_EMAIL='
       - 'DEVICE_USER='
       - 'GITHUB_REPO='
-      - 'NOTIFY_TELEGRAM='
+      - 'NOTIFY_TELEGRAM_ENABLED='
       - 'NOTIFY_TELEGRAM_CHAT_ID='
-      - 'NOTIFY_SLACK='
-      - 'NOTIFY_SLACK_CHANNEL='
+      - 'NOTIFY_SLACK_ENABLED='
+      - 'NOTIFY_SLACK_CHANNEL_ID='
     secrets:
       - DEVICE_PASS
       - GITHUB_TOKEN

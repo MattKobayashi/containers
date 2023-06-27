@@ -37,8 +37,8 @@ COPY --chown=ansible vars.yaml /ansible/vars.yaml
 
 ENV TZ=UTC \
     GIT_USER=YANCoBaT \
-    NOTIFY_TELEGRAM=false \
-    NOTIFY_SLACK=false
+    NOTIFY_TELEGRAM_ENABLED=false \
+    NOTIFY_SLACK_ENABLED=false
 
 ENTRYPOINT ["./entrypoint.sh"]
 
