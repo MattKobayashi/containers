@@ -1,0 +1,14 @@
+---
+services:
+  certbot-cloudflare:
+    image: 'ghcr.io/mattkobayashi/certbot-cloudflare:latest'
+    restart: unless-stopped
+    environment:
+      - 'EMAIL='
+      - 'DOMAIN='
+    secrets:
+      - CERTBOT_CF_DNS_API_TOKEN
+
+secrets:
+  CERTBOT_CF_DNS_API_TOKEN:
+    file: ${PWD}/secrets/CERTBOT_CF_DNS_API_TOKEN  # Set this to the path on the host to your CERTBOT_CF_DNS_API_TOKEN secret file
