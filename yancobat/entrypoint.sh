@@ -16,5 +16,5 @@ if [ -f /run/secrets/NOTIFY_SLACK_TOKEN ]; then
 	export NOTIFY_SLACK_TOKEN=$(cat /run/secrets/NOTIFY_SLACK_TOKEN)
 fi
 
-ansible-playbook /ansible/clone-repo.yaml
+ansible-playbook -i /ansible/vars.yaml /ansible/clone-repo.yaml
 exec supercronic /ansible/crontab/ansible-cron

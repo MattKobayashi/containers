@@ -1,5 +1,15 @@
 ---
 all:
   vars:
-    notify_telegram: "{{ lookup('ansible.builtin.env', 'NOTIFY_TELEGRAM') | bool }}"
-    notify_slack: "{{ lookup('ansible.builtin.env', 'NOTIFY_SLACK') | bool }}"
+    git_user: "{{ lookup('ansible.builtin.env', 'GIT_USER') }}"
+    git_email: "{{ lookup('ansible.builtin.env', 'GIT_EMAIL') }}"
+    device_user: "{{ lookup('ansible.builtin.env', 'DEVICE_USER') }}"
+    device_pass: "{{ lookup('file', '/run/secrets/DEVICE_PASS') }}"
+    github_repo: "{{ lookup('ansible.builtin.env', 'GITHUB_REPO') }}"
+    github_token: "{{ lookup('file', '/run/secrets/GITHUB_TOKEN') }}"
+    notify_telegram_enabled: "{{ lookup('ansible.builtin.env', 'NOTIFY_TELEGRAM_ENABLED') | bool }}"
+    notify_telegram_chat_id: "{{ lookup('ansible.builtin.env', 'NOTIFY_TELEGRAM_CHAT_ID') }}"
+    notify_telegram_token: "{{ lookup('file', '/run/secrets/NOTIFY_TELEGRAM_TOKEN') }}"
+    notify_slack_enabled: "{{ lookup('ansible.builtin.env', 'NOTIFY_SLACK_ENABLED') | bool }}"
+    notify_slack_channel_id: "{{ lookup('ansible.builtin.env', 'NOTIFY_SLACK_CHANNEL_ID') }}"
+    notify_slack_token: "{{ lookup('file', '/run/secrets/NOTIFY_SLACK_TOKEN') }}"

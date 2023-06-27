@@ -16,7 +16,7 @@
     - block:
         - name: Update Git repository
           ansible.builtin.git:
-            repo: https://${GITHUB_TOKEN}@github.com/${GITHUB_REPO}
+            repo: https://{{ github_token }}@github.com/{{ github_repo }}
             dest: /repo/
             force: true
 
@@ -34,8 +34,8 @@
     - block:
         - name: Set device username/password
           ansible.builtin.shell: |
-            yq -i '.all.children.*.vars.ansible_user = strenv(DEVICE_USER)' /repo/hosts.yaml
-            yq -i '.all.children.*.vars.ansible_ssh_pass = strenv(DEVICE_PASS)' /repo/hosts.yaml
+            yq -i '.all.children.*.vars.ansible_user = {{ device_user }}' /repo/hosts.yaml
+            yq -i '.all.children.*.vars.ansible_ssh_pass = {{ device_pass }}' /repo/hosts.yaml
 
       rescue:
         - name: Set failure flag
@@ -68,25 +68,25 @@
 
         - name: Send result notification to Telegram
           community.general.telegram:
-            token: "{{ lookup('ansible.builtin.env', 'NOTIFY_TELEGRAM_TOKEN') }}"
+            token: "{{ notify_telegram_token }}"
             api_args:
-              chat_id: "{{ lookup('ansible.builtin.env', 'NOTIFY_TELEGRAM_CHAT_ID') }}"
+              chat_id: "{{ notify_telegram_chat_id }}"
               parse_mode: "MarkdownV2"
               text: |
                 *\-\- Network device configuration changed \-\-*
                 Device: {{ inventory_hostname | regex_replace('\.', '\.') }}
                 Changes: {{ ios_save.diff | length }}
-                [View on GitHub](https://github.com/{{ lookup('ansible.builtin.env', 'GITHUB_REPO') }}/commits/main/backups/ios/{{ inventory_hostname }}.txt)
+                [View on GitHub](https://github.com/{{ github_repo }}/commits/main/backups/ios/{{ inventory_hostname }}.txt)
               disable_web_page_preview: true
               protect_content: true
           when:
-            - notify_telegram
+            - notify_telegram_enabled
             - ios_save.changed
 
         - name: Send result notification to Slack
           community.general.slack:
-            token: "{{ lookup('ansible.builtin.env', 'NOTIFY_SLACK_TOKEN') }}"
-            channel: "{{ lookup('ansible.builtin.env', 'NOTIFY_SLACK_CHANNEL') }}"
+            token: "{{ notify_slack_token }}"
+            channel: "{{ notify_slack_channel_id }}"
             blocks:
               - type: header
                 text:
@@ -96,14 +96,14 @@
               - type: section
                 text:
                   type: mrkdwn
-                  text: "Device: {{ inventory_hostname }}\n\nChanges: {{ ios_save.diff | length }}\n\n<https://github.com/{{ lookup('ansible.builtin.env', 'GITHUB_REPO') }}/commits/main/backups/ios/{{ inventory_hostname }}.txt|View on GitHub>"
+                  text: "Device: {{ inventory_hostname }}\n\nChanges: {{ ios_save.diff | length }}\n\n<https://github.com/{{ github_repo }}/commits/main/backups/ios/{{ inventory_hostname }}.txt|View on GitHub>"
               - type: divider
               - type: context
                 elements:
                   - type: mrkdwn
                     text: "This notification brought to you by `ansible-network-backup`"
           when:
-            - notify_slack
+            - notify_slack_enabled
             - ios_save.changed
 
       rescue:
@@ -137,25 +137,25 @@
 
         - name: Send result notification to Telegram
           community.general.telegram:
-            token: "{{ lookup('ansible.builtin.env', 'NOTIFY_TELEGRAM_TOKEN') }}"
+            token: "{{ notify_telegram_token }}"
             api_args:
-              chat_id: "{{ lookup('ansible.builtin.env', 'NOTIFY_TELEGRAM_CHAT_ID') }}"
+              chat_id: "{{ notify_telegram_chat_id }}"
               parse_mode: "MarkdownV2"
               text: |
                 *\-\- Network device configuration changed \-\-*
                 Device: {{ inventory_hostname | regex_replace('\.', '\.') }}
                 Changes: {{ iosxr_save.diff | length }}
-                [View on GitHub](https://github.com/{{ lookup('ansible.builtin.env', 'GITHUB_REPO') }}/commits/main/backups/iosxr/{{ inventory_hostname }}.txt)
+                [View on GitHub](https://github.com/{{ github_repo }}/commits/main/backups/iosxr/{{ inventory_hostname }}.txt)
               disable_web_page_preview: true
               protect_content: true
           when:
-            - notify_telegram
+            - notify_telegram_enabled
             - iosxr_save.changed
 
         - name: Send result notification to Slack
           community.general.slack:
-            token: "{{ lookup('ansible.builtin.env', 'NOTIFY_SLACK_TOKEN') }}"
-            channel: "{{ lookup('ansible.builtin.env', 'NOTIFY_SLACK_CHANNEL') }}"
+            token: "{{ notify_slack_token }}"
+            channel: "{{ notify_slack_channel_id }}"
             blocks:
               - type: header
                 text:
@@ -165,14 +165,14 @@
               - type: section
                 text:
                   type: mrkdwn
-                  text: "Device: {{ inventory_hostname }}\n\nChanges: {{ iosxr_save.diff | length }}\n\n<https://github.com/{{ lookup('ansible.builtin.env', 'GITHUB_REPO') }}/commits/main/backups/iosxr/{{ inventory_hostname }}.txt|View on GitHub>"
+                  text: "Device: {{ inventory_hostname }}\n\nChanges: {{ iosxr_save.diff | length }}\n\n<https://github.com/{{ github_repo }}/commits/main/backups/iosxr/{{ inventory_hostname }}.txt|View on GitHub>"
               - type: divider
               - type: context
                 elements:
                   - type: mrkdwn
                     text: "This notification brought to you by `ansible-network-backup`"
           when:
-            - notify_slack
+            - notify_slack_enabled
             - iosxr_save.changed
 
       rescue:
@@ -206,25 +206,25 @@
 
         - name: Send result notification to Telegram
           community.general.telegram:
-            token: "{{ lookup('ansible.builtin.env', 'NOTIFY_TELEGRAM_TOKEN') }}"
+            token: "{{ notify_telegram_token }}"
             api_args:
-              chat_id: "{{ lookup('ansible.builtin.env', 'NOTIFY_TELEGRAM_CHAT_ID') }}"
+              chat_id: "{{ notify_telegram_chat_id }}"
               parse_mode: "MarkdownV2"
               text: |
                 *\-\- Network device configuration changed \-\-*
                 Device: {{ inventory_hostname | regex_replace('\.', '\.') }}
                 Changes: {{ junos_save.diff | length }}
-                [View on GitHub](https://github.com/{{ lookup('ansible.builtin.env', 'GITHUB_REPO') }}/commits/main/backups/junos/{{ inventory_hostname }}.txt)
+                [View on GitHub](https://github.com/{{ github_repo }}/commits/main/backups/junos/{{ inventory_hostname }}.txt)
               disable_web_page_preview: true
               protect_content: true
           when:
-            - notify_telegram
+            - notify_telegram_enabled
             - junos_save.changed
 
         - name: Send result notification to Slack
           community.general.slack:
-            token: "{{ lookup('ansible.builtin.env', 'NOTIFY_SLACK_TOKEN') }}"
-            channel: "{{ lookup('ansible.builtin.env', 'NOTIFY_SLACK_CHANNEL') }}"
+            token: "{{ notify_slack_token }}"
+            channel: "{{ notify_slack_channel_id }}"
             blocks:
               - type: header
                 text:
@@ -234,14 +234,14 @@
               - type: section
                 text:
                   type: mrkdwn
-                  text: "Device: {{ inventory_hostname }}\n\nChanges: {{ junos_save.diff | length }}\n\n<https://github.com/{{ lookup('ansible.builtin.env', 'GITHUB_REPO') }}/commits/main/backups/junos/{{ inventory_hostname }}.txt|View on GitHub>"
+                  text: "Device: {{ inventory_hostname }}\n\nChanges: {{ junos_save.diff | length }}\n\n<https://github.com/{{ github_repo }}/commits/main/backups/junos/{{ inventory_hostname }}.txt|View on GitHub>"
               - type: divider
               - type: context
                 elements:
                   - type: mrkdwn
                     text: "This notification brought to you by `ansible-network-backup`"
           when:
-            - notify_slack
+            - notify_slack_enabled
             - junos_save.changed
 
       rescue:
@@ -275,25 +275,25 @@
 
         - name: Send result notification to Telegram
           community.general.telegram:
-            token: "{{ lookup('ansible.builtin.env', 'NOTIFY_TELEGRAM_TOKEN') }}"
+            token: "{{ notify_telegram_token }}"
             api_args:
-              chat_id: "{{ lookup('ansible.builtin.env', 'NOTIFY_TELEGRAM_CHAT_ID') }}"
+              chat_id: "{{ notify_telegram_chat_id }}"
               parse_mode: "MarkdownV2"
               text: |
                 *\-\- Network device configuration changed \-\-*
                 Device: {{ inventory_hostname | regex_replace('\.', '\.') }}
                 Changes: {{ exos_save.diff | length }}
-                [View on GitHub](https://github.com/{{ lookup('ansible.builtin.env', 'GITHUB_REPO') }}/commits/main/backups/exos/{{ inventory_hostname }}.txt)
+                [View on GitHub](https://github.com/{{ github_repo }}/commits/main/backups/exos/{{ inventory_hostname }}.txt)
               disable_web_page_preview: true
               protect_content: true
           when:
-            - notify_telegram
+            - notify_telegram_enabled
             - exos_save.changed
 
         - name: Send result notification to Slack
           community.general.slack:
-            token: "{{ lookup('ansible.builtin.env', 'NOTIFY_SLACK_TOKEN') }}"
-            channel: "{{ lookup('ansible.builtin.env', 'NOTIFY_SLACK_CHANNEL') }}"
+            token: "{{ notify_slack_token }}"
+            channel: "{{ notify_slack_channel_id }}"
             blocks:
               - type: header
                 text:
@@ -303,14 +303,14 @@
               - type: section
                 text:
                   type: mrkdwn
-                  text: "Device: {{ inventory_hostname }}\n\nChanges: {{ exos_save.diff | length }}\n\n<https://github.com/{{ lookup('ansible.builtin.env', 'GITHUB_REPO') }}/commits/main/backups/exos/{{ inventory_hostname }}.txt|View on GitHub>"
+                  text: "Device: {{ inventory_hostname }}\n\nChanges: {{ exos_save.diff | length }}\n\n<https://github.com/{{ github_repo }}/commits/main/backups/exos/{{ inventory_hostname }}.txt|View on GitHub>"
               - type: divider
               - type: context
                 elements:
                   - type: mrkdwn
                     text: "This notification brought to you by `ansible-network-backup`"
           when:
-            - notify_slack
+            - notify_slack_enabled
             - exos_save.changed
 
       rescue:
@@ -344,25 +344,25 @@
 
         - name: Send change notification to Telegram
           community.general.telegram:
-            token: "{{ lookup('ansible.builtin.env', 'NOTIFY_TELEGRAM_TOKEN') }}"
+            token: "{{ notify_telegram_token }}"
             api_args:
-              chat_id: "{{ lookup('ansible.builtin.env', 'NOTIFY_TELEGRAM_CHAT_ID') }}"
+              chat_id: "{{ notify_telegram_chat_id }}"
               parse_mode: "MarkdownV2"
               text: |
                 *\-\- Network device configuration changed \-\-*
                 Device: {{ inventory_hostname | regex_replace('\.', '\.') }}
                 Changes: {{ routeros_save.diff | length }}
-                [View on GitHub](https://github.com/{{ lookup('ansible.builtin.env', 'GITHUB_REPO') }}/commits/main/backups/routeros/{{ inventory_hostname }}.txt)
+                [View on GitHub](https://github.com/{{ github_repo }}/commits/main/backups/routeros/{{ inventory_hostname }}.txt)
               disable_web_page_preview: true
               protect_content: true
           when:
-            - notify_telegram
+            - notify_telegram_enabled
             - routeros_save.changed
 
         - name: Send change notification to Slack
           community.general.slack:
-            token: "{{ lookup('ansible.builtin.env', 'NOTIFY_SLACK_TOKEN') }}"
-            channel: "{{ lookup('ansible.builtin.env', 'NOTIFY_SLACK_CHANNEL') }}"
+            token: "{{ notify_slack_token }}"
+            channel: "{{ notify_slack_channel_id }}"
             blocks:
               - type: header
                 text:
@@ -372,14 +372,14 @@
               - type: section
                 text:
                   type: mrkdwn
-                  text: "Device: {{ inventory_hostname }}\n\nChanges: {{ routeros_save.diff | length }}\n\n<https://github.com/{{ lookup('ansible.builtin.env', 'GITHUB_REPO') }}/commits/main/backups/routeros/{{ inventory_hostname }}.txt|View on GitHub>"
+                  text: "Device: {{ inventory_hostname }}\n\nChanges: {{ routeros_save.diff | length }}\n\n<https://github.com/{{ github_repo }}/commits/main/backups/routeros/{{ inventory_hostname }}.txt|View on GitHub>"
               - type: divider
               - type: context
                 elements:
                   - type: mrkdwn
                     text: "This notification brought to you by `ansible-network-backup`"
           when:
-            - notify_slack
+            - notify_slack_enabled
             - routeros_save.changed
 
       rescue:
@@ -415,9 +415,9 @@
   tasks:
     - name: Send failure notification to Telegram
       community.general.telegram:
-        token: "{{ lookup('ansible.builtin.env', 'NOTIFY_TELEGRAM_TOKEN') }}"
+        token: "{{ notify_telegram_token }}"
         api_args:
-          chat_id: "{{ lookup('ansible.builtin.env', 'NOTIFY_TELEGRAM_CHAT_ID') }}"
+          chat_id: "{{ notify_telegram_chat_id }}"
           parse_mode: "MarkdownV2"
           text: |
             *\-\- Warning \-\-*
@@ -427,13 +427,13 @@
           disable_notification: true
           protect_content: true
       when:
-        - notify_telegram
+        - notify_telegram_enabled
         - failure_detected
 
     - name: Send failure notification to Slack
       community.general.slack:
-        token: "{{ lookup('ansible.builtin.env', 'NOTIFY_SLACK_TOKEN') }}"
-        channel: "{{ lookup('ansible.builtin.env', 'NOTIFY_SLACK_CHANNEL') }}"
+        token: "{{ notify_slack_token }}"
+        channel: "{{ notify_slack_channel_id }}"
         blocks:
           - type: header
             text:
@@ -450,5 +450,5 @@
               - type: mrkdwn
                 text: "This notification brought to you by `ansible-network-backup`"
       when:
-        - notify_slack
+        - notify_slack_enabled
         - failure_detected

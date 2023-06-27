@@ -5,7 +5,7 @@
   tasks:
     - name: Clone/update Git repository
       ansible.builtin.git:
-        repo: https://${GITHUB_TOKEN}@github.com/${GITHUB_REPO}
+        repo: https://{{ github_token }}@github.com/{{ github_repo }}
         dest: /repo/
 
     - name: Configure Git username
@@ -13,11 +13,11 @@
         repo: /repo/
         name: user.name
         scope: local
-        value: "{{ lookup('ansible.builtin.env', 'GIT_USER') }}"
+        value: "{{ git_user }}"
 
     - name: Configure Git user email
       community.general.git_config:
         repo: /repo/
         name: user.email
         scope: local
-        value: "{{ lookup('ansible.builtin.env', 'GIT_EMAIL') }}"
+        value: "{{ git_email }}"
