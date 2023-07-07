@@ -20,6 +20,7 @@ template bgp fullbogons_clients {
 	local {{ bird_router_id }} as {{ bird_asn }};
 	neighbor as {{ bird_asn }};
 	rr client;
+	passive on;
 	ipv4 {
 		import none;
 		export all;
