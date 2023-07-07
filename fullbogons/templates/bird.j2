@@ -1,0 +1,38 @@
+log syslog all;
+
+router id {{ bird_router_id }};
+
+protocol static {
+	ipv4;
+{% for subnet in fullbogons_ipv4 %}
+	route {{ subnet }} blackhole;
+{% endfor %}
+}
+
+protocol static {
+	ipv6;
+{% for subnet in fullbogons_ipv6 %}
+	route {{ subnet }} blackhole;
+{% endfor %}
+}
+
+template bgp fullbogons_clients {
+	local {{ bird_router_id }} as {{ bird_asn }};
+	neighbor as {{ bird_asn }};
+	rr client;
+	ipv4 {
+		import none;
+		export all;
+	};
+
+	ipv6 {
+		import none;
+		export all;
+	};
+}
+
+{% for name, address in bird_peers.items() %}
+protocol bgp {{ name }} from fullbogons_clients {
+	neighbor {{ address }};
+	}
+{% endfor %}
