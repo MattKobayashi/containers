@@ -1,0 +1,12 @@
+---
+services:
+  fullbogons:
+    image: 'ghcr.io/mattkobayashi/fullbogons:latest'
+    restart: unless-stopped
+    privileged: true
+    environment:
+      - 'BIRD_ROUTER_ID='
+      - 'BIRD_ASN='
+      - 'BIRD_PEERS='
+      - 'BIRD_EXCLUDED_PREFIXES='
+    network_mode: host
