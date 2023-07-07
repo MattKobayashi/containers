@@ -1,6 +1,6 @@
 # irrd
 
-irrd in an Alpine-based Docker image. Small, lightweight and (most importantly) up-to-date with source.
+irrd in an Alpine Linux-based Docker image.
 
 ## Configuration
 

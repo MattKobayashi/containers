@@ -1,6 +1,6 @@
 # Avahi Docker Image
 
-Docker image for the Avahi mDNS/DNS-SD daemon. Built on Alpine Linux to make the image as small as possible. Highly configurable through environment variables to support most usecases which need an Avahi Daemon.
+Docker image for the Avahi mDNS/DNS-SD daemon. Built on Alpine Linux to make the image as small as possible. Highly configurable through environment variables to support most use cases which need an Avahi Daemon.
 
 ## Usage
 

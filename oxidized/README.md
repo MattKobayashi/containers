@@ -1,6 +1,6 @@
 # Oxidized
 
-Oxidized in an Alpine-based Docker image. Small, lightweight and (most importantly) up-to-date with source.
+Oxidized in an Alpine Linux-based Docker image.
 
 ## Configuration
 

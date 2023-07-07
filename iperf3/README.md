@@ -1,6 +1,6 @@
 # iperf3
 
-iperf3 in an Alpine-based Docker image. Small, lightweight and (most importantly) up-to-date with source.
+iperf3 in an Alpine Linux-based Docker image.
 
 ## Running as a server
 

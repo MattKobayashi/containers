@@ -1,6 +1,6 @@
 # docker-rng-tools
 
-rng-tools in an Alpine-based Docker image. Small, lightweight and designed for use with OSes that don't include rng-tools by default (e.g. BurmillaOS).
+rng-tools in an Alpine Linux-based Docker image. Designed for use with OSes that don't include rng-tools by default (e.g. BurmillaOS).
 
 ## Running
 

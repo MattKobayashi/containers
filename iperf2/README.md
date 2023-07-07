@@ -1,6 +1,6 @@
 # iperf2
 
-iperf2 in an Alpine-based Docker image. Small, lightweight and (most importantly) up-to-date with source.
+iperf2 in an Alpine Linux-based Docker image.
 
 ## Running as a server
 

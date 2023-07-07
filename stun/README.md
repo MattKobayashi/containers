@@ -1,6 +1,6 @@
 # stun
 
-A STUN server in an Alpine-based Docker image. Small, lightweight and (most importantly) up-to-date with source.
+A STUN server in an Alpine Linux-based Docker image.
 
 ## Running
 

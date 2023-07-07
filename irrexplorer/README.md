@@ -1,6 +1,6 @@
 # irrexplorer
 
-irrexplorer in an Alpine-based Docker image. Small, lightweight and (most importantly) up-to-date with source.
+irrexplorer in an Alpine Linux-based Docker image.
 
 ## Running
 

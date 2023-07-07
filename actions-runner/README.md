@@ -1,6 +1,6 @@
 # actions-runner
 
-A GitHub Actions self-hosted runner in an Ubuntu-based Docker image. Small, lightweight and (most importantly) up-to-date with source.
+A GitHub Actions self-hosted runner in an Ubuntu-based Docker image.
 
 ## Configuration
 

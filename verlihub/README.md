@@ -1,6 +1,6 @@
 # verlihub
 
-verlihub in an Ubuntu-based Docker image for the Verlihub DC hub server.
+The `verlihub` DC++ hub server in an Ubuntu-based Docker image.
 
 ## Prerequisites
 
