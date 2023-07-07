@@ -1,19 +1,33 @@
-log syslog all;
+log stderr all;
+debug protocols all;
 
 router id {{ bird_router_id }};
 
-protocol static {
+protocol static fullbogons_ipv4 {
 	ipv4;
 {% for subnet in fullbogons_ipv4 %}
 	route {{ subnet }} blackhole;
 {% endfor %}
 }
 
-protocol static {
+protocol static fullbogons_ipv6 {
 	ipv6;
 {% for subnet in fullbogons_ipv6 %}
 	route {{ subnet }} blackhole;
 {% endfor %}
+}
+
+filter export_blackhole {
+	if dest = RTD_BLACKHOLE then {
+		bgp_community.add(({{ bird_asn }},666));
+		if proto = "fullbogons_ipv4" then {
+			bgp_next_hop = 192.0.2.1;
+		}
+		if proto = "fullbogons_ipv6" then {
+			bgp_next_hop = 100::1;
+		}
+	}
+	accept;
 }
 
 template bgp fullbogons_clients {
@@ -23,12 +37,12 @@ template bgp fullbogons_clients {
 	passive on;
 	ipv4 {
 		import none;
-		export all;
+		export filter export_blackhole;
 	};
 
 	ipv6 {
 		import none;
-		export all;
+		export filter export_blackhole;
 	};
 }
 
