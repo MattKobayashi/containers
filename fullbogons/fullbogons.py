@@ -28,13 +28,17 @@ fullbogons_ipv6_raw = requests.get(fullbogons_ipv6_url).text
 options["bird_peers"] = {}
 for peer in os.environ['BIRD_PEERS'].split(";"):
     options["bird_peers"][peer.split(",")[0]] = peer.split(",")[1]
+excluded_prefixes = []
+for prefix in os.environ['BIRD_EXCLUDED_PREFIXES'].split(";"):
+    excluded_prefixes.append(prefix)
 
 # Create list of IPv4 fullbogons
 print("Creating IPv4 fullbogons list...")
 options["fullbogons_ipv4"] = []
 for line in fullbogons_ipv4_raw.split('\n'):
     try:
-        options["fullbogons_ipv4"].append(str(ipaddress.ip_network(line)))
+        if str(ipaddress.ip_network(line)) not in excluded_prefixes:
+            options["fullbogons_ipv4"].append(str(ipaddress.ip_network(line)))
     except ValueError:
         print(line, 'is not a valid IPv4 subnet, skipping...')
         continue
@@ -44,7 +48,8 @@ print("Creating IPv6 fullbogons list...")
 options["fullbogons_ipv6"] = []
 for line in fullbogons_ipv6_raw.split('\n'):
     try:
-        options["fullbogons_ipv6"].append(str(ipaddress.ip_network(line)))
+        if str(ipaddress.ip_network(line)) not in excluded_prefixes:
+            options["fullbogons_ipv6"].append(str(ipaddress.ip_network(line)))
     except ValueError:
         print(line, 'is not a valid IPv6 subnet, skipping...')
         continue
