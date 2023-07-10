@@ -43,16 +43,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      # Cache Docker layers
-      # https://docs.docker.com/build/ci/github-actions/cache/
-      - name: Cache Docker layers
-        uses: actions/cache@v3
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
-
       # Gives two environment variables
       # One with lowercase repo owner's name
       # Another with the name of the image
@@ -86,14 +76,6 @@ jobs:
           context: ./${{ env.IMAGE_NAME }}
           push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
-
-      # Cycle the cache to prevent it from getting too large
-      - name: Cycle build cache
-        run: |
-          rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
   build-avahi:
 
@@ -121,16 +103,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      # Cache Docker layers
-      # https://docs.docker.com/build/ci/github-actions/cache/
-      - name: Cache Docker layers
-        uses: actions/cache@v3
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
-
       # Gives two environment variables
       # One with lowercase repo owner's name
       # Another with the name of the image
@@ -164,14 +136,6 @@ jobs:
           context: ./${{ env.IMAGE_NAME }}
           push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
-
-      # Cycle the cache to prevent it from getting too large
-      - name: Cycle build cache
-        run: |
-          rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
   build-certbot-cloudflare:
 
@@ -199,16 +163,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      # Cache Docker layers
-      # https://docs.docker.com/build/ci/github-actions/cache/
-      - name: Cache Docker layers
-        uses: actions/cache@v3
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
-
       # Gives two environment variables
       # One with lowercase repo owner's name
       # Another with the name of the image
@@ -242,14 +196,6 @@ jobs:
           context: ./${{ env.IMAGE_NAME }}
           push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
-
-      # Cycle the cache to prevent it from getting too large
-      - name: Cycle build cache
-        run: |
-          rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
   build-fullbogons:
 
@@ -310,14 +256,6 @@ jobs:
           context: ./${{ env.IMAGE_NAME }}
           push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
-
-      # Cycle the cache to prevent it from getting too large
-      - name: Cycle build cache
-        run: |
-          rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
   build-iperf2:
 
@@ -345,16 +283,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      # Cache Docker layers
-      # https://docs.docker.com/build/ci/github-actions/cache/
-      - name: Cache Docker layers
-        uses: actions/cache@v3
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
-
       # Gives two environment variables
       # One with lowercase repo owner's name
       # Another with the name of the image
@@ -388,14 +316,6 @@ jobs:
           context: ./${{ env.IMAGE_NAME }}
           push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
-
-      # Cycle the cache to prevent it from getting too large
-      - name: Cycle build cache
-        run: |
-          rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
   build-iperf3:
 
@@ -423,16 +343,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      # Cache Docker layers
-      # https://docs.docker.com/build/ci/github-actions/cache/
-      - name: Cache Docker layers
-        uses: actions/cache@v3
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
-
       # Gives two environment variables
       # One with lowercase repo owner's name
       # Another with the name of the image
@@ -466,14 +376,6 @@ jobs:
           context: ./${{ env.IMAGE_NAME }}
           push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
-
-      # Cycle the cache to prevent it from getting too large
-      - name: Cycle build cache
-        run: |
-          rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
   build-irrd:
 
@@ -501,16 +403,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      # Cache Docker layers
-      # https://docs.docker.com/build/ci/github-actions/cache/
-      - name: Cache Docker layers
-        uses: actions/cache@v3
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
-
       # Gives two environment variables
       # One with lowercase repo owner's name
       # Another with the name of the image
@@ -544,14 +436,6 @@ jobs:
           context: ./${{ env.IMAGE_NAME }}
           push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
-
-      # Cycle the cache to prevent it from getting too large
-      - name: Cycle build cache
-        run: |
-          rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
   build-irrexplorer:
 
@@ -579,16 +463,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      # Cache Docker layers
-      # https://docs.docker.com/build/ci/github-actions/cache/
-      - name: Cache Docker layers
-        uses: actions/cache@v3
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
-
       # Gives two environment variables
       # One with lowercase repo owner's name
       # Another with the name of the image
@@ -622,14 +496,6 @@ jobs:
           context: ./${{ env.IMAGE_NAME }}
           push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
-
-      # Cycle the cache to prevent it from getting too large
-      - name: Cycle build cache
-        run: |
-          rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
   build-mdns-reflector:
 
@@ -657,16 +523,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      # Cache Docker layers
-      # https://docs.docker.com/build/ci/github-actions/cache/
-      - name: Cache Docker layers
-        uses: actions/cache@v3
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
-
       # Gives two environment variables
       # One with lowercase repo owner's name
       # Another with the name of the image
@@ -700,14 +556,6 @@ jobs:
           context: ./${{ env.IMAGE_NAME }}
           push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
-
-      # Cycle the cache to prevent it from getting too large
-      - name: Cycle build cache
-        run: |
-          rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
   build-rng-tools:
 
@@ -735,16 +583,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      # Cache Docker layers
-      # https://docs.docker.com/build/ci/github-actions/cache/
-      - name: Cache Docker layers
-        uses: actions/cache@v3
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
-
       # Gives two environment variables
       # One with lowercase repo owner's name
       # Another with the name of the image
@@ -778,14 +616,6 @@ jobs:
           context: ./${{ env.IMAGE_NAME }}
           push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
-
-      # Cycle the cache to prevent it from getting too large
-      - name: Cycle build cache
-        run: |
-          rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
   build-stun:
 
@@ -813,16 +643,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      # Cache Docker layers
-      # https://docs.docker.com/build/ci/github-actions/cache/
-      - name: Cache Docker layers
-        uses: actions/cache@v3
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
-
       # Gives two environment variables
       # One with lowercase repo owner's name
       # Another with the name of the image
@@ -856,14 +676,6 @@ jobs:
           context: ./${{ env.IMAGE_NAME }}
           push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
-
-      # Cycle the cache to prevent it from getting too large
-      - name: Cycle build cache
-        run: |
-          rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
   build-telegraf:
 
@@ -891,16 +703,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      # Cache Docker layers
-      # https://docs.docker.com/build/ci/github-actions/cache/
-      - name: Cache Docker layers
-        uses: actions/cache@v3
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
-
       # Gives two environment variables
       # One with lowercase repo owner's name
       # Another with the name of the image
@@ -934,14 +736,6 @@ jobs:
           context: ./${{ env.IMAGE_NAME }}
           push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
-
-      # Cycle the cache to prevent it from getting too large
-      - name: Cycle build cache
-        run: |
-          rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
   build-verlihub:
 
@@ -969,16 +763,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      # Cache Docker layers
-      # https://docs.docker.com/build/ci/github-actions/cache/
-      - name: Cache Docker layers
-        uses: actions/cache@v3
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
-
       # Gives two environment variables
       # One with lowercase repo owner's name
       # Another with the name of the image
@@ -1012,14 +796,6 @@ jobs:
           context: ./${{ env.IMAGE_NAME }}
           push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
-
-      # Cycle the cache to prevent it from getting too large
-      - name: Cycle build cache
-        run: |
-          rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
   build-xteve:
 
@@ -1047,16 +823,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      # Cache Docker layers
-      # https://docs.docker.com/build/ci/github-actions/cache/
-      - name: Cache Docker layers
-        uses: actions/cache@v3
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
-
       # Gives two environment variables
       # One with lowercase repo owner's name
       # Another with the name of the image
@@ -1090,14 +856,6 @@ jobs:
           context: ./${{ env.IMAGE_NAME }}
           push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
-
-      # Cycle the cache to prevent it from getting too large
-      - name: Cycle build cache
-        run: |
-          rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
   build-yancobat:
 
@@ -1125,16 +883,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      # Cache Docker layers
-      # https://docs.docker.com/build/ci/github-actions/cache/
-      - name: Cache Docker layers
-        uses: actions/cache@v3
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
-
       # Gives two environment variables
       # One with lowercase repo owner's name
       # Another with the name of the image
@@ -1168,11 +916,3 @@ jobs:
           context: ./${{ env.IMAGE_NAME }}
           push: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
-
-      # Cycle the cache to prevent it from getting too large
-      - name: Cycle build cache
-        run: |
-          rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
