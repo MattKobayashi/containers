@@ -45,9 +45,7 @@ jobs:
         with:
           config-inline: |
             [registry."docker.io"]
-              mirrors = ["192.168.0.10:5000"]
-            [registry."192.168.0.10:5000"]
-              http = true
+              mirrors = ["registry.kobayashi.au"]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -111,9 +109,7 @@ jobs:
         with:
           config-inline: |
             [registry."docker.io"]
-              mirrors = ["192.168.0.10:5000"]
-            [registry."192.168.0.10:5000"]
-              http = true
+              mirrors = ["registry.kobayashi.au"]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -177,9 +173,7 @@ jobs:
         with:
           config-inline: |
             [registry."docker.io"]
-              mirrors = ["192.168.0.10:5000"]
-            [registry."192.168.0.10:5000"]
-              http = true
+              mirrors = ["registry.kobayashi.au"]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -243,9 +237,7 @@ jobs:
         with:
           config-inline: |
             [registry."docker.io"]
-              mirrors = ["192.168.0.10:5000"]
-            [registry."192.168.0.10:5000"]
-              http = true
+              mirrors = ["registry.kobayashi.au"]
 
       # Gives two env variables
       # One with lowercase repo owner's name
@@ -309,9 +301,7 @@ jobs:
         with:
           config-inline: |
             [registry."docker.io"]
-              mirrors = ["192.168.0.10:5000"]
-            [registry."192.168.0.10:5000"]
-              http = true
+              mirrors = ["registry.kobayashi.au"]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -375,9 +365,7 @@ jobs:
         with:
           config-inline: |
             [registry."docker.io"]
-              mirrors = ["192.168.0.10:5000"]
-            [registry."192.168.0.10:5000"]
-              http = true
+              mirrors = ["registry.kobayashi.au"]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -441,9 +429,7 @@ jobs:
         with:
           config-inline: |
             [registry."docker.io"]
-              mirrors = ["192.168.0.10:5000"]
-            [registry."192.168.0.10:5000"]
-              http = true
+              mirrors = ["registry.kobayashi.au"]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -507,9 +493,7 @@ jobs:
         with:
           config-inline: |
             [registry."docker.io"]
-              mirrors = ["192.168.0.10:5000"]
-            [registry."192.168.0.10:5000"]
-              http = true
+              mirrors = ["registry.kobayashi.au"]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -573,9 +557,7 @@ jobs:
         with:
           config-inline: |
             [registry."docker.io"]
-              mirrors = ["192.168.0.10:5000"]
-            [registry."192.168.0.10:5000"]
-              http = true
+              mirrors = ["registry.kobayashi.au"]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -639,9 +621,7 @@ jobs:
         with:
           config-inline: |
             [registry."docker.io"]
-              mirrors = ["192.168.0.10:5000"]
-            [registry."192.168.0.10:5000"]
-              http = true
+              mirrors = ["registry.kobayashi.au"]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -705,9 +685,7 @@ jobs:
         with:
           config-inline: |
             [registry."docker.io"]
-              mirrors = ["192.168.0.10:5000"]
-            [registry."192.168.0.10:5000"]
-              http = true
+              mirrors = ["registry.kobayashi.au"]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -771,9 +749,7 @@ jobs:
         with:
           config-inline: |
             [registry."docker.io"]
-              mirrors = ["192.168.0.10:5000"]
-            [registry."192.168.0.10:5000"]
-              http = true
+              mirrors = ["registry.kobayashi.au"]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -837,9 +813,7 @@ jobs:
         with:
           config-inline: |
             [registry."docker.io"]
-              mirrors = ["192.168.0.10:5000"]
-            [registry."192.168.0.10:5000"]
-              http = true
+              mirrors = ["registry.kobayashi.au"]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -903,9 +877,7 @@ jobs:
         with:
           config-inline: |
             [registry."docker.io"]
-              mirrors = ["192.168.0.10:5000"]
-            [registry."192.168.0.10:5000"]
-              http = true
+              mirrors = ["registry.kobayashi.au"]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -969,9 +941,7 @@ jobs:
         with:
           config-inline: |
             [registry."docker.io"]
-              mirrors = ["192.168.0.10:5000"]
-            [registry."192.168.0.10:5000"]
-              http = true
+              mirrors = ["registry.kobayashi.au"]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
