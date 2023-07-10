@@ -15,7 +15,7 @@ on:
 env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
-  REGISTRY-MIRROR: 'localhost:5000'
+  REGISTRY_MIRROR: 'localhost:5000'
 
 jobs:
   build-actions-runner:
@@ -46,7 +46,7 @@ jobs:
         with:
           config-inline: |
             [registry."docker.io"]
-              mirrors = ["${REGISTRY-MIRROR}"]
+              mirrors = [${REGISTRY_MIRROR}]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -110,7 +110,7 @@ jobs:
         with:
           config-inline: |
             [registry."docker.io"]
-              mirrors = ["${REGISTRY-MIRROR}"]
+              mirrors = [${REGISTRY_MIRROR}]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -174,7 +174,7 @@ jobs:
         with:
           config-inline: |
             [registry."docker.io"]
-              mirrors = ["${REGISTRY-MIRROR}"]
+              mirrors = [${REGISTRY_MIRROR}]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -238,7 +238,7 @@ jobs:
         with:
           config-inline: |
             [registry."docker.io"]
-              mirrors = ["${REGISTRY-MIRROR}"]
+              mirrors = [${REGISTRY_MIRROR}]
 
       # Gives two env variables
       # One with lowercase repo owner's name
@@ -302,7 +302,7 @@ jobs:
         with:
           config-inline: |
             [registry."docker.io"]
-              mirrors = ["${REGISTRY-MIRROR}"]
+              mirrors = [${REGISTRY_MIRROR}]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -366,7 +366,7 @@ jobs:
         with:
           config-inline: |
             [registry."docker.io"]
-              mirrors = ["${REGISTRY-MIRROR}"]
+              mirrors = [${REGISTRY_MIRROR}]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -430,7 +430,7 @@ jobs:
         with:
           config-inline: |
             [registry."docker.io"]
-              mirrors = ["${REGISTRY-MIRROR}"]
+              mirrors = [${REGISTRY_MIRROR}]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -494,7 +494,7 @@ jobs:
         with:
           config-inline: |
             [registry."docker.io"]
-              mirrors = ["${REGISTRY-MIRROR}"]
+              mirrors = [${REGISTRY_MIRROR}]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -558,7 +558,7 @@ jobs:
         with:
           config-inline: |
             [registry."docker.io"]
-              mirrors = ["${REGISTRY-MIRROR}"]
+              mirrors = [${REGISTRY_MIRROR}]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -622,7 +622,7 @@ jobs:
         with:
           config-inline: |
             [registry."docker.io"]
-              mirrors = ["${REGISTRY-MIRROR}"]
+              mirrors = [${REGISTRY_MIRROR}]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -686,7 +686,7 @@ jobs:
         with:
           config-inline: |
             [registry."docker.io"]
-              mirrors = ["${REGISTRY-MIRROR}"]
+              mirrors = [${REGISTRY_MIRROR}]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -750,7 +750,7 @@ jobs:
         with:
           config-inline: |
             [registry."docker.io"]
-              mirrors = ["${REGISTRY-MIRROR}"]
+              mirrors = [${REGISTRY_MIRROR}]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -814,7 +814,7 @@ jobs:
         with:
           config-inline: |
             [registry."docker.io"]
-              mirrors = ["${REGISTRY-MIRROR}"]
+              mirrors = [${REGISTRY_MIRROR}]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -878,7 +878,7 @@ jobs:
         with:
           config-inline: |
             [registry."docker.io"]
-              mirrors = ["${REGISTRY-MIRROR}"]
+              mirrors = [${REGISTRY_MIRROR}]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -942,7 +942,7 @@ jobs:
         with:
           config-inline: |
             [registry."docker.io"]
-              mirrors = ["${REGISTRY-MIRROR}"]
+              mirrors = [${REGISTRY_MIRROR}]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
