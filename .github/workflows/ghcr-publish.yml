@@ -45,7 +45,7 @@ jobs:
         with:
           config-inline: |
             [registry."docker.io"]
-              mirrors = ["localhost:5000"]
+              mirrors = ["192.168.0.10:5000"]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -109,7 +109,7 @@ jobs:
         with:
           config-inline: |
             [registry."docker.io"]
-              mirrors = ["localhost:5000"]
+              mirrors = ["192.168.0.10:5000"]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -173,7 +173,7 @@ jobs:
         with:
           config-inline: |
             [registry."docker.io"]
-              mirrors = ["localhost:5000"]
+              mirrors = ["192.168.0.10:5000"]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -237,7 +237,7 @@ jobs:
         with:
           config-inline: |
             [registry."docker.io"]
-              mirrors = ["localhost:5000"]
+              mirrors = ["192.168.0.10:5000"]
 
       # Gives two env variables
       # One with lowercase repo owner's name
@@ -301,7 +301,7 @@ jobs:
         with:
           config-inline: |
             [registry."docker.io"]
-              mirrors = ["localhost:5000"]
+              mirrors = ["192.168.0.10:5000"]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -365,7 +365,7 @@ jobs:
         with:
           config-inline: |
             [registry."docker.io"]
-              mirrors = ["localhost:5000"]
+              mirrors = ["192.168.0.10:5000"]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -429,7 +429,7 @@ jobs:
         with:
           config-inline: |
             [registry."docker.io"]
-              mirrors = ["localhost:5000"]
+              mirrors = ["192.168.0.10:5000"]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -493,7 +493,7 @@ jobs:
         with:
           config-inline: |
             [registry."docker.io"]
-              mirrors = ["localhost:5000"]
+              mirrors = ["192.168.0.10:5000"]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -557,7 +557,7 @@ jobs:
         with:
           config-inline: |
             [registry."docker.io"]
-              mirrors = ["localhost:5000"]
+              mirrors = ["192.168.0.10:5000"]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -621,7 +621,7 @@ jobs:
         with:
           config-inline: |
             [registry."docker.io"]
-              mirrors = ["localhost:5000"]
+              mirrors = ["192.168.0.10:5000"]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -685,7 +685,7 @@ jobs:
         with:
           config-inline: |
             [registry."docker.io"]
-              mirrors = ["localhost:5000"]
+              mirrors = ["192.168.0.10:5000"]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -749,7 +749,7 @@ jobs:
         with:
           config-inline: |
             [registry."docker.io"]
-              mirrors = ["localhost:5000"]
+              mirrors = ["192.168.0.10:5000"]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -813,7 +813,7 @@ jobs:
         with:
           config-inline: |
             [registry."docker.io"]
-              mirrors = ["localhost:5000"]
+              mirrors = ["192.168.0.10:5000"]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -877,7 +877,7 @@ jobs:
         with:
           config-inline: |
             [registry."docker.io"]
-              mirrors = ["localhost:5000"]
+              mirrors = ["192.168.0.10:5000"]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -941,7 +941,7 @@ jobs:
         with:
           config-inline: |
             [registry."docker.io"]
-              mirrors = ["localhost:5000"]
+              mirrors = ["192.168.0.10:5000"]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
