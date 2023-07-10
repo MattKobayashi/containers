@@ -63,6 +63,13 @@ RUN adduser -D bird \
 # RIP-ng: 521/udp
 EXPOSE 179/tcp 520/udp 521/udp
 
+# Set default environment variables
+ENV BIRD_ROUTER_ID= \
+    BIRD_ASN=64666 \
+    BIRD_PEERS= \
+    BIRD_EXCLUDED_PREFIXES= \
+    BIRD_DEBUG=states,filters,interfaces,events
+
 # Set entrypoint
 ENTRYPOINT ["./entrypoint.sh"]
 

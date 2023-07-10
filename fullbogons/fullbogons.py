@@ -10,6 +10,7 @@ options = {}
 # Variables
 options["bird_router_id"] = os.environ['BIRD_ROUTER_ID']
 options["bird_asn"] = os.environ['BIRD_ASN']
+options["bird_debug"] = os.environ['BIRD_DEBUG']
 
 # Load jinja2 config
 templateLoader = jinja2.FileSystemLoader(searchpath="./templates/")
