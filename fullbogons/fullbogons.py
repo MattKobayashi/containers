@@ -20,7 +20,7 @@ templateEnv = jinja2.Environment(
     keep_trailing_newline=True
     )
 
-# Doownload and process raw fullbogon lists
+# Download and process raw fullbogon lists
 print("Downloading and processing raw fullbogon lists...")
 fullbogons_ipv4_raw = requests.get('https://www.team-cymru.org/Services/Bogons/fullbogons-ipv4.txt').text
 fullbogons_ipv6_raw = requests.get('https://www.team-cymru.org/Services/Bogons/fullbogons-ipv6.txt').text
