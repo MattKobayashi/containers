@@ -1,0 +1,1 @@
+0 0 */4 * * * * su bird -s /usr/bin/python3 fullbogons.py && birdc configure && birdc reload all
