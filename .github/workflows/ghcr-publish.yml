@@ -15,6 +15,7 @@ on:
 env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
+  REGISTRY-MIRROR: 'localhost:5000'
 
 jobs:
   build-actions-runner:
@@ -42,6 +43,10 @@ jobs:
       # https://github.com/docker/setup-buildx-action
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
+        with:
+          config-inline: |
+            [registry."docker.io"]
+              mirrors = ["${{ env.REGISTRY-MIRROR }}""]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -102,6 +107,10 @@ jobs:
       # https://github.com/docker/setup-buildx-action
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
+        with:
+          config-inline: |
+            [registry."docker.io"]
+              mirrors = ["${{ env.REGISTRY-MIRROR }}""]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -162,6 +171,10 @@ jobs:
       # https://github.com/docker/setup-buildx-action
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
+        with:
+          config-inline: |
+            [registry."docker.io"]
+              mirrors = ["${{ env.REGISTRY-MIRROR }}""]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -222,6 +235,10 @@ jobs:
       # https://github.com/docker/setup-buildx-action
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
+        with:
+          config-inline: |
+            [registry."docker.io"]
+              mirrors = ["${{ env.REGISTRY-MIRROR }}""]
 
       # Gives two env variables
       # One with lowercase repo owner's name
@@ -282,6 +299,10 @@ jobs:
       # https://github.com/docker/setup-buildx-action
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
+        with:
+          config-inline: |
+            [registry."docker.io"]
+              mirrors = ["${{ env.REGISTRY-MIRROR }}""]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -342,6 +363,10 @@ jobs:
       # https://github.com/docker/setup-buildx-action
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
+        with:
+          config-inline: |
+            [registry."docker.io"]
+              mirrors = ["${{ env.REGISTRY-MIRROR }}""]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -402,6 +427,10 @@ jobs:
       # https://github.com/docker/setup-buildx-action
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
+        with:
+          config-inline: |
+            [registry."docker.io"]
+              mirrors = ["${{ env.REGISTRY-MIRROR }}""]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -462,6 +491,10 @@ jobs:
       # https://github.com/docker/setup-buildx-action
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
+        with:
+          config-inline: |
+            [registry."docker.io"]
+              mirrors = ["${{ env.REGISTRY-MIRROR }}""]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -522,6 +555,10 @@ jobs:
       # https://github.com/docker/setup-buildx-action
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
+        with:
+          config-inline: |
+            [registry."docker.io"]
+              mirrors = ["${{ env.REGISTRY-MIRROR }}""]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -582,6 +619,10 @@ jobs:
       # https://github.com/docker/setup-buildx-action
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
+        with:
+          config-inline: |
+            [registry."docker.io"]
+              mirrors = ["${{ env.REGISTRY-MIRROR }}""]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -642,6 +683,10 @@ jobs:
       # https://github.com/docker/setup-buildx-action
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
+        with:
+          config-inline: |
+            [registry."docker.io"]
+              mirrors = ["${{ env.REGISTRY-MIRROR }}""]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -702,6 +747,10 @@ jobs:
       # https://github.com/docker/setup-buildx-action
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
+        with:
+          config-inline: |
+            [registry."docker.io"]
+              mirrors = ["${{ env.REGISTRY-MIRROR }}""]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -762,6 +811,10 @@ jobs:
       # https://github.com/docker/setup-buildx-action
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
+        with:
+          config-inline: |
+            [registry."docker.io"]
+              mirrors = ["${{ env.REGISTRY-MIRROR }}""]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -822,6 +875,10 @@ jobs:
       # https://github.com/docker/setup-buildx-action
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
+        with:
+          config-inline: |
+            [registry."docker.io"]
+              mirrors = ["${{ env.REGISTRY-MIRROR }}""]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -882,6 +939,10 @@ jobs:
       # https://github.com/docker/setup-buildx-action
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
+        with:
+          config-inline: |
+            [registry."docker.io"]
+              mirrors = ["${{ env.REGISTRY-MIRROR }}""]
 
       # Gives two environment variables
       # One with lowercase repo owner's name
