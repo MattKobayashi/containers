@@ -25,14 +25,6 @@ jobs:
       packages: write
 
     steps:
-      # Login to Docker Hub to avoid pull rate limit
-      # https://github.com/docker/login-action
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
       # Add support for more platforms with QEMU (optional)
       # https://github.com/docker/setup-qemu-action
       - name: Set up QEMU
@@ -93,14 +85,6 @@ jobs:
       packages: write
 
     steps:
-      # Login to Docker Hub to avoid pull rate limit
-      # https://github.com/docker/login-action
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
       # Add support for more platforms with QEMU (optional)
       # https://github.com/docker/setup-qemu-action
       - name: Set up QEMU
@@ -161,14 +145,6 @@ jobs:
       packages: write
 
     steps:
-      # Login to Docker Hub to avoid pull rate limit
-      # https://github.com/docker/login-action
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
       # Add support for more platforms with QEMU (optional)
       # https://github.com/docker/setup-qemu-action
       - name: Set up QEMU
@@ -229,14 +205,6 @@ jobs:
       packages: write
 
     steps:
-      # Login to Docker Hub to avoid pull rate limit
-      # https://github.com/docker/login-action
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
       # Add support for more platforms with QEMU (optional)
       # https://github.com/docker/setup-qemu-action
       - name: Set up QEMU
@@ -297,14 +265,6 @@ jobs:
       packages: write
 
     steps:
-      # Login to Docker Hub to avoid pull rate limit
-      # https://github.com/docker/login-action
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
       # Add support for more platforms with QEMU (optional)
       # https://github.com/docker/setup-qemu-action
       - name: Set up QEMU
@@ -365,14 +325,6 @@ jobs:
       packages: write
 
     steps:
-      # Login to Docker Hub to avoid pull rate limit
-      # https://github.com/docker/login-action
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
       # Add support for more platforms with QEMU (optional)
       # https://github.com/docker/setup-qemu-action
       - name: Set up QEMU
@@ -433,14 +385,6 @@ jobs:
       packages: write
 
     steps:
-      # Login to Docker Hub to avoid pull rate limit
-      # https://github.com/docker/login-action
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
       # Add support for more platforms with QEMU (optional)
       # https://github.com/docker/setup-qemu-action
       - name: Set up QEMU
@@ -501,14 +445,6 @@ jobs:
       packages: write
 
     steps:
-      # Login to Docker Hub to avoid pull rate limit
-      # https://github.com/docker/login-action
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
       # Add support for more platforms with QEMU (optional)
       # https://github.com/docker/setup-qemu-action
       - name: Set up QEMU
@@ -569,14 +505,6 @@ jobs:
       packages: write
 
     steps:
-      # Login to Docker Hub to avoid pull rate limit
-      # https://github.com/docker/login-action
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
       # Add support for more platforms with QEMU (optional)
       # https://github.com/docker/setup-qemu-action
       - name: Set up QEMU
@@ -637,14 +565,6 @@ jobs:
       packages: write
 
     steps:
-      # Login to Docker Hub to avoid pull rate limit
-      # https://github.com/docker/login-action
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
       # Add support for more platforms with QEMU (optional)
       # https://github.com/docker/setup-qemu-action
       - name: Set up QEMU
@@ -705,14 +625,6 @@ jobs:
       packages: write
 
     steps:
-      # Login to Docker Hub to avoid pull rate limit
-      # https://github.com/docker/login-action
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
       # Add support for more platforms with QEMU (optional)
       # https://github.com/docker/setup-qemu-action
       - name: Set up QEMU
@@ -773,14 +685,6 @@ jobs:
       packages: write
 
     steps:
-      # Login to Docker Hub to avoid pull rate limit
-      # https://github.com/docker/login-action
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
       # Add support for more platforms with QEMU (optional)
       # https://github.com/docker/setup-qemu-action
       - name: Set up QEMU
@@ -841,14 +745,6 @@ jobs:
       packages: write
 
     steps:
-      # Login to Docker Hub to avoid pull rate limit
-      # https://github.com/docker/login-action
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
       # Add support for more platforms with QEMU (optional)
       # https://github.com/docker/setup-qemu-action
       - name: Set up QEMU
@@ -909,14 +805,6 @@ jobs:
       packages: write
 
     steps:
-      # Login to Docker Hub to avoid pull rate limit
-      # https://github.com/docker/login-action
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
       # Add support for more platforms with QEMU (optional)
       # https://github.com/docker/setup-qemu-action
       - name: Set up QEMU
@@ -977,14 +865,6 @@ jobs:
       packages: write
 
     steps:
-      # Login to Docker Hub to avoid pull rate limit
-      # https://github.com/docker/login-action
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
       # Add support for more platforms with QEMU (optional)
       # https://github.com/docker/setup-qemu-action
       - name: Set up QEMU
