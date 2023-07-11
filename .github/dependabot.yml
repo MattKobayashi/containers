@@ -27,6 +27,10 @@ updates:
     directory: "/fullbogons/" # Location of package manifests
     schedule:
       interval: "weekly"
+  - package-ecosystem: "pip" # See documentation for possible values
+    directory: "/fullbogons/" # Location of package manifests
+    schedule:
+      interval: "weekly"
   - package-ecosystem: "docker" # See documentation for possible values
     directory: "/iperf2/" # Location of package manifests
     schedule:
@@ -60,6 +64,10 @@ updates:
     schedule:
       interval: "weekly"
   - package-ecosystem: "docker" # See documentation for possible values
+    directory: "/telegraf/" # Location of package manifests
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "pip" # See documentation for possible values
     directory: "/telegraf/" # Location of package manifests
     schedule:
       interval: "weekly"
