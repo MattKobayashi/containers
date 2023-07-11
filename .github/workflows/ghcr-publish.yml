@@ -46,6 +46,8 @@ jobs:
           config-inline: |
             [registry."docker.io"]
               mirrors = ["registry-mirror:5000"]
+          driver-opts: |
+            network=actions-runners
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -110,6 +112,8 @@ jobs:
           config-inline: |
             [registry."docker.io"]
               mirrors = ["registry-mirror:5000"]
+          driver-opts: |
+            network=actions-runners
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -174,6 +178,8 @@ jobs:
           config-inline: |
             [registry."docker.io"]
               mirrors = ["registry-mirror:5000"]
+          driver-opts: |
+            network=actions-runners
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -238,6 +244,8 @@ jobs:
           config-inline: |
             [registry."docker.io"]
               mirrors = ["registry-mirror:5000"]
+          driver-opts: |
+            network=actions-runners
 
       # Gives two env variables
       # One with lowercase repo owner's name
@@ -302,6 +310,8 @@ jobs:
           config-inline: |
             [registry."docker.io"]
               mirrors = ["registry-mirror:5000"]
+          driver-opts: |
+            network=actions-runners
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -366,6 +376,8 @@ jobs:
           config-inline: |
             [registry."docker.io"]
               mirrors = ["registry-mirror:5000"]
+          driver-opts: |
+            network=actions-runners
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -430,6 +442,8 @@ jobs:
           config-inline: |
             [registry."docker.io"]
               mirrors = ["registry-mirror:5000"]
+          driver-opts: |
+            network=actions-runners
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -494,6 +508,8 @@ jobs:
           config-inline: |
             [registry."docker.io"]
               mirrors = ["registry-mirror:5000"]
+          driver-opts: |
+            network=actions-runners
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -558,6 +574,8 @@ jobs:
           config-inline: |
             [registry."docker.io"]
               mirrors = ["registry-mirror:5000"]
+          driver-opts: |
+            network=actions-runners
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -622,6 +640,8 @@ jobs:
           config-inline: |
             [registry."docker.io"]
               mirrors = ["registry-mirror:5000"]
+          driver-opts: |
+            network=actions-runners
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -686,6 +706,8 @@ jobs:
           config-inline: |
             [registry."docker.io"]
               mirrors = ["registry-mirror:5000"]
+          driver-opts: |
+            network=actions-runners
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -750,6 +772,8 @@ jobs:
           config-inline: |
             [registry."docker.io"]
               mirrors = ["registry-mirror:5000"]
+          driver-opts: |
+            network=actions-runners
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -814,6 +838,8 @@ jobs:
           config-inline: |
             [registry."docker.io"]
               mirrors = ["registry-mirror:5000"]
+          driver-opts: |
+            network=actions-runners
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -878,6 +904,8 @@ jobs:
           config-inline: |
             [registry."docker.io"]
               mirrors = ["registry-mirror:5000"]
+          driver-opts: |
+            network=actions-runners
 
       # Gives two environment variables
       # One with lowercase repo owner's name
@@ -942,6 +970,8 @@ jobs:
           config-inline: |
             [registry."docker.io"]
               mirrors = ["registry-mirror:5000"]
+          driver-opts: |
+            network=actions-runners
 
       # Gives two environment variables
       # One with lowercase repo owner's name
