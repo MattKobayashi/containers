@@ -16,7 +16,7 @@ REG_TOKEN=$(curl -X POST -H "Authorization: token ${ACCESS_TOKEN}" -H "Accept: a
 
 cleanup() {
     echo "Removing runner..."
-    /actions-runner/config.sh remove --token ${REG_TOKEN} & wait
+    /actions-runner/config.sh remove --token ${REG_TOKEN}
 }
 
 trap 'cleanup; exit 130' INT
