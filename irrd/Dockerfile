@@ -1,12 +1,13 @@
-FROM python:3.11-alpine
+FROM pypy:3-slim
 
-RUN apk --no-cache upgrade \
-    && apk --no-cache add build-base postgresql15-dev linux-headers \
+RUN apt-get update \
+    && apt-get upgrade \
+    && apt-get install build-essential \
     && adduser --system irrd
 
 USER irrd
 
-RUN python3 -m pip install irrd
+RUN pip3 install irrd
 
 # Set expose ports and entrypoint
 EXPOSE 43/tcp
