@@ -443,7 +443,7 @@
           - type: section
             text:
               type: mrkdwn
-              text: "A network configuration backup failure has occurred.\n\nPlease check the status of `ansible-network-backup` and rectify any issues."
+              text: "A network configuration backup failure has occurred.\n\nPlease check the logs and rectify any issues."
           - type: divider
           - type: context
             elements:
