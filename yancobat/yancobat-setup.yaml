@@ -1,0 +1,86 @@
+---
+- name: Clone/update Git repository
+  hosts: localhost
+
+  tasks:
+    - name: Clone/update Git repository
+      ansible.builtin.git:
+        repo: https://{{ github_token }}@github.com/{{ github_repo }}
+        dest: /repo/
+
+    - name: Configure Git username
+      community.general.git_config:
+        repo: /repo/
+        name: user.name
+        scope: local
+        value: "{{ git_user }}"
+
+    - name: Configure Git user email
+      community.general.git_config:
+        repo: /repo/
+        name: user.email
+        scope: local
+        value: "{{ git_email }}"
+
+- name: Configure inventory file
+  hosts: localhost
+  gather_facts: false
+
+  tasks:
+    - block:
+        - name: Set device username/password
+          ansible.builtin.shell: |
+            yq -i '.all.children.*.vars.ansible_user = "{{ device_user }}"' /repo/hosts.yaml
+            yq -i '.all.children.*.vars.ansible_ssh_pass = "{{ device_pass }}"' /repo/hosts.yaml
+
+      rescue:
+        - name: Set failure flag
+          ansible.builtin.shell:
+            export FAILURE=true
+
+- name: Failure notifications
+  hosts: localhost
+  gather_facts: false
+  vars:
+    failure_detected: "{{ lookup('ansible.builtin.env', 'FAILURE') }}"
+
+  tasks:
+    - name: Send failure notification to Telegram
+      community.general.telegram:
+        token: "{{ notify_telegram_token }}"
+        api_args:
+          chat_id: "{{ notify_telegram_chat_id }}"
+          parse_mode: "MarkdownV2"
+          text: |
+            *\-\- Warning \-\-*
+            A network configuration backup failure has occurred\.
+            Please check the status of ansible\-network\-backup and rectify any issues\.
+          disable_web_page_preview: true
+          disable_notification: true
+          protect_content: true
+      when:
+        - notify_telegram_enabled
+        - failure_detected
+
+    - name: Send failure notification to Slack
+      community.general.slack:
+        token: "{{ notify_slack_token }}"
+        channel: "{{ notify_slack_channel_id }}"
+        blocks:
+          - type: header
+            text:
+              type: plain_text
+              text: "Warning!"
+          - type: divider
+          - type: section
+            text:
+              type: mrkdwn
+              text: "A network configuration backup failure has occurred.\n\nPlease check the logs and rectify any issues."
+          - type: divider
+          - type: context
+            elements:
+              - type: mrkdwn
+                text: "This notification brought to you by `ansible-network-backup`"
+      when:
+        - notify_slack_enabled
+        - failure_detected
