@@ -1,10 +1,10 @@
 FROM ubuntu:22.04
 
 ARG TARGETPLATFORM
-ENV RUNNER_VERSION=2.307.1 \
-    RUNNER_HASH_x64=038c9e98b3912c5fd6d0b277f2e4266b2a10accc1ff8ff981b9971a8e76b5441 \
-    RUNNER_HASH_arm64=01edc84342ef4128a8f19bc2f33709b40f2f1c40e250e2a4c5e0adf620044ab3 \
-    RUNNER_HASH_arm=dbf978d969f4101bcef40eac438a43a3a763720ad2ed06f3eecbbbce16126d79
+ENV RUNNER_VERSION=2.308.0 \
+    RUNNER_HASH_x64=9f994158d49c5af39f57a65bf1438cbae4968aec1e4fec132dd7992ad57c74fa \
+    RUNNER_HASH_arm64=e39b3137fcaad3262e1def26d3e42cdd810c831a3c836deeb560a2266338b503 \
+    RUNNER_HASH_arm=907d72620afe986a2c1b28091413fbdbf818236a83e19a9022c9aa57f6b35cf5
 
 RUN apt-get update && apt-get -y install curl jq git ca-certificates gnupg sudo \
     && install -m 0755 -d /etc/apt/keyrings \
