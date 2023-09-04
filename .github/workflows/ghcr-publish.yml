@@ -54,7 +54,7 @@ jobs:
       # Checkout repository
       # https://github.com/actions/checkout
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
@@ -114,7 +114,7 @@ jobs:
       # Checkout repository
       # https://github.com/actions/checkout
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
@@ -174,7 +174,7 @@ jobs:
       # Checkout repository
       # https://github.com/actions/checkout
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
@@ -234,7 +234,7 @@ jobs:
       # Checkout repository
       # https://github.com/actions/checkout
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
@@ -294,7 +294,7 @@ jobs:
       # Checkout repository
       # https://github.com/actions/checkout
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
@@ -354,7 +354,7 @@ jobs:
       # Checkout repository
       # https://github.com/actions/checkout
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
@@ -414,7 +414,7 @@ jobs:
   #     # Checkout repository
   #     # https://github.com/actions/checkout
   #     - name: Checkout repository
-  #       uses: actions/checkout@v3
+  #       uses: actions/checkout@v4
 
   #     # Login against a Docker registry except on PR
   #     # https://github.com/docker/login-action
@@ -474,7 +474,7 @@ jobs:
   #     # Checkout repository
   #     # https://github.com/actions/checkout
   #     - name: Checkout repository
-  #       uses: actions/checkout@v3
+  #       uses: actions/checkout@v4
 
   #     # Login against a Docker registry except on PR
   #     # https://github.com/docker/login-action
@@ -534,7 +534,7 @@ jobs:
       # Checkout repository
       # https://github.com/actions/checkout
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
@@ -594,7 +594,7 @@ jobs:
       # Checkout repository
       # https://github.com/actions/checkout
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
@@ -654,7 +654,7 @@ jobs:
       # Checkout repository
       # https://github.com/actions/checkout
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
@@ -714,7 +714,7 @@ jobs:
       # Checkout repository
       # https://github.com/actions/checkout
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
@@ -774,7 +774,7 @@ jobs:
       # Checkout repository
       # https://github.com/actions/checkout
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
@@ -834,7 +834,7 @@ jobs:
       # Checkout repository
       # https://github.com/actions/checkout
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
@@ -894,7 +894,7 @@ jobs:
       # Checkout repository
       # https://github.com/actions/checkout
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
