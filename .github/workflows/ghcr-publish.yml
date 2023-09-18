@@ -33,7 +33,7 @@ jobs:
       # Set up Docker Buildx
       # https://github.com/docker/setup-buildx-action
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
         with:
           config-inline: |
             [registry."docker.io"]
@@ -93,7 +93,7 @@ jobs:
       # Set up Docker Buildx
       # https://github.com/docker/setup-buildx-action
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
         with:
           config-inline: |
             [registry."docker.io"]
@@ -153,7 +153,7 @@ jobs:
       # Set up Docker Buildx
       # https://github.com/docker/setup-buildx-action
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
         with:
           config-inline: |
             [registry."docker.io"]
@@ -213,7 +213,7 @@ jobs:
       # Set up Docker Buildx
       # https://github.com/docker/setup-buildx-action
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
         with:
           config-inline: |
             [registry."docker.io"]
@@ -273,7 +273,7 @@ jobs:
       # Set up Docker Buildx
       # https://github.com/docker/setup-buildx-action
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
         with:
           config-inline: |
             [registry."docker.io"]
@@ -333,7 +333,7 @@ jobs:
       # Set up Docker Buildx
       # https://github.com/docker/setup-buildx-action
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
         with:
           config-inline: |
             [registry."docker.io"]
@@ -393,7 +393,7 @@ jobs:
   #     # Set up Docker Buildx
   #     # https://github.com/docker/setup-buildx-action
   #     - name: Set up Docker Buildx
-  #       uses: docker/setup-buildx-action@v2
+  #       uses: docker/setup-buildx-action@v3
   #       with:
   #         config-inline: |
   #           [registry."docker.io"]
@@ -453,7 +453,7 @@ jobs:
   #     # Set up Docker Buildx
   #     # https://github.com/docker/setup-buildx-action
   #     - name: Set up Docker Buildx
-  #       uses: docker/setup-buildx-action@v2
+  #       uses: docker/setup-buildx-action@v3
   #       with:
   #         config-inline: |
   #           [registry."docker.io"]
@@ -513,7 +513,7 @@ jobs:
       # Set up Docker Buildx
       # https://github.com/docker/setup-buildx-action
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
         with:
           config-inline: |
             [registry."docker.io"]
@@ -573,7 +573,7 @@ jobs:
       # Set up Docker Buildx
       # https://github.com/docker/setup-buildx-action
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
         with:
           config-inline: |
             [registry."docker.io"]
@@ -633,7 +633,7 @@ jobs:
       # Set up Docker Buildx
       # https://github.com/docker/setup-buildx-action
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
         with:
           config-inline: |
             [registry."docker.io"]
@@ -693,7 +693,7 @@ jobs:
       # Set up Docker Buildx
       # https://github.com/docker/setup-buildx-action
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
         with:
           config-inline: |
             [registry."docker.io"]
@@ -753,7 +753,7 @@ jobs:
       # Set up Docker Buildx
       # https://github.com/docker/setup-buildx-action
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
         with:
           config-inline: |
             [registry."docker.io"]
@@ -813,7 +813,7 @@ jobs:
       # Set up Docker Buildx
       # https://github.com/docker/setup-buildx-action
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
         with:
           config-inline: |
             [registry."docker.io"]
@@ -873,7 +873,7 @@ jobs:
       # Set up Docker Buildx
       # https://github.com/docker/setup-buildx-action
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
         with:
           config-inline: |
             [registry."docker.io"]
