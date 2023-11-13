@@ -1,7 +1,7 @@
 FROM alpine:3 as buildenv
 
 ENV SOURCE_FILE=iperf2.tar.gz \
-    SOURCE_URL=https://sourceforge.net/projects/iperf2/files/iperf-2.1.9.tar.gz/download \
+    SOURCE_URL=https://downloads.sourceforge.net/project/iperf2/iperf-2.1.9.tar.gz \
     SOURCE_SHA1SUM=e7b669c2e8747df95b59956e83ff53d3971d7a5f
 
 # Download source file, extract and compile
