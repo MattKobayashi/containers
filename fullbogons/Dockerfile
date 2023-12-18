@@ -53,9 +53,7 @@ COPY entrypoint.sh .
 RUN adduser -D bird \
     && chown -R bird /bird/ \
     && apk --no-cache upgrade \
-    && apk add python3 \
-    && python3 -m ensurepip \
-    && pip3 install -r requirements.txt
+    && apk add python3 py3-requests py3-jinja2
 
 # Set expose ports
 # BGP: 179/tcp
