@@ -22,9 +22,13 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then ARCH=amd64; elif [ "$TARGETPL
     && mkdir /repo && chown -R ansible /repo \
     && apk --no-cache upgrade \
     && apk add --no-cache ansible-core git yq libssh py3-pip build-base python3-dev libssh-dev sudo \
-    && sudo -u ansible pip3 install ansible-pylibssh \
-    && sudo -u ansible ansible-galaxy collection install community.general \
-    && sudo -u ansible ansible-galaxy collection install cisco.ios cisco.iosxr junipernetworks.junos community.network community.routeros \
+    && mkdir /ansible/venv && chown -R ansible /ansible/venv \
+    && sudo -u ansible python3 -m venv /ansible/venv \
+    && sudo -u ansible source venv/bin/activate \
+    && pip3 install ansible-pylibssh \
+    && ansible-galaxy collection install community.general \
+    && ansible-galaxy collection install cisco.ios cisco.iosxr junipernetworks.junos community.network community.routeros \
+    && exit \
     && apk del py3-pip build-base python3-dev libssh-dev sudo
 
 USER ansible
