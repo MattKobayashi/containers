@@ -2,11 +2,11 @@ FROM alpine:3
 
 # Set supercronic environment variables
 ARG TARGETPLATFORM
-ENV SUPERCRONIC_SHA1SUM_amd64=7a79496cf8ad899b99a719355d4db27422396735 \
-    SUPERCRONIC_SHA1SUM_arm=d8124540ebd8f19cc0d8a286ed47ac132e8d151d \
-    SUPERCRONIC_SHA1SUM_arm64=e4801adb518ffedfd930ab3a82db042cb78a0a41 \
-    SUPERCRONIC_SHA1SUM_i386=bcc522ec4ead6de0d564670f6499a88e35082d1f \
-    SUPERCRONIC_VERSION=v0.2.26
+ENV SUPERCRONIC_SHA1SUM_amd64=cd48d45c4b10f3f0bfdd3a57d054cd05ac96812b \
+    SUPERCRONIC_SHA1SUM_arm=75e065bf0909f920b06d5bd797c0e6b31e68b112 \
+    SUPERCRONIC_SHA1SUM_arm64=512f6736450c56555e01b363144c3c9d23abed4c \
+    SUPERCRONIC_SHA1SUM_i386=3436985298ce241d7d9477eb9eab164b582717a8 \
+    SUPERCRONIC_VERSION=v0.2.29
 
 # Install supercronic
 WORKDIR /supercronic
@@ -53,9 +53,7 @@ COPY entrypoint.sh .
 RUN adduser -D bird \
     && chown -R bird /bird/ \
     && apk --no-cache upgrade \
-    && apk add python3 \
-    && python3 -m ensurepip \
-    && pip3 install -r requirements.txt
+    && apk add python3 py3-requests py3-jinja2
 
 # Set expose ports
 # BGP: 179/tcp
