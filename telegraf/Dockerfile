@@ -6,9 +6,7 @@ WORKDIR /opt/docker-telegraf
 # Install Python and requirements
 COPY requirements.txt .
 RUN apk --no-cache upgrade \
-    && apk --no-cache add python3 \
-    && python3 -m ensurepip \
-    && python3 -m pip install --no-cache -r requirements.txt
+    && apk --no-cache add python3 py3-requests
 
 # Install other dependencies
 RUN apk --no-cache upgrade \
