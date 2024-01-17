@@ -21,11 +21,7 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then ARCH=amd64; elif [ "$TARGETPL
     && addgroup -S ansible && adduser -S ansible -G ansible \
     && mkdir /repo && chown -R ansible /repo \
     && apk --no-cache upgrade \
-    && apk add --no-cache ansible-core git yq libssh py3-pip build-base python3-dev libssh-dev sudo \
-    && sudo -u ansible pip3 install ansible-pylibssh \
-    && sudo -u ansible ansible-galaxy collection install community.general \
-    && sudo -u ansible ansible-galaxy collection install cisco.ios cisco.iosxr junipernetworks.junos community.network community.routeros \
-    && apk del py3-pip build-base python3-dev libssh-dev sudo
+    && apk add --no-cache ansible-core git yq libssh poetry
 
 USER ansible
 
@@ -34,6 +30,7 @@ COPY --chown=ansible ansible-cron /ansible/crontab/ansible-cron
 COPY --chown=ansible yancobat-backup.yaml /ansible/yancobat-backup.yaml
 COPY --chown=ansible yancobat-setup.yaml /ansible/yancobat-setup.yaml
 COPY --chown=ansible vars.yaml /ansible/vars.yaml
+COPY --chown=ansible pyproject.toml /ansible/pyproject.toml
 
 ENV TZ=UTC \
     GIT_USER=YANCoBaT \
