@@ -42,6 +42,75 @@
           ansible.builtin.shell:
             export FAILURE=true
 
+- name: Back up EXOS devices
+  hosts: exos
+  gather_facts: false
+
+  tasks:
+    - block:
+        - name: Get EXOS configuration
+          community.network.exos_command:
+            commands: show configuration
+          register: exos_conf
+          async: 60
+          poll: 10
+
+        - name: Ensure backup directory exists
+          ansible.builtin.file:
+            path: /repo/backups/junos/
+            state: directory
+
+        - name: Save EXOS configuration
+          ansible.builtin.copy:
+            content: "{{ exos_conf.stdout[0] }}"
+            dest: "/repo/backups/exos/{{ inventory_hostname }}.txt"
+          register: exos_save
+
+        - name: Send result notification to Telegram
+          community.general.telegram:
+            token: "{{ notify_telegram_token }}"
+            api_args:
+              chat_id: "{{ notify_telegram_chat_id }}"
+              parse_mode: "MarkdownV2"
+              text: |
+                *\-\- Network device configuration changed \-\-*
+                Device: {{ inventory_hostname | regex_replace('\.', '\.') }}
+                Changes: {{ exos_save.diff | length }}
+                [View on GitHub](https://github.com/{{ github_repo }}/commits/main/backups/exos/{{ inventory_hostname }}.txt)
+              disable_web_page_preview: true
+              protect_content: true
+          when:
+            - notify_telegram_enabled
+            - exos_save.changed
+
+        - name: Send result notification to Slack
+          community.general.slack:
+            token: "{{ notify_slack_token }}"
+            channel: "{{ notify_slack_channel_id }}"
+            blocks:
+              - type: header
+                text:
+                  type: plain_text
+                  text: "Network device configuration changed"
+              - type: divider
+              - type: section
+                text:
+                  type: mrkdwn
+                  text: "Device: {{ inventory_hostname }}\n\nChanges: {{ exos_save.diff | length }}\n\n<https://github.com/{{ github_repo }}/commits/main/backups/exos/{{ inventory_hostname }}.txt|View on GitHub>"
+              - type: divider
+              - type: context
+                elements:
+                  - type: mrkdwn
+                    text: "This notification brought to you by `YANCoBaT`"
+          when:
+            - notify_slack_enabled
+            - exos_save.changed
+
+      rescue:
+        - name: Set failure flag
+          ansible.builtin.shell:
+            export FAILURE=true
+
 - name: Back up IOS devices
   hosts: ios
   gather_facts: false
@@ -101,7 +170,7 @@
               - type: context
                 elements:
                   - type: mrkdwn
-                    text: "This notification brought to you by `ansible-network-backup`"
+                    text: "This notification brought to you by `YANCoBaT`"
           when:
             - notify_slack_enabled
             - ios_save.changed
@@ -170,7 +239,7 @@
               - type: context
                 elements:
                   - type: mrkdwn
-                    text: "This notification brought to you by `ansible-network-backup`"
+                    text: "This notification brought to you by `YANCoBaT`"
           when:
             - notify_slack_enabled
             - iosxr_save.changed
@@ -239,79 +308,10 @@
               - type: context
                 elements:
                   - type: mrkdwn
-                    text: "This notification brought to you by `ansible-network-backup`"
+                    text: "This notification brought to you by `YANCoBaT`"
           when:
             - notify_slack_enabled
             - junos_save.changed
-
-      rescue:
-        - name: Set failure flag
-          ansible.builtin.shell:
-            export FAILURE=true
-
-- name: Back up EXOS devices
-  hosts: exos
-  gather_facts: false
-
-  tasks:
-    - block:
-        - name: Get EXOS configuration
-          community.network.exos_command:
-            commands: show configuration
-          register: exos_conf
-          async: 60
-          poll: 10
-
-        - name: Ensure backup directory exists
-          ansible.builtin.file:
-            path: /repo/backups/junos/
-            state: directory
-
-        - name: Save EXOS configuration
-          ansible.builtin.copy:
-            content: "{{ exos_conf.stdout[0] }}"
-            dest: "/repo/backups/exos/{{ inventory_hostname }}.txt"
-          register: exos_save
-
-        - name: Send result notification to Telegram
-          community.general.telegram:
-            token: "{{ notify_telegram_token }}"
-            api_args:
-              chat_id: "{{ notify_telegram_chat_id }}"
-              parse_mode: "MarkdownV2"
-              text: |
-                *\-\- Network device configuration changed \-\-*
-                Device: {{ inventory_hostname | regex_replace('\.', '\.') }}
-                Changes: {{ exos_save.diff | length }}
-                [View on GitHub](https://github.com/{{ github_repo }}/commits/main/backups/exos/{{ inventory_hostname }}.txt)
-              disable_web_page_preview: true
-              protect_content: true
-          when:
-            - notify_telegram_enabled
-            - exos_save.changed
-
-        - name: Send result notification to Slack
-          community.general.slack:
-            token: "{{ notify_slack_token }}"
-            channel: "{{ notify_slack_channel_id }}"
-            blocks:
-              - type: header
-                text:
-                  type: plain_text
-                  text: "Network device configuration changed"
-              - type: divider
-              - type: section
-                text:
-                  type: mrkdwn
-                  text: "Device: {{ inventory_hostname }}\n\nChanges: {{ exos_save.diff | length }}\n\n<https://github.com/{{ github_repo }}/commits/main/backups/exos/{{ inventory_hostname }}.txt|View on GitHub>"
-              - type: divider
-              - type: context
-                elements:
-                  - type: mrkdwn
-                    text: "This notification brought to you by `ansible-network-backup`"
-          when:
-            - notify_slack_enabled
-            - exos_save.changed
 
       rescue:
         - name: Set failure flag
@@ -377,10 +377,79 @@
               - type: context
                 elements:
                   - type: mrkdwn
-                    text: "This notification brought to you by `ansible-network-backup`"
+                    text: "This notification brought to you by `YANCoBaT`"
           when:
             - notify_slack_enabled
             - routeros_save.changed
+
+      rescue:
+        - name: Set failure flag
+          ansible.builtin.shell:
+            export FAILURE=true
+
+- name: Back up VyOS devices
+  hosts: vyos
+  gather_facts: false
+
+  tasks:
+    - block:
+        - name: Get VyOS configuration
+          vyos.vyos.vyos_facts:
+            gather_subset: config
+          register: vyos_conf
+          async: 60
+          poll: 10
+
+        - name: Ensure backup directory exists
+          ansible.builtin.file:
+            path: /repo/backups/vyos/
+            state: directory
+
+        - name: Save VyOS configuration
+          ansible.builtin.copy:
+            content: "{{ vyos_conf.ansible_net_config }}"
+            dest: "/repo/backups/vyos/{{ inventory_hostname }}.txt"
+          register: vyos_save
+
+        - name: Send result notification to Telegram
+          community.general.telegram:
+            token: "{{ notify_telegram_token }}"
+            api_args:
+              chat_id: "{{ notify_telegram_chat_id }}"
+              parse_mode: "MarkdownV2"
+              text: |
+                *\-\- Network device configuration changed \-\-*
+                Device: {{ inventory_hostname | regex_replace('\.', '\.') }}
+                Changes: {{ vyos_save.diff | length }}
+                [View on GitHub](https://github.com/{{ github_repo }}/commits/main/backups/vyos/{{ inventory_hostname }}.txt)
+              disable_web_page_preview: true
+              protect_content: true
+          when:
+            - notify_telegram_enabled
+            - vyos_save.changed
+
+        - name: Send result notification to Slack
+          community.general.slack:
+            token: "{{ notify_slack_token }}"
+            channel: "{{ notify_slack_channel_id }}"
+            blocks:
+              - type: header
+                text:
+                  type: plain_text
+                  text: "Network device configuration changed"
+              - type: divider
+              - type: section
+                text:
+                  type: mrkdwn
+                  text: "Device: {{ inventory_hostname }}\n\nChanges: {{ vyos_save.diff | length }}\n\n<https://github.com/{{ github_repo }}/commits/main/backups/vyos/{{ inventory_hostname }}.txt|View on GitHub>"
+              - type: divider
+              - type: context
+                elements:
+                  - type: mrkdwn
+                    text: "This notification brought to you by `YANCoBaT`"
+          when:
+            - notify_slack_enabled
+            - vyos_save.changed
 
       rescue:
         - name: Set failure flag

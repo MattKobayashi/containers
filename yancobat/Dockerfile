@@ -26,8 +26,8 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then ARCH=amd64; elif [ "$TARGETPL
     && sudo -u ansible python3 -m venv /ansible/venv \
     && sudo -u ansible source venv/bin/activate \
     && pip3 install ansible-pylibssh \
-    && ansible-galaxy collection install community.general \
-    && ansible-galaxy collection install cisco.ios cisco.iosxr junipernetworks.junos community.network community.routeros \
+    && ansible-galaxy collection install community.general community.network \
+    && ansible-galaxy collection install cisco.ios cisco.iosxr junipernetworks.junos community.routeros vyos.vyos \
     && exit \
     && apk del py3-pip build-base python3-dev libssh-dev sudo
 
