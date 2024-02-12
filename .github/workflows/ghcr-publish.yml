@@ -20,6 +20,7 @@ jobs:
   build-actions-runner:
 
     runs-on: self-hosted
+    if: ${{ github.ref_name == "main" || github.ref_name == "actions-runner" }}
     permissions:
       contents: read
       packages: write
@@ -80,6 +81,7 @@ jobs:
   build-avahi:
 
     runs-on: self-hosted
+    if: ${{ github.ref_name == "main" || github.ref_name == "avahi" }}
     permissions:
       contents: read
       packages: write
@@ -140,6 +142,7 @@ jobs:
   build-certbot-cloudflare:
 
     runs-on: self-hosted
+    if: ${{ github.ref_name == "main" || github.ref_name == "certbot-cloudflare" }}
     permissions:
       contents: read
       packages: write
@@ -200,6 +203,7 @@ jobs:
   build-fullbogons:
 
     runs-on: self-hosted
+    if: ${{ github.ref_name == "main" || github.ref_name == "fullbogons" }}
     permissions:
       contents: read
       packages: write
@@ -260,6 +264,7 @@ jobs:
   build-iperf2:
 
     runs-on: self-hosted
+    if: ${{ github.ref_name == "main" || github.ref_name == "iperf2" }}
     permissions:
       contents: read
       packages: write
@@ -320,6 +325,7 @@ jobs:
   build-iperf3:
 
     runs-on: self-hosted
+    if: ${{ github.ref_name == "main" || github.ref_name == "iperf3" }}
     permissions:
       contents: read
       packages: write
@@ -380,6 +386,7 @@ jobs:
   # build-irrd:
 
   #   runs-on: self-hosted
+  #   if: ${{ github.ref_name == "main" || github.ref_name == "irrd" }}
   #   permissions:
   #     contents: read
   #     packages: write
@@ -440,6 +447,7 @@ jobs:
   # build-irrexplorer:
 
   #   runs-on: self-hosted
+  #   if: ${{ github.ref_name == "main" || github.ref_name == "irrexplorer" }}
   #   permissions:
   #     contents: read
   #     packages: write
@@ -500,6 +508,7 @@ jobs:
   build-mdns-reflector:
 
     runs-on: self-hosted
+    if: ${{ github.ref_name == "main" || github.ref_name == "mdns-reflector" }}
     permissions:
       contents: read
       packages: write
@@ -560,6 +569,7 @@ jobs:
   build-rng-tools:
 
     runs-on: self-hosted
+    if: ${{ github.ref_name == "main" || github.ref_name == "rng-tools" }}
     permissions:
       contents: read
       packages: write
@@ -620,6 +630,7 @@ jobs:
   build-speedtest:
 
     runs-on: self-hosted
+    if: ${{ github.ref_name == "main" || github.ref_name == "speedtest" }}
     permissions:
       contents: read
       packages: write
@@ -680,6 +691,7 @@ jobs:
   build-stun:
 
     runs-on: self-hosted
+    if: ${{ github.ref_name == "main" || github.ref_name == "stun" }}
     permissions:
       contents: read
       packages: write
@@ -740,6 +752,7 @@ jobs:
   build-telegraf:
 
     runs-on: self-hosted
+    if: ${{ github.ref_name == "main" || github.ref_name == "telegraf" }}
     permissions:
       contents: read
       packages: write
@@ -800,6 +813,7 @@ jobs:
   build-verlihub:
 
     runs-on: self-hosted
+    if: ${{ github.ref_name == "main" || github.ref_name == "verlihub" }}
     permissions:
       contents: read
       packages: write
@@ -860,6 +874,7 @@ jobs:
   build-xteve:
 
     runs-on: self-hosted
+    if: ${{ github.ref_name == "main" || github.ref_name == "xteve" }}
     permissions:
       contents: read
       packages: write
@@ -920,6 +935,7 @@ jobs:
   build-yancobat:
 
     runs-on: self-hosted
+    if: ${{ github.ref_name == "main" || github.ref_name == "yancobat" }}
     permissions:
       contents: read
       packages: write
