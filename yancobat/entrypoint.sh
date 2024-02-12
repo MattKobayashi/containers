@@ -8,12 +8,16 @@ if [ -f /run/secrets/GITHUB_TOKEN ]; then
 	export GITHUB_TOKEN=$(cat /run/secrets/GITHUB_TOKEN)
 fi
 
-if [ -f /run/secrets/NOTIFY_TELEGRAM_TOKEN ]; then
-	export NOTIFY_TELEGRAM_TOKEN=$(cat /run/secrets/NOTIFY_TELEGRAM_TOKEN)
+if [ -f /run/secrets/NOTIFY_PUSHOVER_APP_TOKEN ]; then
+	export NOTIFY_PUSHOVER_APP_TOKEN=$(cat /run/secrets/NOTIFY_PUSHOVER_APP_TOKEN)
 fi
 
 if [ -f /run/secrets/NOTIFY_SLACK_TOKEN ]; then
 	export NOTIFY_SLACK_TOKEN=$(cat /run/secrets/NOTIFY_SLACK_TOKEN)
+fi
+
+if [ -f /run/secrets/NOTIFY_TELEGRAM_TOKEN ]; then
+	export NOTIFY_TELEGRAM_TOKEN=$(cat /run/secrets/NOTIFY_TELEGRAM_TOKEN)
 fi
 
 poetry run ansible-playbook -i /ansible/vars.yaml /ansible/yancobat-setup.yaml

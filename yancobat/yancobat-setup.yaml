@@ -45,21 +45,16 @@
     failure_detected: "{{ lookup('ansible.builtin.env', 'FAILURE') }}"
 
   tasks:
-    - name: Send failure notification to Telegram
-      community.general.telegram:
-        token: "{{ notify_telegram_token }}"
-        api_args:
-          chat_id: "{{ notify_telegram_chat_id }}"
-          parse_mode: "MarkdownV2"
-          text: |
-            *\-\- Warning \-\-*
-            A network configuration backup failure has occurred\.
-            Please check the status of ansible\-network\-backup and rectify any issues\.
-          disable_web_page_preview: true
-          disable_notification: true
-          protect_content: true
+    - name: Send failure notification to Pushover
+      community.general.pushover:
+        app_token: "{{ notify_pushover_app_token }}"
+        user_key: "{{ notify_pushover_user_key }}"
+        msg: |
+          *\-\- Warning \-\-*
+          A network configuration backup failure has occurred\.
+          Please check the status of YANCoBaT and rectify any issues\.
       when:
-        - notify_telegram_enabled
+        - notify_pushover_enabled
         - failure_detected
 
     - name: Send failure notification to Slack
@@ -80,7 +75,24 @@
           - type: context
             elements:
               - type: mrkdwn
-                text: "This notification brought to you by `ansible-network-backup`"
+                text: "This notification brought to you by `YANCoBaT`"
       when:
         - notify_slack_enabled
+        - failure_detected
+
+    - name: Send failure notification to Telegram
+      community.general.telegram:
+        token: "{{ notify_telegram_token }}"
+        api_args:
+          chat_id: "{{ notify_telegram_chat_id }}"
+          parse_mode: "MarkdownV2"
+          text: |
+            *\-\- Warning \-\-*
+            A network configuration backup failure has occurred\.
+            Please check the status of ansible\-network\-backup and rectify any issues\.
+          disable_web_page_preview: true
+          disable_notification: true
+          protect_content: true
+      when:
+        - notify_telegram_enabled
         - failure_detected
