@@ -20,5 +20,5 @@ if [ -f /run/secrets/NOTIFY_TELEGRAM_TOKEN ]; then
 	export NOTIFY_TELEGRAM_TOKEN=$(cat /run/secrets/NOTIFY_TELEGRAM_TOKEN)
 fi
 
-poetry run ansible-playbook -i /ansible/vars.yaml /ansible/yancobat-setup.yaml
+ansible-playbook -i /ansible/vars.yaml /ansible/yancobat-setup.yaml
 exec supercronic /ansible/crontab/ansible-cron
