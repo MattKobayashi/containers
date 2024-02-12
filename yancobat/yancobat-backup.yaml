@@ -1,13 +1,4 @@
 ---
-- name: Set shared flags
-  hosts: localhost
-  gather_facts: false
-
-  tasks:
-    - name: Failure flag
-      ansible.builtin.shell: |
-        export FAILURE=false
-
 - name: Set up Git repository
   hosts: localhost
   gather_facts: false
@@ -21,10 +12,10 @@
             force: true
 
       rescue:
-        - name: Failure flag
+        - name: Set failure flag
           ansible.builtin.add_host:
-            name: "shared"
-            failure_detected: true
+            name: failure
+            occurred: true
 
 - name: Configure inventory file
   hosts: localhost
@@ -39,8 +30,9 @@
 
       rescue:
         - name: Set failure flag
-          ansible.builtin.shell:
-            export FAILURE=true
+          ansible.builtin.add_host:
+            name: failure
+            occurred: true
 
 - name: Back up EXOS devices
   hosts: exos
@@ -118,8 +110,9 @@
 
       rescue:
         - name: Set failure flag
-          ansible.builtin.shell:
-            export FAILURE=true
+          ansible.builtin.add_host:
+            name: failure
+            occurred: true
 
 - name: Back up IOS devices
   hosts: ios
@@ -197,8 +190,9 @@
 
       rescue:
         - name: Set failure flag
-          ansible.builtin.shell:
-            export FAILURE=true
+          ansible.builtin.add_host:
+            name: failure
+            occurred: true
 
 - name: Back up IOS-XR devices
   hosts: iosxr
@@ -276,8 +270,9 @@
 
       rescue:
         - name: Set failure flag
-          ansible.builtin.shell:
-            export FAILURE=true
+          ansible.builtin.add_host:
+            name: failure
+            occurred: true
 
 - name: Back up JunOS devices
   hosts: junos
@@ -355,8 +350,9 @@
 
       rescue:
         - name: Set failure flag
-          ansible.builtin.shell:
-            export FAILURE=true
+          ansible.builtin.add_host:
+            name: failure
+            occurred: true
 
 - name: Back up RouterOS devices
   hosts: routeros
@@ -434,8 +430,9 @@
 
       rescue:
         - name: Set failure flag
-          ansible.builtin.shell:
-            export FAILURE=true
+          ansible.builtin.add_host:
+            name: failure
+            occurred: true
 
 - name: Back up VyOS devices
   hosts: vyos
@@ -513,8 +510,9 @@
 
       rescue:
         - name: Set failure flag
-          ansible.builtin.shell:
-            export FAILURE=true
+          ansible.builtin.add_host:
+            name: failure
+            occurred: true
 
 - name: Commit to Git repository
   hosts: localhost
@@ -532,14 +530,15 @@
 
       rescue:
         - name: Set failure flag
-          ansible.builtin.shell:
-            export FAILURE=true
+          ansible.builtin.add_host:
+            name: failure
+            occurred: true
 
 - name: Failure notifications
   hosts: localhost
   gather_facts: false
   vars:
-    failure_detected: "{{ lookup('ansible.builtin.env', 'FAILURE') | bool }}"
+    failure_detected: "{{ hostvars['failure']['occurred'] }}"
 
   tasks:
     - name: Send failure notification to Pushover

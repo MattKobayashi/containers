@@ -35,14 +35,15 @@
 
       rescue:
         - name: Set failure flag
-          ansible.builtin.shell:
-            export FAILURE=true
+          ansible.builtin.add_host:
+            name: failure
+            occurred: true
 
 - name: Failure notifications
   hosts: localhost
   gather_facts: false
   vars:
-    failure_detected: "{{ lookup('ansible.builtin.env', 'FAILURE') }}"
+    failure_detected: "{{ hostvars['failure']['occurred'] }}"
 
   tasks:
     - name: Send failure notification to Pushover
