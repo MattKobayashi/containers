@@ -538,7 +538,7 @@
   hosts: localhost
   gather_facts: false
   vars:
-    failure_detected: "{{ hostvars['failure']['occurred'] }}"
+    failure_detected: "{{ hostvars['failure']['occurred'] | default('false') }}"
 
   tasks:
     - name: Send failure notification to Pushover
