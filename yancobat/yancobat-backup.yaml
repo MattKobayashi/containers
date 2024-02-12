@@ -70,11 +70,8 @@
           community.general.pushover:
             token: "{{ notify_pushover_app_token }}"
             user_key: "{{ notify_pushover_user_key }}"
-            msg: |
-              *\-\- Network device configuration changed \-\-*
-              Device: {{ inventory_hostname | regex_replace('\.', '\.') }}
-              Changes: {{ exos_save.diff | length }}
-              [View on GitHub](https://github.com/{{ github_repo }}/commits/main/backups/exos/{{ inventory_hostname }}.txt)
+            title: "Network device configuration changed"
+            msg: "<b>Device:</b> {{ inventory_hostname | regex_replace('\.', '\.') }} <b>Changes:</b> {{ exos_save.diff | length }} <a href=\"https://github.com/{{ github_repo }}/commits/main/backups/exos/{{ inventory_hostname }}.txt>View on GitHub</a>"
           when:
             - notify_pushover_enabled
             - exos_save.changed
@@ -152,11 +149,8 @@
           community.general.pushover:
             token: "{{ notify_pushover_app_token }}"
             user_key: "{{ notify_pushover_user_key }}"
-            msg: |
-              *\-\- Network device configuration changed \-\-*
-              Device: {{ inventory_hostname | regex_replace('\.', '\.') }}
-              Changes: {{ ios_save.diff | length }}
-              [View on GitHub](https://github.com/{{ github_repo }}/commits/main/backups/ios/{{ inventory_hostname }}.txt)
+            title: "Network device configuration changed"
+            msg: "<b>Device:</b> {{ inventory_hostname | regex_replace('\.', '\.') }} <b>Changes:</b> {{ ios_save.diff | length }} <a href=\"https://github.com/{{ github_repo }}/commits/main/backups/ios/{{ inventory_hostname }}.txt>View on GitHub</a>"
           when:
             - notify_pushover_enabled
             - ios_save.changed
@@ -234,11 +228,8 @@
           community.general.pushover:
             token: "{{ notify_pushover_app_token }}"
             user_key: "{{ notify_pushover_user_key }}"
-            msg: |
-              *\-\- Network device configuration changed \-\-*
-              Device: {{ inventory_hostname | regex_replace('\.', '\.') }}
-              Changes: {{ iosxr_save.diff | length }}
-              [View on GitHub](https://github.com/{{ github_repo }}/commits/main/backups/iosxr/{{ inventory_hostname }}.txt)
+            title: "Network device configuration changed"
+            msg: "<b>Device:</b> {{ inventory_hostname | regex_replace('\.', '\.') }} <b>Changes:</b> {{ iosxr_save.diff | length }} <a href=\"https://github.com/{{ github_repo }}/commits/main/backups/iosxr/{{ inventory_hostname }}.txt>View on GitHub</a>"
           when:
             - notify_pushover_enabled
             - iosxr_save.changed
@@ -316,11 +307,8 @@
           community.general.pushover:
             token: "{{ notify_pushover_app_token }}"
             user_key: "{{ notify_pushover_user_key }}"
-            msg: |
-              *\-\- Network device configuration changed \-\-*
-              Device: {{ inventory_hostname | regex_replace('\.', '\.') }}
-              Changes: {{ junos_save.diff | length }}
-              [View on GitHub](https://github.com/{{ github_repo }}/commits/main/backups/junos/{{ inventory_hostname }}.txt)
+            title: "Network device configuration changed"
+            msg: "<b>Device:</b> {{ inventory_hostname | regex_replace('\.', '\.') }} <b>Changes:</b> {{ junos_save.diff | length }} <a href=\"https://github.com/{{ github_repo }}/commits/main/backups/junos/{{ inventory_hostname }}.txt>View on GitHub</a>"
           when:
             - notify_pushover_enabled
             - junos_save.changed
@@ -398,11 +386,8 @@
           community.general.pushover:
             token: "{{ notify_pushover_app_token }}"
             user_key: "{{ notify_pushover_user_key }}"
-            msg: |
-              *\-\- Network device configuration changed \-\-*
-              Device: {{ inventory_hostname | regex_replace('\.', '\.') }}
-              Changes: {{ routeros_save.diff | length }}
-              [View on GitHub](https://github.com/{{ github_repo }}/commits/main/backups/routeros/{{ inventory_hostname }}.txt)
+            title: "Network device configuration changed"
+            msg: "<b>Device:</b> {{ inventory_hostname | regex_replace('\.', '\.') }} <b>Changes:</b> {{ routeros_save.diff | length }} <a href=\"https://github.com/{{ github_repo }}/commits/main/backups/routeros/{{ inventory_hostname }}.txt>View on GitHub</a>"
           when:
             - notify_pushover_enabled
             - routeros_save.changed
@@ -480,11 +465,8 @@
           community.general.pushover:
             token: "{{ notify_pushover_app_token }}"
             user_key: "{{ notify_pushover_user_key }}"
-            msg: |
-              *\-\- Network device configuration changed \-\-*
-              Device: {{ inventory_hostname | regex_replace('\.', '\.') }}
-              Changes: {{ vyos_save.diff | length }}
-              [View on GitHub](https://github.com/{{ github_repo }}/commits/main/backups/vyos/{{ inventory_hostname }}.txt)
+            title: "Network device configuration changed"
+            msg: "<b>Device:</b> {{ inventory_hostname | regex_replace('\.', '\.') }} <b>Changes:</b> {{ vyos_save.diff | length }} <a href=\"https://github.com/{{ github_repo }}/commits/main/backups/vyos/{{ inventory_hostname }}.txt>View on GitHub</a>"
           when:
             - notify_pushover_enabled
             - vyos_save.changed
@@ -564,10 +546,8 @@
       community.general.pushover:
         app_token: "{{ notify_pushover_app_token }}"
         user_key: "{{ notify_pushover_user_key }}"
-        msg: |
-          *\-\- Warning \-\-*
-          A network configuration backup failure has occurred\.
-          Please check the status of YANCoBaT and rectify any issues\.
+        title: "Warning!"
+        msg: "A network configuration backup failure has occurred. Please check the status of YANCoBaT and rectify any issues."
       when:
         - notify_pushover_enabled
         - failure_detected
@@ -590,7 +570,7 @@
           - type: context
             elements:
               - type: mrkdwn
-                text: "This notification brought to you by `ansible-network-backup`"
+                text: "This notification brought to you by `YANCoBaT`"
       when:
         - notify_slack_enabled
         - failure_detected
@@ -604,7 +584,7 @@
           text: |
             *\-\- Warning \-\-*
             A network configuration backup failure has occurred\.
-            Please check the status of ansible\-network\-backup and rectify any issues\.
+            Please check the status of YANCoBaT and rectify any issues\.
           disable_web_page_preview: true
           disable_notification: true
           protect_content: true

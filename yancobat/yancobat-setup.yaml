@@ -49,10 +49,8 @@
       community.general.pushover:
         app_token: "{{ notify_pushover_app_token }}"
         user_key: "{{ notify_pushover_user_key }}"
-        msg: |
-          *\-\- Warning \-\-*
-          A network configuration backup failure has occurred\.
-          Please check the status of YANCoBaT and rectify any issues\.
+        title: "Warning!"
+        msg: "A network configuration backup failure has occurred. Please check the status of YANCoBaT and rectify any issues."
       when:
         - notify_pushover_enabled
         - failure_detected
