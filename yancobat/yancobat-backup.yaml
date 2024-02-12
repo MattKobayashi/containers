@@ -539,7 +539,7 @@
   hosts: localhost
   gather_facts: false
   vars:
-    failure_detected: "{{ lookup('ansible.builtin.env', 'FAILURE') }}"
+    failure_detected: "{{ lookup('ansible.builtin.env', 'FAILURE') | bool }}"
 
   tasks:
     - name: Send failure notification to Pushover
