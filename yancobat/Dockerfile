@@ -21,7 +21,9 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then ARCH=amd64; elif [ "$TARGETPL
     && addgroup -S ansible && adduser -S ansible -G ansible \
     && mkdir /repo && chown -R ansible /repo \
     && apk --no-cache upgrade \
-    && apk add --no-cache ansible-core git yq libssh poetry
+    && apk add --no-cache ansible-core git yq libssh poetry \
+    && ansible-galaxy collection install community.general community.network \
+    && ansible-galaxy collection install cisco.ios cisco.iosxr junipernetworks.junos community.routeros vyos.vyos
 
 USER ansible
 
