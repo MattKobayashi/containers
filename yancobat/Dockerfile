@@ -19,7 +19,7 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then ARCH=amd64; elif [ "$TARGETPL
     && addgroup -S ansible && adduser -S ansible -G ansible \
     && mkdir /repo && chown -R ansible /repo \
     && apk --no-cache upgrade \
-    && apk add --no-cache ansible-core git yq build-base python3-dev libssh-dev poetry
+    && apk add --no-cache ansible-core git yq build-base python3-dev libssh libssh-dev poetry
 
 USER ansible
 WORKDIR /ansible
