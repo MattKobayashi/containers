@@ -21,7 +21,9 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then ARCH=amd64; elif [ "$TARGETPL
     && addgroup -S ansible && adduser -S ansible -G ansible \
     && mkdir /repo && chown -R ansible /repo \
     && apk --no-cache upgrade \
-    && apk add --no-cache ansible-core git yq libssh poetry
+    && apk add --no-cache ansible-core git yq libssh poetry \
+    && ansible-galaxy collection install community.general community.network \
+    && ansible-galaxy collection install cisco.ios cisco.iosxr junipernetworks.junos community.routeros vyos.vyos
 
 USER ansible
 
@@ -34,8 +36,9 @@ COPY --chown=ansible pyproject.toml /ansible/pyproject.toml
 
 ENV TZ=UTC \
     GIT_USER=YANCoBaT \
-    NOTIFY_TELEGRAM_ENABLED=false \
-    NOTIFY_SLACK_ENABLED=false
+    NOTIFY_PUSHOVER_ENABLED=false \
+    NOTIFY_SLACK_ENABLED=false \
+    NOTIFY_TELEGRAM_ENABLED=false
 
 ENTRYPOINT ["./entrypoint.sh"]
 

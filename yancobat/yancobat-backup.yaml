@@ -66,21 +66,17 @@
             dest: "/repo/backups/exos/{{ inventory_hostname }}.txt"
           register: exos_save
 
-        - name: Send result notification to Telegram
-          community.general.telegram:
-            token: "{{ notify_telegram_token }}"
-            api_args:
-              chat_id: "{{ notify_telegram_chat_id }}"
-              parse_mode: "MarkdownV2"
-              text: |
-                *\-\- Network device configuration changed \-\-*
-                Device: {{ inventory_hostname | regex_replace('\.', '\.') }}
-                Changes: {{ exos_save.diff | length }}
-                [View on GitHub](https://github.com/{{ github_repo }}/commits/main/backups/exos/{{ inventory_hostname }}.txt)
-              disable_web_page_preview: true
-              protect_content: true
+        - name: Send result notification to Pushover
+          community.general.pushover:
+            token: "{{ notify_pushover_app_token }}"
+            user_key: "{{ notify_pushover_user_key }}"
+            msg: |
+              *\-\- Network device configuration changed \-\-*
+              Device: {{ inventory_hostname | regex_replace('\.', '\.') }}
+              Changes: {{ exos_save.diff | length }}
+              [View on GitHub](https://github.com/{{ github_repo }}/commits/main/backups/exos/{{ inventory_hostname }}.txt)
           when:
-            - notify_telegram_enabled
+            - notify_pushover_enabled
             - exos_save.changed
 
         - name: Send result notification to Slack
@@ -104,6 +100,23 @@
                     text: "This notification brought to you by `YANCoBaT`"
           when:
             - notify_slack_enabled
+            - exos_save.changed
+
+        - name: Send result notification to Telegram
+          community.general.telegram:
+            token: "{{ notify_telegram_token }}"
+            api_args:
+              chat_id: "{{ notify_telegram_chat_id }}"
+              parse_mode: "MarkdownV2"
+              text: |
+                *\-\- Network device configuration changed \-\-*
+                Device: {{ inventory_hostname | regex_replace('\.', '\.') }}
+                Changes: {{ exos_save.diff | length }}
+                [View on GitHub](https://github.com/{{ github_repo }}/commits/main/backups/exos/{{ inventory_hostname }}.txt)
+              disable_web_page_preview: true
+              protect_content: true
+          when:
+            - notify_telegram_enabled
             - exos_save.changed
 
       rescue:
@@ -135,21 +148,17 @@
             dest: "/repo/backups/ios/{{ inventory_hostname }}.txt"
           register: ios_save
 
-        - name: Send result notification to Telegram
-          community.general.telegram:
-            token: "{{ notify_telegram_token }}"
-            api_args:
-              chat_id: "{{ notify_telegram_chat_id }}"
-              parse_mode: "MarkdownV2"
-              text: |
-                *\-\- Network device configuration changed \-\-*
-                Device: {{ inventory_hostname | regex_replace('\.', '\.') }}
-                Changes: {{ ios_save.diff | length }}
-                [View on GitHub](https://github.com/{{ github_repo }}/commits/main/backups/ios/{{ inventory_hostname }}.txt)
-              disable_web_page_preview: true
-              protect_content: true
+        - name: Send result notification to Pushover
+          community.general.pushover:
+            token: "{{ notify_pushover_app_token }}"
+            user_key: "{{ notify_pushover_user_key }}"
+            msg: |
+              *\-\- Network device configuration changed \-\-*
+              Device: {{ inventory_hostname | regex_replace('\.', '\.') }}
+              Changes: {{ ios_save.diff | length }}
+              [View on GitHub](https://github.com/{{ github_repo }}/commits/main/backups/ios/{{ inventory_hostname }}.txt)
           when:
-            - notify_telegram_enabled
+            - notify_pushover_enabled
             - ios_save.changed
 
         - name: Send result notification to Slack
@@ -173,6 +182,23 @@
                     text: "This notification brought to you by `YANCoBaT`"
           when:
             - notify_slack_enabled
+            - ios_save.changed
+
+        - name: Send result notification to Telegram
+          community.general.telegram:
+            token: "{{ notify_telegram_token }}"
+            api_args:
+              chat_id: "{{ notify_telegram_chat_id }}"
+              parse_mode: "MarkdownV2"
+              text: |
+                *\-\- Network device configuration changed \-\-*
+                Device: {{ inventory_hostname | regex_replace('\.', '\.') }}
+                Changes: {{ ios_save.diff | length }}
+                [View on GitHub](https://github.com/{{ github_repo }}/commits/main/backups/ios/{{ inventory_hostname }}.txt)
+              disable_web_page_preview: true
+              protect_content: true
+          when:
+            - notify_telegram_enabled
             - ios_save.changed
 
       rescue:
@@ -204,21 +230,17 @@
             dest: "/repo/backups/iosxr/{{ inventory_hostname }}.txt"
           register: iosxr_save
 
-        - name: Send result notification to Telegram
-          community.general.telegram:
-            token: "{{ notify_telegram_token }}"
-            api_args:
-              chat_id: "{{ notify_telegram_chat_id }}"
-              parse_mode: "MarkdownV2"
-              text: |
-                *\-\- Network device configuration changed \-\-*
-                Device: {{ inventory_hostname | regex_replace('\.', '\.') }}
-                Changes: {{ iosxr_save.diff | length }}
-                [View on GitHub](https://github.com/{{ github_repo }}/commits/main/backups/iosxr/{{ inventory_hostname }}.txt)
-              disable_web_page_preview: true
-              protect_content: true
+        - name: Send result notification to Pushover
+          community.general.pushover:
+            token: "{{ notify_pushover_app_token }}"
+            user_key: "{{ notify_pushover_user_key }}"
+            msg: |
+              *\-\- Network device configuration changed \-\-*
+              Device: {{ inventory_hostname | regex_replace('\.', '\.') }}
+              Changes: {{ iosxr_save.diff | length }}
+              [View on GitHub](https://github.com/{{ github_repo }}/commits/main/backups/iosxr/{{ inventory_hostname }}.txt)
           when:
-            - notify_telegram_enabled
+            - notify_pushover_enabled
             - iosxr_save.changed
 
         - name: Send result notification to Slack
@@ -242,6 +264,23 @@
                     text: "This notification brought to you by `YANCoBaT`"
           when:
             - notify_slack_enabled
+            - iosxr_save.changed
+
+        - name: Send result notification to Telegram
+          community.general.telegram:
+            token: "{{ notify_telegram_token }}"
+            api_args:
+              chat_id: "{{ notify_telegram_chat_id }}"
+              parse_mode: "MarkdownV2"
+              text: |
+                *\-\- Network device configuration changed \-\-*
+                Device: {{ inventory_hostname | regex_replace('\.', '\.') }}
+                Changes: {{ iosxr_save.diff | length }}
+                [View on GitHub](https://github.com/{{ github_repo }}/commits/main/backups/iosxr/{{ inventory_hostname }}.txt)
+              disable_web_page_preview: true
+              protect_content: true
+          when:
+            - notify_telegram_enabled
             - iosxr_save.changed
 
       rescue:
@@ -273,21 +312,17 @@
             dest: "/repo/backups/junos/{{ inventory_hostname }}.txt"
           register: junos_save
 
-        - name: Send result notification to Telegram
-          community.general.telegram:
-            token: "{{ notify_telegram_token }}"
-            api_args:
-              chat_id: "{{ notify_telegram_chat_id }}"
-              parse_mode: "MarkdownV2"
-              text: |
-                *\-\- Network device configuration changed \-\-*
-                Device: {{ inventory_hostname | regex_replace('\.', '\.') }}
-                Changes: {{ junos_save.diff | length }}
-                [View on GitHub](https://github.com/{{ github_repo }}/commits/main/backups/junos/{{ inventory_hostname }}.txt)
-              disable_web_page_preview: true
-              protect_content: true
+        - name: Send result notification to Pushover
+          community.general.pushover:
+            token: "{{ notify_pushover_app_token }}"
+            user_key: "{{ notify_pushover_user_key }}"
+            msg: |
+              *\-\- Network device configuration changed \-\-*
+              Device: {{ inventory_hostname | regex_replace('\.', '\.') }}
+              Changes: {{ junos_save.diff | length }}
+              [View on GitHub](https://github.com/{{ github_repo }}/commits/main/backups/junos/{{ inventory_hostname }}.txt)
           when:
-            - notify_telegram_enabled
+            - notify_pushover_enabled
             - junos_save.changed
 
         - name: Send result notification to Slack
@@ -311,6 +346,23 @@
                     text: "This notification brought to you by `YANCoBaT`"
           when:
             - notify_slack_enabled
+            - junos_save.changed
+
+        - name: Send result notification to Telegram
+          community.general.telegram:
+            token: "{{ notify_telegram_token }}"
+            api_args:
+              chat_id: "{{ notify_telegram_chat_id }}"
+              parse_mode: "MarkdownV2"
+              text: |
+                *\-\- Network device configuration changed \-\-*
+                Device: {{ inventory_hostname | regex_replace('\.', '\.') }}
+                Changes: {{ junos_save.diff | length }}
+                [View on GitHub](https://github.com/{{ github_repo }}/commits/main/backups/junos/{{ inventory_hostname }}.txt)
+              disable_web_page_preview: true
+              protect_content: true
+          when:
+            - notify_telegram_enabled
             - junos_save.changed
 
       rescue:
@@ -342,24 +394,20 @@
             dest: "/repo/backups/routeros/{{ inventory_hostname }}.txt"
           register: routeros_save
 
-        - name: Send change notification to Telegram
-          community.general.telegram:
-            token: "{{ notify_telegram_token }}"
-            api_args:
-              chat_id: "{{ notify_telegram_chat_id }}"
-              parse_mode: "MarkdownV2"
-              text: |
-                *\-\- Network device configuration changed \-\-*
-                Device: {{ inventory_hostname | regex_replace('\.', '\.') }}
-                Changes: {{ routeros_save.diff | length }}
-                [View on GitHub](https://github.com/{{ github_repo }}/commits/main/backups/routeros/{{ inventory_hostname }}.txt)
-              disable_web_page_preview: true
-              protect_content: true
+        - name: Send result notification to Pushover
+          community.general.pushover:
+            token: "{{ notify_pushover_app_token }}"
+            user_key: "{{ notify_pushover_user_key }}"
+            msg: |
+              *\-\- Network device configuration changed \-\-*
+              Device: {{ inventory_hostname | regex_replace('\.', '\.') }}
+              Changes: {{ routeros_save.diff | length }}
+              [View on GitHub](https://github.com/{{ github_repo }}/commits/main/backups/routeros/{{ inventory_hostname }}.txt)
           when:
-            - notify_telegram_enabled
+            - notify_pushover_enabled
             - routeros_save.changed
 
-        - name: Send change notification to Slack
+        - name: Send result notification to Slack
           community.general.slack:
             token: "{{ notify_slack_token }}"
             channel: "{{ notify_slack_channel_id }}"
@@ -380,6 +428,23 @@
                     text: "This notification brought to you by `YANCoBaT`"
           when:
             - notify_slack_enabled
+            - routeros_save.changed
+
+        - name: Send result notification to Telegram
+          community.general.telegram:
+            token: "{{ notify_telegram_token }}"
+            api_args:
+              chat_id: "{{ notify_telegram_chat_id }}"
+              parse_mode: "MarkdownV2"
+              text: |
+                *\-\- Network device configuration changed \-\-*
+                Device: {{ inventory_hostname | regex_replace('\.', '\.') }}
+                Changes: {{ routeros_save.diff | length }}
+                [View on GitHub](https://github.com/{{ github_repo }}/commits/main/backups/routeros/{{ inventory_hostname }}.txt)
+              disable_web_page_preview: true
+              protect_content: true
+          when:
+            - notify_telegram_enabled
             - routeros_save.changed
 
       rescue:
@@ -411,21 +476,17 @@
             dest: "/repo/backups/vyos/{{ inventory_hostname }}.txt"
           register: vyos_save
 
-        - name: Send result notification to Telegram
-          community.general.telegram:
-            token: "{{ notify_telegram_token }}"
-            api_args:
-              chat_id: "{{ notify_telegram_chat_id }}"
-              parse_mode: "MarkdownV2"
-              text: |
-                *\-\- Network device configuration changed \-\-*
-                Device: {{ inventory_hostname | regex_replace('\.', '\.') }}
-                Changes: {{ vyos_save.diff | length }}
-                [View on GitHub](https://github.com/{{ github_repo }}/commits/main/backups/vyos/{{ inventory_hostname }}.txt)
-              disable_web_page_preview: true
-              protect_content: true
+        - name: Send result notification to Pushover
+          community.general.pushover:
+            token: "{{ notify_pushover_app_token }}"
+            user_key: "{{ notify_pushover_user_key }}"
+            msg: |
+              *\-\- Network device configuration changed \-\-*
+              Device: {{ inventory_hostname | regex_replace('\.', '\.') }}
+              Changes: {{ vyos_save.diff | length }}
+              [View on GitHub](https://github.com/{{ github_repo }}/commits/main/backups/vyos/{{ inventory_hostname }}.txt)
           when:
-            - notify_telegram_enabled
+            - notify_pushover_enabled
             - vyos_save.changed
 
         - name: Send result notification to Slack
@@ -449,6 +510,23 @@
                     text: "This notification brought to you by `YANCoBaT`"
           when:
             - notify_slack_enabled
+            - vyos_save.changed
+
+        - name: Send result notification to Telegram
+          community.general.telegram:
+            token: "{{ notify_telegram_token }}"
+            api_args:
+              chat_id: "{{ notify_telegram_chat_id }}"
+              parse_mode: "MarkdownV2"
+              text: |
+                *\-\- Network device configuration changed \-\-*
+                Device: {{ inventory_hostname | regex_replace('\.', '\.') }}
+                Changes: {{ vyos_save.diff | length }}
+                [View on GitHub](https://github.com/{{ github_repo }}/commits/main/backups/vyos/{{ inventory_hostname }}.txt)
+              disable_web_page_preview: true
+              protect_content: true
+          when:
+            - notify_telegram_enabled
             - vyos_save.changed
 
       rescue:
@@ -482,21 +560,16 @@
     failure_detected: "{{ lookup('ansible.builtin.env', 'FAILURE') }}"
 
   tasks:
-    - name: Send failure notification to Telegram
-      community.general.telegram:
-        token: "{{ notify_telegram_token }}"
-        api_args:
-          chat_id: "{{ notify_telegram_chat_id }}"
-          parse_mode: "MarkdownV2"
-          text: |
-            *\-\- Warning \-\-*
-            A network configuration backup failure has occurred\.
-            Please check the status of ansible\-network\-backup and rectify any issues\.
-          disable_web_page_preview: true
-          disable_notification: true
-          protect_content: true
+    - name: Send failure notification to Pushover
+      community.general.pushover:
+        app_token: "{{ notify_pushover_app_token }}"
+        user_key: "{{ notify_pushover_user_key }}"
+        msg: |
+          *\-\- Warning \-\-*
+          A network configuration backup failure has occurred\.
+          Please check the status of YANCoBaT and rectify any issues\.
       when:
-        - notify_telegram_enabled
+        - notify_pushover_enabled
         - failure_detected
 
     - name: Send failure notification to Slack
@@ -520,4 +593,21 @@
                 text: "This notification brought to you by `ansible-network-backup`"
       when:
         - notify_slack_enabled
+        - failure_detected
+
+    - name: Send failure notification to Telegram
+      community.general.telegram:
+        token: "{{ notify_telegram_token }}"
+        api_args:
+          chat_id: "{{ notify_telegram_chat_id }}"
+          parse_mode: "MarkdownV2"
+          text: |
+            *\-\- Warning \-\-*
+            A network configuration backup failure has occurred\.
+            Please check the status of ansible\-network\-backup and rectify any issues\.
+          disable_web_page_preview: true
+          disable_notification: true
+          protect_content: true
+      when:
+        - notify_telegram_enabled
         - failure_detected
