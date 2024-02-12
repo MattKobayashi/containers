@@ -1,7 +1,5 @@
 FROM alpine:3
 
-WORKDIR /ansible
-
 ARG TARGETPLATFORM
 ENV SUPERCRONIC_SHA1SUM_amd64=cd48d45c4b10f3f0bfdd3a57d054cd05ac96812b \
     SUPERCRONIC_SHA1SUM_arm=75e065bf0909f920b06d5bd797c0e6b31e68b112 \
@@ -21,12 +19,10 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then ARCH=amd64; elif [ "$TARGETPL
     && addgroup -S ansible && adduser -S ansible -G ansible \
     && mkdir /repo && chown -R ansible /repo \
     && apk --no-cache upgrade \
-    && apk add --no-cache ansible-core git yq libssh poetry
+    && apk add --no-cache ansible-core git yq build-base python3-dev libssh-dev poetry
 
 USER ansible
-
-RUN ansible-galaxy collection install community.general community.network \
-    && ansible-galaxy collection install cisco.ios cisco.iosxr junipernetworks.junos community.routeros vyos.vyos
+WORKDIR /ansible
 
 COPY --chown=ansible --chmod=0744 entrypoint.sh /ansible/entrypoint.sh
 COPY --chown=ansible ansible-cron /ansible/crontab/ansible-cron
@@ -34,6 +30,16 @@ COPY --chown=ansible yancobat-backup.yaml /ansible/yancobat-backup.yaml
 COPY --chown=ansible yancobat-setup.yaml /ansible/yancobat-setup.yaml
 COPY --chown=ansible vars.yaml /ansible/vars.yaml
 COPY --chown=ansible pyproject.toml /ansible/pyproject.toml
+
+RUN ansible-galaxy collection install community.general community.network \
+    && ansible-galaxy collection install cisco.ios cisco.iosxr junipernetworks.junos community.routeros vyos.vyos \
+    && poetry --no-root install
+
+USER root
+
+RUN apk del build-base python3-dev libssh-dev
+
+USER ansible
 
 ENV TZ=UTC \
     GIT_USER=YANCoBaT \
