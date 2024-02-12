@@ -19,7 +19,7 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then ARCH=amd64; elif [ "$TARGETPL
     && addgroup -S ansible && adduser -S ansible -G ansible \
     && mkdir /repo && chown -R ansible /repo \
     && apk --no-cache upgrade \
-    && apk add --no-cache py3-pip ansible-core git yq libssh build-base libssh-dev
+    && apk add --no-cache py3-pip ansible-core git yq libssh build-base python3-dev libssh-dev
 
 USER ansible
 WORKDIR /ansible
@@ -36,7 +36,7 @@ RUN ansible-galaxy collection install community.general community.network \
     && pip install --break-system-packages --user ansible-pylibssh
 
 USER root
-RUN apk del build-base libssh-dev
+RUN apk del build-base python3-dev libssh-dev
 
 USER ansible
 
