@@ -6,7 +6,7 @@ YANCoBaT stands for 'Yet Another Network Configuration Backup Tool'. Because we 
 
 Create a GitHub repository for your network device backups. Add a `hosts.yaml` file with details of the devices to be backed up (use the example `hosts.yaml` in this repository to get started). The Docker image relies upon the presence of this file (with this exact name) in the repository to run the playbook successfully.
 
-Set the following environment variables when creating your Docker container:
+The following environment variables are available when creating your Docker container:
 
 - `TZ=` Your preferred timezone, e.g. `Australia/Brisbane`
 - `GIT_USER=` Your preferred user name for Git commits (optional, default: `YANCoBaT`).
@@ -15,12 +15,15 @@ Set the following environment variables when creating your Docker container:
 - `DEVICE_PASS=` Your devices' SSH password for backups (recommended to be a locally-configured read-only user). This value can also be passed as a Docker secret (highly recommended).
 - `GITHUB_REPO=` The short-form name of your GitHub backups repository, e.g. `MattKobayashi/containers`.
 - `GITHUB_TOKEN=` A GitHub personal access token with read-write permissions for your GitHub backups repository. This value can also be passed as a Docker secret (highly recommended).
-- `NOTIFY_TELEGRAM=` Boolean flag for Telegram notifications (optional, default: `false`).
-- `NOTIFY_TELEGRAM_TOKEN=` Your Telegram bot token (required if `NOTIFY_TELEGRAM=true`). This value can also be passed as a Docker secret (highly recommended).
-- `NOTIFY_TELEGRAM_CHAT_ID=` Your Telegram chat ID (required if `NOTIFY_TELEGRAM=true`).
-- `NOTIFY_SLACK=` Boolean flag for Slack notifications (optional, default: `false`).
-- `NOTIFY_SLACK_TOKEN=` Your Slack bot token (required if `NOTIFY_SLACK=true`). This value can also be passed as a Docker secret (highly recommended).
-- `NOTIFY_SLACK_CHANNEL=` Your Slack channel ID (required if `NOTIFY_SLACK=true`).
+- `NOTIFY_SLACK_ENABLED=` Boolean flag for Slack notifications (optional, default: `false`).
+- `NOTIFY_SLACK_TOKEN=` Your Slack bot token (required if `NOTIFY_SLACK_ENABLED=true`). This value can also be passed as a Docker secret (highly recommended).
+- `NOTIFY_SLACK_CHANNEL=` Your Slack channel ID (required if `NOTIFY_SLACK_ENABLED=true`).
+- `NOTIFY_PUSHOVER_ENABLED=` Boolean flag for Pushover notifications (optional, default: `false`).
+- `NOTIFY_PUSHOVER_APP_TOKEN=` Your Pushover app token (required if `NOTIFY_PUSHOVER_ENABLED=true`). This value can also be passed as a Docker secret (highly recommended).
+- `NOTIFY_PUSHOVER_USER_KEY=` Your Pushover user key (required if `NOTIFY_PUSHOVER_ENABLED=true`).
+- `NOTIFY_TELEGRAM_ENABLED=` Boolean flag for Telegram notifications (optional, default: `false`).
+- `NOTIFY_TELEGRAM_TOKEN=` Your Telegram bot token (required if `NOTIFY_TELEGRAM_ENABLED=true`). This value can also be passed as a Docker secret (highly recommended).
+- `NOTIFY_TELEGRAM_CHAT_ID=` Your Telegram chat ID (required if `NOTIFY_TELEGRAM_ENABLED=true`).
 
 ## Running
 
