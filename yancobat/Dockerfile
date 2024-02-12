@@ -25,16 +25,16 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then ARCH=amd64; elif [ "$TARGETPL
 
 USER ansible
 
-RUN ansible-galaxy collection install community.general community.network \
-    && ansible-galaxy collection install cisco.ios cisco.iosxr junipernetworks.junos community.routeros vyos.vyos \
-    && poetry --no-root install
-
 COPY --chown=ansible --chmod=0744 entrypoint.sh /ansible/entrypoint.sh
 COPY --chown=ansible ansible-cron /ansible/crontab/ansible-cron
 COPY --chown=ansible yancobat-backup.yaml /ansible/yancobat-backup.yaml
 COPY --chown=ansible yancobat-setup.yaml /ansible/yancobat-setup.yaml
 COPY --chown=ansible vars.yaml /ansible/vars.yaml
 COPY --chown=ansible pyproject.toml /ansible/pyproject.toml
+
+RUN ansible-galaxy collection install community.general community.network \
+    && ansible-galaxy collection install cisco.ios cisco.iosxr junipernetworks.junos community.routeros vyos.vyos \
+    && poetry --no-root install
 
 ENV TZ=UTC \
     GIT_USER=YANCoBaT \
