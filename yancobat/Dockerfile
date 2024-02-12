@@ -21,7 +21,7 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then ARCH=amd64; elif [ "$TARGETPL
     && addgroup -S ansible && adduser -S ansible -G ansible \
     && mkdir /repo && chown -R ansible /repo \
     && apk --no-cache upgrade \
-    && apk add --no-cache ansible-core git yq build-base libssh-dev poetry
+    && apk add --no-cache ansible-core git yq build-base python3-dev libssh-dev poetry
 
 USER ansible
 
@@ -34,7 +34,8 @@ COPY --chown=ansible pyproject.toml /ansible/pyproject.toml
 
 RUN ansible-galaxy collection install community.general community.network \
     && ansible-galaxy collection install cisco.ios cisco.iosxr junipernetworks.junos community.routeros vyos.vyos \
-    && poetry --no-root install
+    && poetry --no-root install \
+    && apk del build-base python3-dev libssh-dev
 
 ENV TZ=UTC \
     GIT_USER=YANCoBaT \
