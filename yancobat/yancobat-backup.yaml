@@ -71,7 +71,7 @@
             token: "{{ notify_pushover_app_token }}"
             user_key: "{{ notify_pushover_user_key }}"
             title: "Network device configuration changed"
-            msg: "<b>Device:</b> {{ inventory_hostname | regex_replace('\.', '\.') }} <b>Changes:</b> {{ exos_save.diff | length }} <a href=\"https://github.com/{{ github_repo }}/commits/main/backups/exos/{{ inventory_hostname }}.txt>View on GitHub</a>"
+            msg: "<b>Device:</b> {{ inventory_hostname }} <b>Changes:</b> {{ exos_save.diff | length }} <a href=\"https://github.com/{{ github_repo }}/commits/main/backups/exos/{{ inventory_hostname }}.txt>View on GitHub</a>"
           when:
             - notify_pushover_enabled
             - exos_save.changed
@@ -150,7 +150,7 @@
             token: "{{ notify_pushover_app_token }}"
             user_key: "{{ notify_pushover_user_key }}"
             title: "Network device configuration changed"
-            msg: "<b>Device:</b> {{ inventory_hostname | regex_replace('\.', '\.') }} <b>Changes:</b> {{ ios_save.diff | length }} <a href=\"https://github.com/{{ github_repo }}/commits/main/backups/ios/{{ inventory_hostname }}.txt>View on GitHub</a>"
+            msg: "<b>Device:</b> {{ inventory_hostname }} <b>Changes:</b> {{ ios_save.diff | length }} <a href=\"https://github.com/{{ github_repo }}/commits/main/backups/ios/{{ inventory_hostname }}.txt>View on GitHub</a>"
           when:
             - notify_pushover_enabled
             - ios_save.changed
@@ -229,7 +229,7 @@
             token: "{{ notify_pushover_app_token }}"
             user_key: "{{ notify_pushover_user_key }}"
             title: "Network device configuration changed"
-            msg: "<b>Device:</b> {{ inventory_hostname | regex_replace('\.', '\.') }} <b>Changes:</b> {{ iosxr_save.diff | length }} <a href=\"https://github.com/{{ github_repo }}/commits/main/backups/iosxr/{{ inventory_hostname }}.txt>View on GitHub</a>"
+            msg: "<b>Device:</b> {{ inventory_hostname }} <b>Changes:</b> {{ iosxr_save.diff | length }} <a href=\"https://github.com/{{ github_repo }}/commits/main/backups/iosxr/{{ inventory_hostname }}.txt>View on GitHub</a>"
           when:
             - notify_pushover_enabled
             - iosxr_save.changed
@@ -308,7 +308,7 @@
             token: "{{ notify_pushover_app_token }}"
             user_key: "{{ notify_pushover_user_key }}"
             title: "Network device configuration changed"
-            msg: "<b>Device:</b> {{ inventory_hostname | regex_replace('\.', '\.') }} <b>Changes:</b> {{ junos_save.diff | length }} <a href=\"https://github.com/{{ github_repo }}/commits/main/backups/junos/{{ inventory_hostname }}.txt>View on GitHub</a>"
+            msg: "<b>Device:</b> {{ inventory_hostname }} <b>Changes:</b> {{ junos_save.diff | length }} <a href=\"https://github.com/{{ github_repo }}/commits/main/backups/junos/{{ inventory_hostname }}.txt>View on GitHub</a>"
           when:
             - notify_pushover_enabled
             - junos_save.changed
@@ -387,7 +387,7 @@
             token: "{{ notify_pushover_app_token }}"
             user_key: "{{ notify_pushover_user_key }}"
             title: "Network device configuration changed"
-            msg: "<b>Device:</b> {{ inventory_hostname | regex_replace('\.', '\.') }} <b>Changes:</b> {{ routeros_save.diff | length }} <a href=\"https://github.com/{{ github_repo }}/commits/main/backups/routeros/{{ inventory_hostname }}.txt>View on GitHub</a>"
+            msg: "<b>Device:</b> {{ inventory_hostname }} <b>Changes:</b> {{ routeros_save.diff | length }} <a href=\"https://github.com/{{ github_repo }}/commits/main/backups/routeros/{{ inventory_hostname }}.txt>View on GitHub</a>"
           when:
             - notify_pushover_enabled
             - routeros_save.changed
@@ -466,7 +466,7 @@
             token: "{{ notify_pushover_app_token }}"
             user_key: "{{ notify_pushover_user_key }}"
             title: "Network device configuration changed"
-            msg: "<b>Device:</b> {{ inventory_hostname | regex_replace('\.', '\.') }} <b>Changes:</b> {{ vyos_save.diff | length }} <a href=\"https://github.com/{{ github_repo }}/commits/main/backups/vyos/{{ inventory_hostname }}.txt>View on GitHub</a>"
+            msg: "<b>Device:</b> {{ inventory_hostname }} <b>Changes:</b> {{ vyos_save.diff | length }} <a href=\"https://github.com/{{ github_repo }}/commits/main/backups/vyos/{{ inventory_hostname }}.txt>View on GitHub</a>"
           when:
             - notify_pushover_enabled
             - vyos_save.changed
