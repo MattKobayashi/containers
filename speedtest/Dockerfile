@@ -9,6 +9,6 @@ RUN apk --no-cache upgrade \
     && tar -xof ookla-speedtest-1.2.0-linux-x86_64.tgz
 
 # Set entrypoint
-ENTRYPOINT ["./speedtest", "--accept-license"]
+ENTRYPOINT ["./speedtest", "--accept-license", "--progress=no"]
 
 LABEL org.opencontainers.image.authors="MattKobayashi <matthew@kobayashi.au>"
