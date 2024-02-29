@@ -51,11 +51,14 @@ ev_charger_props = openapi.get(
         {"device_id": os.environ['TUYA_DEVICE_ID']}
         )
 if ev_charger_props['success'] is True:
-    ev_charger_status = [
-        props['value'] for props
-        in ev_charger_props['result']['properties']
-        if props['code'] == 'switch_1'
-        ]
+    ev_charger_status = next(
+        (
+            props['value'] for props
+            in ev_charger_props['result']['properties']
+            if props['code'] == 'switch_1'
+        ),
+        True
+    )
 else:
     print("growatt-ev: Cannot get status of EV charger. Exiting...")
     sys.exit()
