@@ -84,7 +84,7 @@ else:
         print("growatt-ev: Disabling the EV charger...")
         req = openapi.post(
             f"/v2.0/cloud/thing/{os.environ['TUYA_DEVICE_ID']}/shadow/properties/issue",
-            {"properties": "{\"switch_1\": true}"}
+            {"properties": "{\"switch_1\": false}"}
         )
         if req['success'] is True:
             print("growatt-ev: EV charger has been disabled!")
