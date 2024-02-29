@@ -4,6 +4,22 @@ import sys
 import growattServer
 from tuya_connector import TuyaOpenAPI
 
+# Check that env vars are set
+if (
+    "GROWATT_USER" in os.environ
+    and "GROWATT_PASS" in os.environ
+    and "TUYA_CLIENT_ID" in os.environ
+    and "TUYA_CLIENT_SECRET" in os.environ
+    and "TUYA_DEVICE_ID" in os.environ
+):
+    pass
+else:
+    print(
+        "growatt-ev: One or more environment variables are missing.",
+        "Please check that all required variables are set!"
+    )
+    sys.exit()
+
 # Connect to Growatt API
 api = growattServer.GrowattApi(False, "GAGF")
 api.server_url = 'https://server.growatt.com/'
