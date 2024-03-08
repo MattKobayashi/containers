@@ -17,1118 +17,380 @@ env:
   REGISTRY: ghcr.io
 
 jobs:
-  build-actions-runner:
+  actions-runner:
 
     runs-on: self-hosted
-    if: ${{ github.ref_name == 'main' || github.head_ref == 'actions-runner' }}
+    if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
     permissions:
       contents: read
       packages: write
 
     steps:
-      # Add support for more platforms with QEMU (optional)
-      # https://github.com/docker/setup-qemu-action
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
-      # Set up Docker Buildx
-      # https://github.com/docker/setup-buildx-action
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-        with:
-          config-inline: |
-            [registry."docker.io"]
-              mirrors = ["registry-mirror:5000"]
-            [registry."registry-mirror:5000"]
-              http = true
-          driver-opts: |
-            network=actions-runners
-
-      # Gives two environment variables
-      # One with lowercase repo owner's name
-      # Another with the name of the image
-      - name: Set image name
+      # Convert the repository owner name to lowercase
+      - name: Convert repository owner name to lowercase
         run: |
-          echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
-          echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
+          echo "REPO_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV}
 
-      # Checkout repository
-      # https://github.com/actions/checkout
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      # Login against a Docker registry except on PR
-      # https://github.com/docker/login-action
-      - name: Log into registry ${{ env.REGISTRY }}
-        if: |
-          github.event_name == 'push' ||
-          github.event_name == 'schedule' ||
-          github.event_name == 'workflow_dispatch'
-        uses: docker/login-action@v3
+      # Run common jobs
+      - name: Run common jobs
+        uses: ./.github/workflows/common-jobs.yaml
         with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          image-name: ${{ github.job }}
+          repo-owner: ${{ env.REPO_OWNER }}
 
-      # Build and push Docker image with Buildx (don't push on PR)
-      # https://github.com/docker/build-push-action
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./${{ env.IMAGE_NAME }}
-          push: ${{ github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
-          tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
-
-  build-avahi:
+  avahi:
 
     runs-on: self-hosted
-    if: ${{ github.ref_name == 'main' || github.head_ref == 'avahi' }}
+    if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
     permissions:
       contents: read
       packages: write
 
     steps:
-      # Add support for more platforms with QEMU (optional)
-      # https://github.com/docker/setup-qemu-action
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
-      # Set up Docker Buildx
-      # https://github.com/docker/setup-buildx-action
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-        with:
-          config-inline: |
-            [registry."docker.io"]
-              mirrors = ["registry-mirror:5000"]
-            [registry."registry-mirror:5000"]
-              http = true
-          driver-opts: |
-            network=actions-runners
-
-      # Gives two environment variables
-      # One with lowercase repo owner's name
-      # Another with the name of the image
-      - name: Set image name
+      # Convert the repository owner name to lowercase
+      - name: Convert repository owner name to lowercase
         run: |
-          echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
-          echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
+          echo "REPO_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV}
 
-      # Checkout repository
-      # https://github.com/actions/checkout
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      # Login against a Docker registry except on PR
-      # https://github.com/docker/login-action
-      - name: Log into registry ${{ env.REGISTRY }}
-        if: |
-          github.event_name == 'push' ||
-          github.event_name == 'schedule' ||
-          github.event_name == 'workflow_dispatch'
-        uses: docker/login-action@v3
+      # Run common jobs
+      - name: Run common jobs
+        uses: ./.github/workflows/common-jobs.yaml
         with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          image-name: ${{ github.job }}
+          repo-owner: ${{ env.REPO_OWNER }}
 
-      # Build and push Docker image with Buildx (don't push on PR)
-      # https://github.com/docker/build-push-action
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./${{ env.IMAGE_NAME }}
-          push: ${{ github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
-          tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
-
-  build-certbot-cloudflare:
+  certbot-cloudflare:
 
     runs-on: self-hosted
-    if: ${{ github.ref_name == 'main' || github.head_ref == 'certbot-cloudflare' }}
+    if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
     permissions:
       contents: read
       packages: write
 
     steps:
-      # Add support for more platforms with QEMU (optional)
-      # https://github.com/docker/setup-qemu-action
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
-      # Set up Docker Buildx
-      # https://github.com/docker/setup-buildx-action
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-        with:
-          config-inline: |
-            [registry."docker.io"]
-              mirrors = ["registry-mirror:5000"]
-            [registry."registry-mirror:5000"]
-              http = true
-          driver-opts: |
-            network=actions-runners
-
-      # Gives two environment variables
-      # One with lowercase repo owner's name
-      # Another with the name of the image
-      - name: Set image name
+      # Convert the repository owner name to lowercase
+      - name: Convert repository owner name to lowercase
         run: |
-          echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
-          echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
+          echo "REPO_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV}
 
-      # Checkout repository
-      # https://github.com/actions/checkout
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      # Login against a Docker registry except on PR
-      # https://github.com/docker/login-action
-      - name: Log into registry ${{ env.REGISTRY }}
-        if: |
-          github.event_name == 'push' ||
-          github.event_name == 'schedule' ||
-          github.event_name == 'workflow_dispatch'
-        uses: docker/login-action@v3
+      # Run common jobs
+      - name: Run common jobs
+        uses: ./.github/workflows/common-jobs.yaml
         with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          image-name: ${{ github.job }}
+          repo-owner: ${{ env.REPO_OWNER }}
 
-      # Build and push Docker image with Buildx (don't push on PR)
-      # https://github.com/docker/build-push-action
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./${{ env.IMAGE_NAME }}
-          push: ${{ github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
-          tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
-
-  build-fullbogons:
+  fullbogons:
 
     runs-on: self-hosted
-    if: ${{ github.ref_name == 'main' || github.head_ref == 'fullbogons' }}
+    if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
     permissions:
       contents: read
       packages: write
 
     steps:
-      # Add support for more platforms with QEMU (optional)
-      # https://github.com/docker/setup-qemu-action
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
-      # Set up Docker Buildx
-      # https://github.com/docker/setup-buildx-action
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-        with:
-          config-inline: |
-            [registry."docker.io"]
-              mirrors = ["registry-mirror:5000"]
-            [registry."registry-mirror:5000"]
-              http = true
-          driver-opts: |
-            network=actions-runners
-
-      # Gives two env variables
-      # One with lowercase repo owner's name
-      # Another with the name of the image
-      - name: Set image name
+      # Convert the repository owner name to lowercase
+      - name: Convert repository owner name to lowercase
         run: |
-          echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
-          echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
+          echo "REPO_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV}
 
-      # Checkout repository
-      # https://github.com/actions/checkout
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      # Login against a Docker registry except on PR
-      # https://github.com/docker/login-action
-      - name: Log into registry ${{ env.REGISTRY }}
-        if: |
-          github.event_name == 'push' ||
-          github.event_name == 'schedule' ||
-          github.event_name == 'workflow_dispatch'
-        uses: docker/login-action@v3
+      # Run common jobs
+      - name: Run common jobs
+        uses: ./.github/workflows/common-jobs.yaml
         with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          image-name: ${{ github.job }}
+          repo-owner: ${{ env.REPO_OWNER }}
 
-      # Build and push Docker image with Buildx (don't push on PR)
-      # https://github.com/docker/build-push-action
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./${{ env.IMAGE_NAME }}
-          push: ${{ github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
-          tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
-
-  build-growatt-ev:
+  growatt-ev:
 
     runs-on: self-hosted
-    if: ${{ github.ref_name == 'main' || github.head_ref == 'growatt-ev' }}
+    if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
     permissions:
       contents: read
       packages: write
 
     steps:
-      # Add support for more platforms with QEMU (optional)
-      # https://github.com/docker/setup-qemu-action
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
-      # Set up Docker Buildx
-      # https://github.com/docker/setup-buildx-action
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-        with:
-          config-inline: |
-            [registry."docker.io"]
-              mirrors = ["registry-mirror:5000"]
-            [registry."registry-mirror:5000"]
-              http = true
-          driver-opts: |
-            network=actions-runners
-
-      # Gives two env variables
-      # One with lowercase repo owner's name
-      # Another with the name of the image
-      - name: Set image name
+      # Convert the repository owner name to lowercase
+      - name: Convert repository owner name to lowercase
         run: |
-          echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
-          echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
+          echo "REPO_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV}
 
-      # Checkout repository
-      # https://github.com/actions/checkout
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      # Login against a Docker registry except on PR
-      # https://github.com/docker/login-action
-      - name: Log into registry ${{ env.REGISTRY }}
-        if: |
-          github.event_name == 'push' ||
-          github.event_name == 'schedule' ||
-          github.event_name == 'workflow_dispatch'
-        uses: docker/login-action@v3
+      # Run common jobs
+      - name: Run common jobs
+        uses: ./.github/workflows/common-jobs.yaml
         with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          image-name: ${{ github.job }}
+          repo-owner: ${{ env.REPO_OWNER }}
 
-      # Build and push Docker image with Buildx (don't push on PR)
-      # https://github.com/docker/build-push-action
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./${{ env.IMAGE_NAME }}
-          push: ${{ github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
-          tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
-
-  build-iperf2:
+  iperf2:
 
     runs-on: self-hosted
-    if: ${{ github.ref_name == 'main' || github.head_ref == 'iperf2' }}
+    if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
     permissions:
       contents: read
       packages: write
 
     steps:
-      # Add support for more platforms with QEMU (optional)
-      # https://github.com/docker/setup-qemu-action
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
-      # Set up Docker Buildx
-      # https://github.com/docker/setup-buildx-action
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-        with:
-          config-inline: |
-            [registry."docker.io"]
-              mirrors = ["registry-mirror:5000"]
-            [registry."registry-mirror:5000"]
-              http = true
-          driver-opts: |
-            network=actions-runners
-
-      # Gives two environment variables
-      # One with lowercase repo owner's name
-      # Another with the name of the image
-      - name: Set image name
+      # Convert the repository owner name to lowercase
+      - name: Convert repository owner name to lowercase
         run: |
-          echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
-          echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
+          echo "REPO_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV}
 
-      # Checkout repository
-      # https://github.com/actions/checkout
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      # Login against a Docker registry except on PR
-      # https://github.com/docker/login-action
-      - name: Log into registry ${{ env.REGISTRY }}
-        if: |
-          github.event_name == 'push' ||
-          github.event_name == 'schedule' ||
-          github.event_name == 'workflow_dispatch'
-        uses: docker/login-action@v3
+      # Run common jobs
+      - name: Run common jobs
+        uses: ./.github/workflows/common-jobs.yaml
         with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          image-name: ${{ github.job }}
+          repo-owner: ${{ env.REPO_OWNER }}
 
-      # Build and push Docker image with Buildx (don't push on PR)
-      # https://github.com/docker/build-push-action
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./${{ env.IMAGE_NAME }}
-          push: ${{ github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
-          tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
-
-  build-iperf3:
+  iperf3:
 
     runs-on: self-hosted
-    if: ${{ github.ref_name == 'main' || github.head_ref == 'iperf3' }}
+    if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
     permissions:
       contents: read
       packages: write
 
     steps:
-      # Add support for more platforms with QEMU (optional)
-      # https://github.com/docker/setup-qemu-action
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
-      # Set up Docker Buildx
-      # https://github.com/docker/setup-buildx-action
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-        with:
-          config-inline: |
-            [registry."docker.io"]
-              mirrors = ["registry-mirror:5000"]
-            [registry."registry-mirror:5000"]
-              http = true
-          driver-opts: |
-            network=actions-runners
-
-      # Gives two environment variables
-      # One with lowercase repo owner's name
-      # Another with the name of the image
-      - name: Set image name
+      # Convert the repository owner name to lowercase
+      - name: Convert repository owner name to lowercase
         run: |
-          echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
-          echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
+          echo "REPO_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV}
 
-      # Checkout repository
-      # https://github.com/actions/checkout
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      # Login against a Docker registry except on PR
-      # https://github.com/docker/login-action
-      - name: Log into registry ${{ env.REGISTRY }}
-        if: |
-          github.event_name == 'push' ||
-          github.event_name == 'schedule' ||
-          github.event_name == 'workflow_dispatch'
-        uses: docker/login-action@v3
+      # Run common jobs
+      - name: Run common jobs
+        uses: ./.github/workflows/common-jobs.yaml
         with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          image-name: ${{ github.job }}
+          repo-owner: ${{ env.REPO_OWNER }}
 
-      # Build and push Docker image with Buildx (don't push on PR)
-      # https://github.com/docker/build-push-action
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./${{ env.IMAGE_NAME }}
-          push: ${{ github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
-          tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
+  # irrd:
 
-  # build-irrd:
+  #  runs-on: self-hosted
+  #  if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+  #  permissions:
+  #    contents: read
+  #    packages: write
 
-  #   runs-on: self-hosted
-  #   if: ${{ github.ref_name == 'main' || github.head_ref == 'irrd' }}
-  #   permissions:
-  #     contents: read
-  #     packages: write
+  #  steps:
+  #    # Convert the repository owner name to lowercase
+  #    - name: Convert repository owner name to lowercase
+  #      run: |
+  #        echo "REPO_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV}
 
-  #   steps:
-  #     # Add support for more platforms with QEMU (optional)
-  #     # https://github.com/docker/setup-qemu-action
-  #     - name: Set up QEMU
-  #       uses: docker/setup-qemu-action@v3
-
-  #     # Set up Docker Buildx
-  #     # https://github.com/docker/setup-buildx-action
-  #     - name: Set up Docker Buildx
-  #       uses: docker/setup-buildx-action@v3
-  #       with:
-  #         config-inline: |
-  #           [registry."docker.io"]
-  #             mirrors = ["registry-mirror:5000"]
-  #           [registry."registry-mirror:5000"]
-  #             http = true
-  #         driver-opts: |
-  #           network=actions-runners
-
-  #     # Gives two environment variables
-  #     # One with lowercase repo owner's name
-  #     # Another with the name of the image
-  #     - name: Set image name
-  #       run: |
-  #         echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
-  #         echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
-
-  #     # Checkout repository
-  #     # https://github.com/actions/checkout
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v4
-
-  #    # Login against a Docker registry except on PR
-  #    # https://github.com/docker/login-action
-  #    - name: Log into registry ${{ env.REGISTRY }}
-  #      if#: |
-  #        github.event_name == 'push' ||
-  #        github.event_name == 'schedule' ||
-  #        github.event_name == 'workflow_dispatch'
-  #      uses: docker/login-action@v3
+  #    # Run common jobs
+  #    - name: Run common jobs
+  #      uses: ./.github/workflows/common-jobs.yaml
   #      with:
-  #        registry: ${{ env.REGISTRY }}
-  #        username: ${{ github.actor }}
-  #        password: ${{ secrets.GITHUB_TOKEN }}
+  #        image-name: ${{ github.job }}
+  #        repo-owner: ${{ env.REPO_OWNER }}
 
-  #    # Build and push Docker image with Buildx (don't push on PR)
-  #    # https://github.com/docker/build-push-action
-  #    - name: Build and push Docker image
-  #      uses: docker/build-push-action@v5
+  # irrexplorer:
+
+  #  runs-on: self-hosted
+  #  if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+  #  permissions:
+  #    contents: read
+  #    packages: write
+
+  #  steps:
+  #    # Convert the repository owner name to lowercase
+  #    - name: Convert repository owner name to lowercase
+  #      run: |
+  #        echo "REPO_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV}
+
+  #    # Run common jobs
+  #    - name: Run common jobs
+  #      uses: ./.github/workflows/common-jobs.yaml
   #      with:
-  #        context: ./${{ env.IMAGE_NAME }}
-  #        push: ${{ github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
-  #        tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
+  #        image-name: ${{ github.job }}
+  #        repo-owner: ${{ env.REPO_OWNER }}
 
-  # build-irrexplorer:
-
-  #   runs-on: self-hosted
-  #   if: ${{ github.ref_name == 'main' || github.head_ref == 'irrexplorer' }}
-  #   permissions:
-  #     contents: read
-  #     packages: write
-
-  #   steps:
-  #     # Add support for more platforms with QEMU (optional)
-  #     # https://github.com/docker/setup-qemu-action
-  #     - name: Set up QEMU
-  #       uses: docker/setup-qemu-action@v3
-
-  #     # Set up Docker Buildx
-  #     # https://github.com/docker/setup-buildx-action
-  #     - name: Set up Docker Buildx
-  #       uses: docker/setup-buildx-action@v3
-  #       with:
-  #         config-inline: |
-  #           [registry."docker.io"]
-  #             mirrors = ["registry-mirror:5000"]
-  #           [registry."registry-mirror:5000"]
-  #             http = true
-  #         driver-opts: |
-  #           network=actions-runners
-
-  #     # Gives two environment variables
-  #     # One with lowercase repo owner's name
-  #     # Another with the name of the image
-  #     - name: Set image name
-  #       run: |
-  #         echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
-  #         echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
-
-  #     # Checkout repository
-  #     # https://github.com/actions/checkout
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v4
-
-  #    # Login against a Docker registry except on PR
-  #    # https://github.com/docker/login-action
-  #    - name: Log into registry ${{ env.REGISTRY }}
-  #      if: |
-  #        github.event_name == 'push' ||
-  #        github.event_name == 'schedule' ||
-  #        github.event_name == 'workflow_dispatch'
-  #      uses: docker/login-action@v3
-  #      with:
-  #        registry: ${{ env.REGISTRY }}
-  #        username: ${{ github.actor }}
-  #        password: ${{ secrets.GITHUB_TOKEN }}
-
-  #    # Build and push Docker image with Buildx (don't push on PR)
-  #    # https://github.com/docker/build-push-action
-  #    - name: Build and push Docker image
-  #      uses: docker/build-push-action@v5
-  #      with:
-  #        context: ./${{ env.IMAGE_NAME }}
-  #        push: ${{ github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
-  #        tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
-
-  build-mdns-reflector:
+  mdns-reflector:
 
     runs-on: self-hosted
-    if: ${{ github.ref_name == 'main' || github.head_ref == 'mdns-reflector' }}
+    if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
     permissions:
       contents: read
       packages: write
 
     steps:
-      # Add support for more platforms with QEMU (optional)
-      # https://github.com/docker/setup-qemu-action
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
-      # Set up Docker Buildx
-      # https://github.com/docker/setup-buildx-action
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-        with:
-          config-inline: |
-            [registry."docker.io"]
-              mirrors = ["registry-mirror:5000"]
-            [registry."registry-mirror:5000"]
-              http = true
-          driver-opts: |
-            network=actions-runners
-
-      # Gives two environment variables
-      # One with lowercase repo owner's name
-      # Another with the name of the image
-      - name: Set image name
+      # Convert the repository owner name to lowercase
+      - name: Convert repository owner name to lowercase
         run: |
-          echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
-          echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
+          echo "REPO_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV}
 
-      # Checkout repository
-      # https://github.com/actions/checkout
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      # Login against a Docker registry except on PR
-      # https://github.com/docker/login-action
-      - name: Log into registry ${{ env.REGISTRY }}
-        if: |
-          github.event_name == 'push' ||
-          github.event_name == 'schedule' ||
-          github.event_name == 'workflow_dispatch'
-        uses: docker/login-action@v3
+      # Run common jobs
+      - name: Run common jobs
+        uses: ./.github/workflows/common-jobs.yaml
         with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          image-name: ${{ github.job }}
+          repo-owner: ${{ env.REPO_OWNER }}
 
-      # Build and push Docker image with Buildx (don't push on PR)
-      # https://github.com/docker/build-push-action
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./${{ env.IMAGE_NAME }}
-          push: ${{ github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
-          tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
-
-  build-rng-tools:
+  rng-tools:
 
     runs-on: self-hosted
-    if: ${{ github.ref_name == 'main' || github.head_ref == 'rng-tools' }}
+    if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
     permissions:
       contents: read
       packages: write
 
     steps:
-      # Add support for more platforms with QEMU (optional)
-      # https://github.com/docker/setup-qemu-action
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
-      # Set up Docker Buildx
-      # https://github.com/docker/setup-buildx-action
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-        with:
-          config-inline: |
-            [registry."docker.io"]
-              mirrors = ["registry-mirror:5000"]
-            [registry."registry-mirror:5000"]
-              http = true
-          driver-opts: |
-            network=actions-runners
-
-      # Gives two environment variables
-      # One with lowercase repo owner's name
-      # Another with the name of the image
-      - name: Set image name
+      # Convert the repository owner name to lowercase
+      - name: Convert repository owner name to lowercase
         run: |
-          echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
-          echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
+          echo "REPO_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV}
 
-      # Checkout repository
-      # https://github.com/actions/checkout
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      # Login against a Docker registry except on PR
-      # https://github.com/docker/login-action
-      - name: Log into registry ${{ env.REGISTRY }}
-        if: |
-          github.event_name == 'push' ||
-          github.event_name == 'schedule' ||
-          github.event_name == 'workflow_dispatch'
-        uses: docker/login-action@v3
+      # Run common jobs
+      - name: Run common jobs
+        uses: ./.github/workflows/common-jobs.yaml
         with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          image-name: ${{ github.job }}
+          repo-owner: ${{ env.REPO_OWNER }}
 
-      # Build and push Docker image with Buildx (don't push on PR)
-      # https://github.com/docker/build-push-action
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./${{ env.IMAGE_NAME }}
-          push: ${{ github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
-          tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
-
-  build-speedtest:
+  speedtest:
 
     runs-on: self-hosted
-    if: ${{ github.ref_name == 'main' || github.head_ref == 'speedtest' }}
+    if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
     permissions:
       contents: read
       packages: write
 
     steps:
-      # Add support for more platforms with QEMU (optional)
-      # https://github.com/docker/setup-qemu-action
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
-      # Set up Docker Buildx
-      # https://github.com/docker/setup-buildx-action
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-        with:
-          config-inline: |
-            [registry."docker.io"]
-              mirrors = ["registry-mirror:5000"]
-            [registry."registry-mirror:5000"]
-              http = true
-          driver-opts: |
-            network=actions-runners
-
-      # Gives two environment variables
-      # One with lowercase repo owner's name
-      # Another with the name of the image
-      - name: Set image name
+      # Convert the repository owner name to lowercase
+      - name: Convert repository owner name to lowercase
         run: |
-          echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
-          echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
+          echo "REPO_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV}
 
-      # Checkout repository
-      # https://github.com/actions/checkout
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      # Login against a Docker registry except on PR
-      # https://github.com/docker/login-action
-      - name: Log into registry ${{ env.REGISTRY }}
-        if: |
-          github.event_name == 'push' ||
-          github.event_name == 'schedule' ||
-          github.event_name == 'workflow_dispatch'
-        uses: docker/login-action@v3
+      # Run common jobs
+      - name: Run common jobs
+        uses: ./.github/workflows/common-jobs.yaml
         with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          image-name: ${{ github.job }}
+          repo-owner: ${{ env.REPO_OWNER }}
 
-      # Build and push Docker image with Buildx (don't push on PR)
-      # https://github.com/docker/build-push-action
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./${{ env.IMAGE_NAME }}
-          push: ${{ github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
-          tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
-
-  build-stun:
+  stun:
 
     runs-on: self-hosted
-    if: ${{ github.ref_name == 'main' || github.head_ref == 'stun' }}
+    if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
     permissions:
       contents: read
       packages: write
 
     steps:
-      # Add support for more platforms with QEMU (optional)
-      # https://github.com/docker/setup-qemu-action
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
-      # Set up Docker Buildx
-      # https://github.com/docker/setup-buildx-action
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-        with:
-          config-inline: |
-            [registry."docker.io"]
-              mirrors = ["registry-mirror:5000"]
-            [registry."registry-mirror:5000"]
-              http = true
-          driver-opts: |
-            network=actions-runners
-
-      # Gives two environment variables
-      # One with lowercase repo owner's name
-      # Another with the name of the image
-      - name: Set image name
+      # Convert the repository owner name to lowercase
+      - name: Convert repository owner name to lowercase
         run: |
-          echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
-          echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
+          echo "REPO_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV}
 
-      # Checkout repository
-      # https://github.com/actions/checkout
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      # Login against a Docker registry except on PR
-      # https://github.com/docker/login-action
-      - name: Log into registry ${{ env.REGISTRY }}
-        if: |
-          github.event_name == 'push' ||
-          github.event_name == 'schedule' ||
-          github.event_name == 'workflow_dispatch'
-        uses: docker/login-action@v3
+      # Run common jobs
+      - name: Run common jobs
+        uses: ./.github/workflows/common-jobs.yaml
         with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          image-name: ${{ github.job }}
+          repo-owner: ${{ env.REPO_OWNER }}
 
-      # Build and push Docker image with Buildx (don't push on PR)
-      # https://github.com/docker/build-push-action
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./${{ env.IMAGE_NAME }}
-          push: ${{ github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
-          tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
-
-  build-telegraf:
+  telegraf:
 
     runs-on: self-hosted
-    if: ${{ github.ref_name == 'main' || github.head_ref == 'telegraf' }}
+    if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
     permissions:
       contents: read
       packages: write
 
     steps:
-      # Add support for more platforms with QEMU (optional)
-      # https://github.com/docker/setup-qemu-action
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
-      # Set up Docker Buildx
-      # https://github.com/docker/setup-buildx-action
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-        with:
-          config-inline: |
-            [registry."docker.io"]
-              mirrors = ["registry-mirror:5000"]
-            [registry."registry-mirror:5000"]
-              http = true
-          driver-opts: |
-            network=actions-runners
-
-      # Gives two environment variables
-      # One with lowercase repo owner's name
-      # Another with the name of the image
-      - name: Set image name
+      # Convert the repository owner name to lowercase
+      - name: Convert repository owner name to lowercase
         run: |
-          echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
-          echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
+          echo "REPO_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV}
 
-      # Checkout repository
-      # https://github.com/actions/checkout
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      # Login against a Docker registry except on PR
-      # https://github.com/docker/login-action
-      - name: Log into registry ${{ env.REGISTRY }}
-        if: |
-          github.event_name == 'push' ||
-          github.event_name == 'schedule' ||
-          github.event_name == 'workflow_dispatch'
-        uses: docker/login-action@v3
+      # Run common jobs
+      - name: Run common jobs
+        uses: ./.github/workflows/common-jobs.yaml
         with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          image-name: ${{ github.job }}
+          repo-owner: ${{ env.REPO_OWNER }}
 
-      # Build and push Docker image with Buildx (don't push on PR)
-      # https://github.com/docker/build-push-action
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./${{ env.IMAGE_NAME }}
-          push: ${{ github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
-          tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
-
-  build-verlihub:
+  verlihub:
 
     runs-on: self-hosted
-    if: ${{ github.ref_name == 'main' || github.head_ref == 'verlihub' }}
+    if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
     permissions:
       contents: read
       packages: write
 
     steps:
-      # Add support for more platforms with QEMU (optional)
-      # https://github.com/docker/setup-qemu-action
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
-      # Set up Docker Buildx
-      # https://github.com/docker/setup-buildx-action
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-        with:
-          config-inline: |
-            [registry."docker.io"]
-              mirrors = ["registry-mirror:5000"]
-            [registry."registry-mirror:5000"]
-              http = true
-          driver-opts: |
-            network=actions-runners
-
-      # Gives two environment variables
-      # One with lowercase repo owner's name
-      # Another with the name of the image
-      - name: Set image name
+      # Convert the repository owner name to lowercase
+      - name: Convert repository owner name to lowercase
         run: |
-          echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
-          echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
+          echo "REPO_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV}
 
-      # Checkout repository
-      # https://github.com/actions/checkout
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      # Login against a Docker registry except on PR
-      # https://github.com/docker/login-action
-      - name: Log into registry ${{ env.REGISTRY }}
-        if: |
-          github.event_name == 'push' ||
-          github.event_name == 'schedule' ||
-          github.event_name == 'workflow_dispatch'
-        uses: docker/login-action@v3
+      # Run common jobs
+      - name: Run common jobs
+        uses: ./.github/workflows/common-jobs.yaml
         with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          image-name: ${{ github.job }}
+          repo-owner: ${{ env.REPO_OWNER }}
 
-      # Build and push Docker image with Buildx (don't push on PR)
-      # https://github.com/docker/build-push-action
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./${{ env.IMAGE_NAME }}
-          push: ${{ github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
-          tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
-
-  build-vyos-blog-alert:
+  vyos-blog-alert:
 
     runs-on: self-hosted
-    if: ${{ github.ref_name == 'main' || github.head_ref == 'vyos-blog-alert' }}
+    if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
     permissions:
       contents: read
       packages: write
 
     steps:
-      # Add support for more platforms with QEMU (optional)
-      # https://github.com/docker/setup-qemu-action
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
-      # Set up Docker Buildx
-      # https://github.com/docker/setup-buildx-action
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-        with:
-          config-inline: |
-            [registry."docker.io"]
-              mirrors = ["registry-mirror:5000"]
-            [registry."registry-mirror:5000"]
-              http = true
-          driver-opts: |
-            network=actions-runners
-
-      # Gives two environment variables
-      # One with lowercase repo owner's name
-      # Another with the name of the image
-      - name: Set image name
+      # Convert the repository owner name to lowercase
+      - name: Convert repository owner name to lowercase
         run: |
-          echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
-          echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
+          echo "REPO_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV}
 
-      # Checkout repository
-      # https://github.com/actions/checkout
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      # Login against a Docker registry except on PR
-      # https://github.com/docker/login-action
-      - name: Log into registry ${{ env.REGISTRY }}
-        if: |
-          github.event_name == 'push' ||
-          github.event_name == 'schedule' ||
-          github.event_name == 'workflow_dispatch'
-        uses: docker/login-action@v3
+      # Run common jobs
+      - name: Run common jobs
+        uses: ./.github/workflows/common-jobs.yaml
         with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          image-name: ${{ github.job }}
+          repo-owner: ${{ env.REPO_OWNER }}
 
-      # Build and push Docker image with Buildx (don't push on PR)
-      # https://github.com/docker/build-push-action
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./${{ env.IMAGE_NAME }}
-          push: ${{ github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
-          tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
-
-  build-xteve:
+  xteve:
 
     runs-on: self-hosted
-    if: ${{ github.ref_name == 'main' || github.head_ref == 'xteve' }}
+    if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
     permissions:
       contents: read
       packages: write
 
     steps:
-      # Add support for more platforms with QEMU (optional)
-      # https://github.com/docker/setup-qemu-action
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
-      # Set up Docker Buildx
-      # https://github.com/docker/setup-buildx-action
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-        with:
-          config-inline: |
-            [registry."docker.io"]
-              mirrors = ["registry-mirror:5000"]
-            [registry."registry-mirror:5000"]
-              http = true
-          driver-opts: |
-            network=actions-runners
-
-      # Gives two environment variables
-      # One with lowercase repo owner's name
-      # Another with the name of the image
-      - name: Set image name
+      # Convert the repository owner name to lowercase
+      - name: Convert repository owner name to lowercase
         run: |
-          echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
-          echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
+          echo "REPO_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV}
 
-      # Checkout repository
-      # https://github.com/actions/checkout
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      # Login against a Docker registry except on PR
-      # https://github.com/docker/login-action
-      - name: Log into registry ${{ env.REGISTRY }}
-        if: |
-          github.event_name == 'push' ||
-          github.event_name == 'schedule' ||
-          github.event_name == 'workflow_dispatch'
-        uses: docker/login-action@v3
+      # Run common jobs
+      - name: Run common jobs
+        uses: ./.github/workflows/common-jobs.yaml
         with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          image-name: ${{ github.job }}
+          repo-owner: ${{ env.REPO_OWNER }}
 
-      # Build and push Docker image with Buildx (don't push on PR)
-      # https://github.com/docker/build-push-action
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./${{ env.IMAGE_NAME }}
-          push: ${{ github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
-          tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
-
-  build-yancobat:
+  yancobat:
 
     runs-on: self-hosted
-    if: ${{ github.ref_name == 'main' || github.head_ref == 'yancobat' }}
+    if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
     permissions:
       contents: read
       packages: write
 
     steps:
-      # Add support for more platforms with QEMU (optional)
-      # https://github.com/docker/setup-qemu-action
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
-      # Set up Docker Buildx
-      # https://github.com/docker/setup-buildx-action
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-        with:
-          config-inline: |
-            [registry."docker.io"]
-              mirrors = ["registry-mirror:5000"]
-            [registry."registry-mirror:5000"]
-              http = true
-          driver-opts: |
-            network=actions-runners
-
-      # Gives two environment variables
-      # One with lowercase repo owner's name
-      # Another with the name of the image
-      - name: Set image name
+      # Convert the repository owner name to lowercase
+      - name: Convert repository owner name to lowercase
         run: |
-          echo "REPO_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV} &&
-          echo "IMAGE_NAME=${GITHUB_JOB#*-}" >> ${GITHUB_ENV}
+          echo "REPO_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV}
 
-      # Checkout repository
-      # https://github.com/actions/checkout
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      # Login against a Docker registry except on PR
-      # https://github.com/docker/login-action
-      - name: Log into registry ${{ env.REGISTRY }}
-        if: |
-          github.event_name == 'push' ||
-          github.event_name == 'schedule' ||
-          github.event_name == 'workflow_dispatch'
-        uses: docker/login-action@v3
+      # Run common jobs
+      - name: Run common jobs
+        uses: ./.github/workflows/common-jobs.yaml
         with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      # Build and push Docker image with Buildx (don't push on PR)
-      # https://github.com/docker/build-push-action
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./${{ env.IMAGE_NAME }}
-          push: ${{ github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
-          tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest
+          image-name: ${{ github.job }}
+          repo-owner: ${{ env.REPO_OWNER }}
