@@ -17,7 +17,7 @@ jobs:
     steps:
       # Build the container
       - name: Build and publish container
-        uses: MattKobayashi/containers/.github/workflows/build-and-push.yaml
+        uses: ./.github/workflows/build-and-push.yaml
         with:
           image-name: ${{ github.job }}
           repo-owner: ${{ inputs.repo-owner }}
@@ -30,7 +30,7 @@ jobs:
     steps:
       # Build the container
       - name: Build and publish container
-        uses: MattKobayashi/containers/.github/workflows/build-and-push.yaml
+        uses: ./.github/workflows/build-and-push.yaml
         with:
           image-name: ${{ github.job }}
           repo-owner: ${{ inputs.repo-owner }}
@@ -43,7 +43,7 @@ jobs:
     steps:
       # Build the container
       - name: Build and publish container
-        uses: MattKobayashi/containers/.github/workflows/build-and-push.yaml
+        uses: ./.github/workflows/build-and-push.yaml
         with:
           image-name: ${{ github.job }}
           repo-owner: ${{ inputs.repo-owner }}
@@ -56,7 +56,7 @@ jobs:
     steps:
       # Build the container
       - name: Build and publish container
-        uses: MattKobayashi/containers/.github/workflows/build-and-push.yaml
+        uses: ./.github/workflows/build-and-push.yaml
         with:
           image-name: ${{ github.job }}
           repo-owner: ${{ inputs.repo-owner }}
@@ -69,7 +69,7 @@ jobs:
     steps:
       # Build the container
       - name: Build and publish container
-        uses: MattKobayashi/containers/.github/workflows/build-and-push.yaml
+        uses: ./.github/workflows/build-and-push.yaml
         with:
           image-name: ${{ github.job }}
           repo-owner: ${{ inputs.repo-owner }}
@@ -82,7 +82,7 @@ jobs:
     steps:
       # Build the container
       - name: Build and publish container
-        uses: MattKobayashi/containers/.github/workflows/build-and-push.yaml
+        uses: ./.github/workflows/build-and-push.yaml
         with:
           image-name: ${{ github.job }}
           repo-owner: ${{ inputs.repo-owner }}
@@ -95,7 +95,7 @@ jobs:
     steps:
       # Build the container
       - name: Build and publish container
-        uses: MattKobayashi/containers/.github/workflows/build-and-push.yaml
+        uses: ./.github/workflows/build-and-push.yaml
         with:
           image-name: ${{ github.job }}
           repo-owner: ${{ inputs.repo-owner }}
@@ -108,7 +108,7 @@ jobs:
     steps:
       # Build the container
       - name: Build and publish container
-        uses: MattKobayashi/containers/.github/workflows/build-and-push.yaml
+        uses: ./.github/workflows/build-and-push.yaml
         with:
           image-name: ${{ github.job }}
           repo-owner: ${{ inputs.repo-owner }}
@@ -121,7 +121,7 @@ jobs:
     steps:
       # Build the container
       - name: Build and publish container
-        uses: MattKobayashi/containers/.github/workflows/build-and-push.yaml
+        uses: ./.github/workflows/build-and-push.yaml
         with:
           image-name: ${{ github.job }}
           repo-owner: ${{ inputs.repo-owner }}
@@ -134,7 +134,7 @@ jobs:
     steps:
       # Build the container
       - name: Build and publish container
-        uses: MattKobayashi/containers/.github/workflows/build-and-push.yaml
+        uses: ./.github/workflows/build-and-push.yaml
         with:
           image-name: ${{ github.job }}
           repo-owner: ${{ inputs.repo-owner }}
@@ -147,7 +147,7 @@ jobs:
     steps:
       # Build the container
       - name: Build and publish container
-        uses: MattKobayashi/containers/.github/workflows/build-and-push.yaml
+        uses: ./.github/workflows/build-and-push.yaml
         with:
           image-name: ${{ github.job }}
           repo-owner: ${{ inputs.repo-owner }}
@@ -160,7 +160,7 @@ jobs:
     steps:
       # Build the container
       - name: Build and publish container
-        uses: MattKobayashi/containers/.github/workflows/build-and-push.yaml
+        uses: ./.github/workflows/build-and-push.yaml
         with:
           image-name: ${{ github.job }}
           repo-owner: ${{ inputs.repo-owner }}
@@ -173,7 +173,7 @@ jobs:
     steps:
       # Build the container
       - name: Build and publish container
-        uses: MattKobayashi/containers/.github/workflows/build-and-push.yaml
+        uses: ./.github/workflows/build-and-push.yaml
         with:
           image-name: ${{ github.job }}
           repo-owner: ${{ inputs.repo-owner }}
@@ -186,7 +186,7 @@ jobs:
     steps:
       # Build the container
       - name: Build and publish container
-        uses: MattKobayashi/containers/.github/workflows/build-and-push.yaml
+        uses: ./.github/workflows/build-and-push.yaml
         with:
           image-name: ${{ github.job }}
           repo-owner: ${{ inputs.repo-owner }}
@@ -199,7 +199,7 @@ jobs:
     steps:
       # Build the container
       - name: Build and publish container
-        uses: MattKobayashi/containers/.github/workflows/build-and-push.yaml
+        uses: ./.github/workflows/build-and-push.yaml
         with:
           image-name: ${{ github.job }}
           repo-owner: ${{ inputs.repo-owner }}
@@ -212,7 +212,7 @@ jobs:
     steps:
       # Build the container
       - name: Build and publish container
-        uses: MattKobayashi/containers/.github/workflows/build-and-push.yaml
+        uses: ./.github/workflows/build-and-push.yaml
         with:
           image-name: ${{ github.job }}
           repo-owner: ${{ inputs.repo-owner }}
