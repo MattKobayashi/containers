@@ -1,0 +1,218 @@
+---
+name: Spawn Jobs
+
+on:
+  workflow_call:
+    inputs:
+      repo-owner:
+        required: true
+        type: string
+
+jobs:
+  actions-runner:
+
+    runs-on: self-hosted
+    if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+
+    steps:
+      # Build the container
+      - name: Build and publish container
+        uses: ./.github/workflows/build-and-push.yaml
+        with:
+          image-name: ${{ github.job }}
+          repo-owner: ${{ inputs.repo-owner }}
+
+  avahi:
+
+    runs-on: self-hosted
+    if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+
+    steps:
+      # Build the container
+      - name: Build and publish container
+        uses: ./.github/workflows/build-and-push.yaml
+        with:
+          image-name: ${{ github.job }}
+          repo-owner: ${{ inputs.repo-owner }}
+
+  certbot-cloudflare:
+
+    runs-on: self-hosted
+    if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+
+    steps:
+      # Build the container
+      - name: Build and publish container
+        uses: ./.github/workflows/build-and-push.yaml
+        with:
+          image-name: ${{ github.job }}
+          repo-owner: ${{ inputs.repo-owner }}
+
+  fullbogons:
+
+    runs-on: self-hosted
+    if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+
+    steps:
+      # Build the container
+      - name: Build and publish container
+        uses: ./.github/workflows/build-and-push.yaml
+        with:
+          image-name: ${{ github.job }}
+          repo-owner: ${{ inputs.repo-owner }}
+
+  growatt-ev:
+
+    runs-on: self-hosted
+    if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+
+    steps:
+      # Build the container
+      - name: Build and publish container
+        uses: ./.github/workflows/build-and-push.yaml
+        with:
+          image-name: ${{ github.job }}
+          repo-owner: ${{ inputs.repo-owner }}
+
+  iperf2:
+
+    runs-on: self-hosted
+    if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+
+    steps:
+      # Build the container
+      - name: Build and publish container
+        uses: ./.github/workflows/build-and-push.yaml
+        with:
+          image-name: ${{ github.job }}
+          repo-owner: ${{ inputs.repo-owner }}
+
+  iperf3:
+
+    runs-on: self-hosted
+    if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+
+    steps:
+      # Build the container
+      - name: Build and publish container
+        uses: ./.github/workflows/build-and-push.yaml
+        with:
+          image-name: ${{ github.job }}
+          repo-owner: ${{ inputs.repo-owner }}
+
+  mdns-reflector:
+
+    runs-on: self-hosted
+    if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+
+    steps:
+      # Build the container
+      - name: Build and publish container
+        uses: ./.github/workflows/build-and-push.yaml
+        with:
+          image-name: ${{ github.job }}
+          repo-owner: ${{ inputs.repo-owner }}
+
+  rng-tools:
+
+    runs-on: self-hosted
+    if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+
+    steps:
+      # Build the container
+      - name: Build and publish container
+        uses: ./.github/workflows/build-and-push.yaml
+        with:
+          image-name: ${{ github.job }}
+          repo-owner: ${{ inputs.repo-owner }}
+
+  speedtest:
+
+    runs-on: self-hosted
+    if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+
+    steps:
+      # Build the container
+      - name: Build and publish container
+        uses: ./.github/workflows/build-and-push.yaml
+        with:
+          image-name: ${{ github.job }}
+          repo-owner: ${{ inputs.repo-owner }}
+
+  stun:
+
+    runs-on: self-hosted
+    if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+
+    steps:
+      # Build the container
+      - name: Build and publish container
+        uses: ./.github/workflows/build-and-push.yaml
+        with:
+          image-name: ${{ github.job }}
+          repo-owner: ${{ inputs.repo-owner }}
+
+  telegraf:
+
+    runs-on: self-hosted
+    if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+
+    steps:
+      # Build the container
+      - name: Build and publish container
+        uses: ./.github/workflows/build-and-push.yaml
+        with:
+          image-name: ${{ github.job }}
+          repo-owner: ${{ inputs.repo-owner }}
+
+  verlihub:
+
+    runs-on: self-hosted
+    if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+
+    steps:
+      # Build the container
+      - name: Build and publish container
+        uses: ./.github/workflows/build-and-push.yaml
+        with:
+          image-name: ${{ github.job }}
+          repo-owner: ${{ inputs.repo-owner }}
+
+  vyos-blog-alert:
+
+    runs-on: self-hosted
+    if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+
+    steps:
+      # Build the container
+      - name: Build and publish container
+        uses: ./.github/workflows/build-and-push.yaml
+        with:
+          image-name: ${{ github.job }}
+          repo-owner: ${{ inputs.repo-owner }}
+
+  xteve:
+
+    runs-on: self-hosted
+    if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+
+    steps:
+      # Build the container
+      - name: Build and publish container
+        uses: ./.github/workflows/build-and-push.yaml
+        with:
+          image-name: ${{ github.job }}
+          repo-owner: ${{ inputs.repo-owner }}
+
+  yancobat:
+
+    runs-on: self-hosted
+    if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+
+    steps:
+      # Build the container
+      - name: Build and publish container
+        uses: ./.github/workflows/build-and-push.yaml
+        with:
+          image-name: ${{ github.job }}
+          repo-owner: ${{ inputs.repo-owner }}
