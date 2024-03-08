@@ -1,11 +1,22 @@
 ---
-name: Common Jobs
+name: Build and Push Container
 
 on:
   workflow_call:
+    inputs:
+      image-name:
+        required: true
+        type: string
+      repo-owner:
+        required: true
+        type: string
+
+env:
+  # Use docker.io for Docker Hub if empty
+  REGISTRY: ghcr.io
 
 jobs:
-  build-container:
+  build-and-push-container:
 
     runs-on: self-hosted
     permissions:
