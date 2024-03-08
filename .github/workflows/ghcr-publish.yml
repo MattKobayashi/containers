@@ -13,7 +13,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  lowercase-repo-owner-name:
+  build-setup:
     runs-on: self-hosted
 
     steps:
@@ -21,10 +21,6 @@ jobs:
         run: |
           echo "REPO_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV}
 
-  spawn-jobs:
-    runs-on: self-hosted
-
-    steps:
       - name: Spawn build jobs for each container
         uses: ./.github/workflows/spawn-jobs.yaml
         with:
