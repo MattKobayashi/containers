@@ -15,13 +15,15 @@ on:
 jobs:
   build-setup:
     runs-on: self-hosted
-
+    outputs:
+      repo-owner: ${{ steps.repo-lowercase.outputs.REPO_OWNER }}
     steps:
       - name: Convert repository owner name to lowercase
+        id: repo-lowercase
         run: |
-          echo "REPO_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV}
-
-      - name: Spawn build jobs for each container
-        uses: ./.github/workflows/spawn-jobs.yaml
-        with:
-          repo-owner: ${{ env.REPO_OWNER }}
+          echo "REPO_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_OUTPUT
+  spawn-jobs:
+    needs: build-setup
+    uses: ./.github/workflows/spawn-jobs.yml
+    with:
+      repo-owner: ${{ needs.build-setup.outputs.repo-owner }}
