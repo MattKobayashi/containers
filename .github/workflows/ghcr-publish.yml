@@ -22,6 +22,6 @@ jobs:
           echo "REPO_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV}
 
       - name: Spawn build jobs for each container
-        uses: ./.github/workflows/spawn-jobs.yaml
+        uses: MattKobayashi/containers/.github/workflows/spawn-jobs.yaml
         with:
           repo-owner: ${{ env.REPO_OWNER }}
