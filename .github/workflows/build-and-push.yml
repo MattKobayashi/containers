@@ -16,6 +16,7 @@ env:
 
 jobs:
   build-and-push-container:
+    name: ${{ inputs.image-name }}
     runs-on: self-hosted
     permissions:
       contents: read

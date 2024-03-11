@@ -14,6 +14,7 @@ on:
 
 jobs:
   build-setup:
+    name: "Set up build environment"
     runs-on: self-hosted
     outputs:
       repo-owner: ${{ steps.repo-lowercase.outputs.REPO_OWNER }}
@@ -23,6 +24,7 @@ jobs:
         run: |
           echo "REPO_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_OUTPUT
   spawn-jobs:
+    name: "Spawn container build jobs"
     needs: build-setup
     uses: ./.github/workflows/spawn-jobs.yml
     with:
