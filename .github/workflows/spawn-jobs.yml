@@ -87,11 +87,11 @@ jobs:
     with:
       image-name: verlihub
       repo-owner: ${{ inputs.repo-owner }}
-  vyos-blog-alert:
+  vyos-release-alert:
     if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
     uses: ./.github/workflows/build-and-push.yml
     with:
-      image-name: vyos-blog-alert
+      image-name: vyos-release-alert
       repo-owner: ${{ inputs.repo-owner }}
   xteve:
     if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}

@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "vyos-blog-alert"
+name = "vyos-release-alert"
 version = "0.0.1"
-description = "A script to check for new VyOS blog posts"
+description = "A script to check for new VyOS release blog posts"
 authors = ["MattKobayashi <matthew@kobayashi.au>"]
 
 [tool.poetry.dependencies]
