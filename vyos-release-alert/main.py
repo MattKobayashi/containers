@@ -72,6 +72,10 @@ if is_within_one_hour(
                 }),
             {"content-type": "application/x-www-form-urlencoded"}
         )
+        print(
+            "Triggered new autobuild for VyOS 1.3:",
+            "https://github.com/MattKobayashi/vyos-autobuild/actions"
+        )
 
     if "1.4" in latest_post.title:
         conn2 = http.client.HTTPSConnection(
@@ -86,4 +90,8 @@ if is_within_one_hour(
                 "event_type": "blog_1.4"
                 }),
             {"content-type": "application/x-www-form-urlencoded"}
+        )
+        print(
+            "Triggered new autobuild for VyOS 1.4:",
+            "https://github.com/MattKobayashi/vyos-autobuild/actions"
         )
