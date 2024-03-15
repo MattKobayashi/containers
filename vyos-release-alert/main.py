@@ -1,10 +1,13 @@
 #! /usr/bin/env python3
 
+import re
+import json
 from os import environ
 from sys import exit
 from datetime import datetime, timedelta
 from time import mktime
-import http.client, urllib
+import http.client
+import urllib
 import feedparser
 
 
@@ -62,15 +65,25 @@ if is_within_one_hour(
         conn2 = http.client.HTTPSConnection(
             "api.github.com:443"
         )
-        conn.request(
+        conn2.request(
             "POST",
             "/repos/MattKobayashi/vyos-autobuild/dispatches",
-            urllib.parse.urlencode({
+            json.dumps({
+                "event_type": "1.3 Blog Release",
+                "client_payload": {
+                    "version": next(
+                        i for i
+                        in latest_post.title.split(" ")
+                        if re.match(r"1\.3\.[0-9]{1,2}", i)
+                    )
+                }
+            }),
+            {
+                "User-Agent": "vyos-release-alert",
                 "Accept": "application/vnd.github+json",
-                "Authorization": f"token {environ['GITHUB_PAT']}",
-                "event_type": "blog_1.3"
-                }),
-            {"content-type": "application/x-www-form-urlencoded"}
+                "Authorization": f"Bearer {environ['GITHUB_PAT']}",
+                "Content-Type": "application/vnd.github+json"
+            }
         )
         print(
             "Triggered new autobuild for VyOS 1.3:",
@@ -81,15 +94,25 @@ if is_within_one_hour(
         conn2 = http.client.HTTPSConnection(
             "api.github.com:443"
         )
-        conn.request(
+        conn2.request(
             "POST",
             "/repos/MattKobayashi/vyos-autobuild/dispatches",
-            urllib.parse.urlencode({
+            json.dumps({
+                "event_type": "1.4 Blog Release",
+                "client_payload": {
+                    "version": next(
+                        i for i
+                        in latest_post.title.split(" ")
+                        if re.match(r"1\.4\.[0-9]{1,2}", i)
+                    )
+                }
+            }),
+            {
+                "User-Agent": "vyos-release-alert",
                 "Accept": "application/vnd.github+json",
-                "Authorization": f"token {environ['GITHUB_PAT']}",
-                "event_type": "blog_1.4"
-                }),
-            {"content-type": "application/x-www-form-urlencoded"}
+                "Authorization": f"Bearer {environ['GITHUB_PAT']}",
+                "Content-Type": "application/vnd.github+json"
+            }
         )
         print(
             "Triggered new autobuild for VyOS 1.4:",
