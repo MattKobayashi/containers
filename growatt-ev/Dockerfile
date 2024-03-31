@@ -12,6 +12,6 @@ COPY --chown=growatt-ev main2.py main.py
 
 USER growatt-ev
 
-ENTRYPOINT ["python3 main.py"]
+ENTRYPOINT ["python3", "main.py"]
 
 LABEL org.opencontainers.image.authors="MattKobayashi <matthew@kobayashi.au>"
