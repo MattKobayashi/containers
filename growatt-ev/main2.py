@@ -26,7 +26,7 @@ else:
 
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, flags, reason_code, properties):
-    print(f"growatt-ev: Connected to MQTT broker with result code {reason_code}")
+    print(f"growatt-ev: Connected to MQTT broker with result code: {reason_code}")
     # Subscribing in on_connect() means that if we lose the connection and
     # reconnect then subscriptions will be renewed.
     client.subscribe(os.environ["MQTT_TOPIC"])
