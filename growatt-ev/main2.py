@@ -7,7 +7,8 @@ import paho.mqtt.client as mqtt
 
 # Check that env vars are set
 if (
-    "MQTT_SERVER" in os.environ
+    "SOLAR_WATTS" in os.environ
+    and "MQTT_SERVER" in os.environ
     and "MQTT_TOPIC" in os.environ
     and "MQTT_USER" in os.environ
     and "MQTT_PASS" in os.environ
@@ -68,8 +69,8 @@ def on_message(client, userdata, msg):
         print("growatt-ev: Cannot get status of EV charger...")
         ev_charger_status = False
 
-    # Switch EV charger on if solar array is producing at least 1.5kW
-    if inverter_watts >= 1500:
+    # Switch EV charger on if solar array is producing at least SOLAR_WATTS
+    if inverter_watts >= int(os.environ['SOLAR_WATTS']):
         if ev_charger_status is False:
             print("growatt-ev: Enabling the EV charger...")
             req = openapi.post(
