@@ -26,7 +26,8 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then ARCH=x64; elif [ "$TARGETPLAT
     && rm actions-runner-linux-$ARCH-$RUNNER_VERSION.tar.gz
 
 USER root
-RUN ./bin/installdependencies.sh
+RUN add-apt-repository ppa:dotnet/backports \
+    && apt-get install dotnet6
 
 COPY --chmod=0744 --chown=runner:runner entrypoint.sh /actions-runner/entrypoint.sh
 
