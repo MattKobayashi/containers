@@ -15,7 +15,7 @@ on:
 jobs:
   build-setup:
     name: "Set up build environment"
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     outputs:
       repo-owner: ${{ steps.repo-lowercase.outputs.REPO_OWNER }}
     steps:
