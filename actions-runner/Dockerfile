@@ -26,7 +26,9 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then ARCH=x64; elif [ "$TARGETPLAT
     && rm actions-runner-linux-$ARCH-$RUNNER_VERSION.tar.gz
 
 USER root
-RUN ./bin/installdependencies.sh
+RUN curl -O -L https://packages.microsoft.com/ubuntu/24.04/prod/pool/main/p/packages-microsoft-prod/packages-microsoft-prod_1.1-ubuntu24.04_all.deb \
+    && dpkg -i packages-microsoft-prod_1.1-ubuntu24.04_all.deb \
+    && rm packages-microsoft-prod_1.1-ubuntu24.04_all.deb
 
 COPY --chmod=0744 --chown=runner:runner entrypoint.sh /actions-runner/entrypoint.sh
 
