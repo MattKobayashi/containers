@@ -10,6 +10,9 @@ on:
       repo-owner:
         required: true
         type: string
+      build-context:
+        required: true
+        type: string
 
 env:
   REGISTRY: ghcr.io
@@ -59,6 +62,6 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
-          context: ./${{ inputs.image-name }}
+          context: ${{ inputs.build-context }}
           push: ${{ github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
           tags: ${{ env.REGISTRY }}/${{ inputs.repo-owner }}/${{ inputs.image-name }}:latest
