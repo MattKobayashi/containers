@@ -16,15 +16,16 @@ jobs:
   build-setup:
     name: "Set up build environment"
     runs-on: ubuntu-latest
-    outputs:
-      repo-owner: ${{ steps.repo-lowercase.outputs.REPO_OWNER }}
     steps:
       - name: Convert repository owner name to lowercase
         id: repo-lowercase
         run: |
-          echo "REPO_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_OUTPUT
+          echo "REPO_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_ENV
   build-and-push:
+    name: "Build container images and push to registry"
     runs-on: ubuntu-latest
+    env:
+      REGISTRY: ghcr.io
     strategy:
       matrix:
         container: [
@@ -86,7 +87,7 @@ jobs:
         with:
           context: ./${{ matrix.container }}
           push: ${{ github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
-          tags: ${{ env.REGISTRY }}/${{ inputs.repo-owner }}/${{ inputs.image-name }}:latest
+          tags: ${{ env.REGISTRY }}/${{ env.REPO_OWNER }}/${{ matrix.container }}:latest
   build-and-push-otbr:
     runs-on: ubuntu-latest
     steps:
@@ -126,4 +127,4 @@ jobs:
         with:
           context: ./otbr/ot-br-posix-conditional_avahi/etc/docker
           push: ${{ github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
-          tags: ${{ env.REGISTRY }}/${{ inputs.repo-owner }}/${{ inputs.image-name }}:latest
+          tags: ${{ env.REGISTRY }}/${{ env.REPO_OWNER }}/otbr:latest
