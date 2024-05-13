@@ -131,6 +131,6 @@ jobs:
         if: ${{ github.ref_name == 'main' || github.head_ref == 'otbr' }}
         with:
           context: ./otbr/ot-br-posix-conditional_avahi
-          file: etc/docker/Dockerfile
+          file: ./otbr/ot-br-posix-conditional_avahi/etc/docker/Dockerfile
           push: ${{ github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
           tags: ${{ env.REGISTRY }}/${{ needs.build-setup.outputs.repo-owner }}/otbr:latest
