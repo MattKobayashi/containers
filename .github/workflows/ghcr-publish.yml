@@ -58,6 +58,7 @@ jobs:
       # https://github.com/actions/checkout
       - name: Checkout repository
         uses: actions/checkout@v4
+        if: ${{ github.ref_name == 'main' || github.head_ref == matrix.container }}
       # Set up QEMU
       # https://github.com/docker/setup-qemu-action
       - name: Set up QEMU
@@ -100,6 +101,10 @@ jobs:
       # https://github.com/actions/checkout
       - name: Checkout repository
         uses: actions/checkout@v4
+        if: ${{ github.ref_name == 'main' || github.head_ref == 'otbr' }}
+        with:
+          repository: kevinanderson1/ot-br-posix
+          ref: conditional_avahi
       # Set up QEMU
       # https://github.com/docker/setup-qemu-action
       - name: Set up QEMU
@@ -130,7 +135,7 @@ jobs:
         uses: docker/build-push-action@v5
         if: ${{ github.ref_name == 'main' || github.head_ref == 'otbr' }}
         with:
-          context: ./otbr/ot-br-posix-conditional_avahi
-          file: ./otbr/ot-br-posix-conditional_avahi/etc/docker/Dockerfile
+          context: .
+          file: ./etc/docker/Dockerfile
           push: ${{ github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
           tags: ${{ env.REGISTRY }}/${{ needs.build-setup.outputs.repo-owner }}/otbr:latest
