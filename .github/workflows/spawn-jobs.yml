@@ -12,6 +12,9 @@ jobs:
   actions-runner:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+        uses: actions/checkout@v4
       - name: Build and push container
         if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
         uses: ./.github/workflows/build-and-push.yml
@@ -22,6 +25,9 @@ jobs:
   avahi:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+        uses: actions/checkout@v4
       - name: Build and push container
         if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
         uses: ./.github/workflows/build-and-push.yml
@@ -32,6 +38,9 @@ jobs:
   certbot-cloudflare:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+        uses: actions/checkout@v4
       - name: Build and push container
         if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
         uses: ./.github/workflows/build-and-push.yml
@@ -42,6 +51,9 @@ jobs:
   fullbogons:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+        uses: actions/checkout@v4
       - name: Build and push container
         if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
         uses: ./.github/workflows/build-and-push.yml
@@ -52,6 +64,9 @@ jobs:
   growatt-ev:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+        uses: actions/checkout@v4
       - name: Build and push container
         if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
         uses: ./.github/workflows/build-and-push.yml
@@ -62,6 +77,9 @@ jobs:
   iperf2:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+        uses: actions/checkout@v4
       - name: Build and push container
         if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
         uses: ./.github/workflows/build-and-push.yml
@@ -72,6 +90,9 @@ jobs:
   iperf3:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+        uses: actions/checkout@v4
       - name: Build and push container
         if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
         uses: ./.github/workflows/build-and-push.yml
@@ -82,6 +103,9 @@ jobs:
   mdns-reflector:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+        uses: actions/checkout@v4
       - name: Build and push container
         if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
         uses: ./.github/workflows/build-and-push.yml
@@ -92,6 +116,9 @@ jobs:
   otbr:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+        uses: actions/checkout@v4
       - name: Build and push container
         if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
         uses: ./.github/workflows/build-and-push.yml
@@ -102,6 +129,9 @@ jobs:
   rng-tools:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+        uses: actions/checkout@v4
       - name: Build and push container
         if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
         uses: ./.github/workflows/build-and-push.yml
@@ -112,6 +142,9 @@ jobs:
   speedtest:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+        uses: actions/checkout@v4
       - name: Build and push container
         if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
         uses: ./.github/workflows/build-and-push.yml
@@ -122,6 +155,9 @@ jobs:
   stun:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+        uses: actions/checkout@v4
       - name: Build and push container
         if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
         uses: ./.github/workflows/build-and-push.yml
@@ -132,6 +168,9 @@ jobs:
   telegraf:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+        uses: actions/checkout@v4
       - name: Build and push container
         if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
         uses: ./.github/workflows/build-and-push.yml
@@ -142,6 +181,9 @@ jobs:
   verlihub:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+        uses: actions/checkout@v4
       - name: Build and push container
         if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
         uses: ./.github/workflows/build-and-push.yml
@@ -152,6 +194,9 @@ jobs:
   vyos-release-alert:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+        uses: actions/checkout@v4
       - name: Build and push container
         if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
         uses: ./.github/workflows/build-and-push.yml
@@ -162,6 +207,9 @@ jobs:
   xteve:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+        uses: actions/checkout@v4
       - name: Build and push container
         if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
         uses: ./.github/workflows/build-and-push.yml
@@ -172,6 +220,9 @@ jobs:
   yancobat:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+        uses: actions/checkout@v4
       - name: Build and push container
         if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
         uses: ./.github/workflows/build-and-push.yml
