@@ -110,12 +110,10 @@ jobs:
         env:
           BUILD_TARGET: "docker-check"
         run: tests/scripts/bootstrap.sh
-        working-directory: ./ot-br-posix
         if: ${{ github.ref_name == 'main' || github.head_ref == 'otbr' }}
       # Run checks
       - name: Check build environment
         run: tests/scripts/check-docker
-        working-directory: ./ot-br-posix
         if: ${{ github.ref_name == 'main' || github.head_ref == 'otbr' }}
       # Set up QEMU
       # https://github.com/docker/setup-qemu-action
@@ -147,7 +145,7 @@ jobs:
         uses: docker/build-push-action@v5
         if: ${{ github.ref_name == 'main' || github.head_ref == 'otbr' }}
         with:
-          context: ./ot-br-posix
-          file: ./ot-br-posix/etc/docker/Dockerfile
+          context: .
+          file: ./etc/docker/Dockerfile
           push: ${{ github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
           tags: ${{ env.REGISTRY }}/${{ needs.build-setup.outputs.repo-owner }}/otbr:latest
