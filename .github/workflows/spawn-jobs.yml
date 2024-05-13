@@ -10,155 +10,121 @@ on:
 
 jobs:
   actions-runner:
-    env:
-      IMAGE_NAME: actions-runner
     if: ${{ github.ref_name == 'main' || contains(github.job, github.head_ref) }}
     uses: ./.github/workflows/build-and-push.yml
     with:
-      image-name: ${{ env.IMAGE_NAME }}
+      image-name: actions-runner
       repo-owner: ${{ inputs.repo-owner }}
-      build-context: ./${{ env.IMAGE_NAME }}
+      build-context: ./${{ inputs.image-name }}
   avahi:
-    env:
-      IMAGE_NAME: avahi
     if: ${{ github.ref_name == 'main' || contains(github.job, github.head_ref) }}
     uses: ./.github/workflows/build-and-push.yml
     with:
-      image-name: ${{ env.IMAGE_NAME }}
+      image-name: avahi
       repo-owner: ${{ inputs.repo-owner }}
-      build-context: ./${{ env.IMAGE_NAME }}
+      build-context: ./${{ inputs.image-name }}
   certbot-cloudflare:
-    env:
-      IMAGE_NAME: certbot-cloudflare
     if: ${{ github.ref_name == 'main' || contains(github.job, github.head_ref) }}
     uses: ./.github/workflows/build-and-push.yml
     with:
-      image-name: ${{ env.IMAGE_NAME }}
+      image-name: certbot-cloudflare
       repo-owner: ${{ inputs.repo-owner }}
-      build-context: ./${{ env.IMAGE_NAME }}
+      build-context: ./${{ inputs.image-name }}
   fullbogons:
-    env:
-      IMAGE_NAME: fullbogons
     if: ${{ github.ref_name == 'main' || contains(github.job, github.head_ref) }}
     uses: ./.github/workflows/build-and-push.yml
     with:
-      image-name: ${{ env.IMAGE_NAME }}
+      image-name: fullbogons
       repo-owner: ${{ inputs.repo-owner }}
-      build-context: ./${{ env.IMAGE_NAME }}
+      build-context: ./${{ inputs.image-name }}
   growatt-ev:
-    env:
-      IMAGE_NAME: growatt-ev
     if: ${{ github.ref_name == 'main' || contains(github.job, github.head_ref) }}
     uses: ./.github/workflows/build-and-push.yml
     with:
-      image-name: ${{ env.IMAGE_NAME }}
+      image-name: growatt-ev
       repo-owner: ${{ inputs.repo-owner }}
-      build-context: ./${{ env.IMAGE_NAME }}
+      build-context: ./${{ inputs.image-name }}
   iperf2:
-    env:
-      IMAGE_NAME: iperf2
     if: ${{ github.ref_name == 'main' || contains(github.job, github.head_ref) }}
     uses: ./.github/workflows/build-and-push.yml
     with:
-      image-name: ${{ env.IMAGE_NAME }}
+      image-name: iperf2
       repo-owner: ${{ inputs.repo-owner }}
-      build-context: ./${{ env.IMAGE_NAME }}
+      build-context: ./${{ inputs.image-name }}
   iperf3:
-    env:
-      IMAGE_NAME: iperf3
     if: ${{ github.ref_name == 'main' || contains(github.job, github.head_ref) }}
     uses: ./.github/workflows/build-and-push.yml
     with:
-      image-name: ${{ env.IMAGE_NAME }}
+      image-name: iperf3
       repo-owner: ${{ inputs.repo-owner }}
-      build-context: ./${{ env.IMAGE_NAME }}
+      build-context: ./${{ inputs.image-name }}
   mdns-reflector:
-    env:
-      IMAGE_NAME: mdns-reflector
     if: ${{ github.ref_name == 'main' || contains(github.job, github.head_ref) }}
     uses: ./.github/workflows/build-and-push.yml
     with:
-      image-name: ${{ env.IMAGE_NAME }}
+      image-name: mdns-reflector
       repo-owner: ${{ inputs.repo-owner }}
-      build-context: ./${{ env.IMAGE_NAME }}
+      build-context: ./${{ inputs.image-name }}
   otbr:
-    env:
-      IMAGE_NAME: otbr
     if: ${{ github.ref_name == 'main' || contains(github.job, github.head_ref) }}
     uses: ./.github/workflows/build-and-push.yml
     with:
-      image-name: ${{ env.IMAGE_NAME }}
+      image-name: otbr
       repo-owner: ${{ inputs.repo-owner }}
-      build-context: ./${{ env.IMAGE_NAME }}/ot-br-posix/etc/docker/
+      build-context: ./${{ inputs.image-name }}/ot-br-posix/etc/docker/
   rng-tools:
-    env:
-      IMAGE_NAME: rng-tools
     if: ${{ github.ref_name == 'main' || contains(github.job, github.head_ref) }}
     uses: ./.github/workflows/build-and-push.yml
     with:
-      image-name: ${{ env.IMAGE_NAME }}
+      image-name: rng-tools
       repo-owner: ${{ inputs.repo-owner }}
-      build-context: ./${{ env.IMAGE_NAME }}
+      build-context: ./${{ inputs.image-name }}
   speedtest:
-    env:
-      IMAGE_NAME: speedtest
     if: ${{ github.ref_name == 'main' || contains(github.job, github.head_ref) }}
     uses: ./.github/workflows/build-and-push.yml
     with:
-      image-name: ${{ env.IMAGE_NAME }}
+      image-name: speedtest
       repo-owner: ${{ inputs.repo-owner }}
-      build-context: ./${{ env.IMAGE_NAME }}
+      build-context: ./${{ inputs.image-name }}
   stun:
-    env:
-      IMAGE_NAME: stun
     if: ${{ github.ref_name == 'main' || contains(github.job, github.head_ref) }}
     uses: ./.github/workflows/build-and-push.yml
     with:
-      image-name: ${{ env.IMAGE_NAME }}
+      image-name: stun
       repo-owner: ${{ inputs.repo-owner }}
-      build-context: ./${{ env.IMAGE_NAME }}
+      build-context: ./${{ inputs.image-name }}
   telegraf:
-    env:
-      IMAGE_NAME: telegraf
     if: ${{ github.ref_name == 'main' || contains(github.job, github.head_ref) }}
     uses: ./.github/workflows/build-and-push.yml
     with:
-      image-name: ${{ env.IMAGE_NAME }}
+      image-name: telegraf
       repo-owner: ${{ inputs.repo-owner }}
-      build-context: ./${{ env.IMAGE_NAME }}
+      build-context: ./${{ inputs.image-name }}
   verlihub:
-    env:
-      IMAGE_NAME: verlihub
     if: ${{ github.ref_name == 'main' || contains(github.job, github.head_ref) }}
     uses: ./.github/workflows/build-and-push.yml
     with:
-      image-name: ${{ env.IMAGE_NAME }}
+      image-name: verlihub
       repo-owner: ${{ inputs.repo-owner }}
-      build-context: ./${{ env.IMAGE_NAME }}
+      build-context: ./${{ inputs.image-name }}
   vyos-release-alert:
-    env:
-      IMAGE_NAME: vyos-release-alert
     if: ${{ github.ref_name == 'main' || contains(github.job, github.head_ref) }}
     uses: ./.github/workflows/build-and-push.yml
     with:
-      image-name: ${{ env.IMAGE_NAME }}
+      image-name: vyos-release-alert
       repo-owner: ${{ inputs.repo-owner }}
-      build-context: ./${{ env.IMAGE_NAME }}
+      build-context: ./${{ inputs.image-name }}
   xteve:
-    env:
-      IMAGE_NAME: xteve
     if: ${{ github.ref_name == 'main' || contains(github.job, github.head_ref) }}
     uses: ./.github/workflows/build-and-push.yml
     with:
-      image-name: ${{ env.IMAGE_NAME }}
+      image-name: xteve
       repo-owner: ${{ inputs.repo-owner }}
-      build-context: ./${{ env.IMAGE_NAME }}
+      build-context: ./${{ inputs.image-name }}
   yancobat:
-    env:
-      IMAGE_NAME: yancobat
     if: ${{ github.ref_name == 'main' || contains(github.job, github.head_ref) }}
     uses: ./.github/workflows/build-and-push.yml
     with:
-      image-name: ${{ env.IMAGE_NAME }}
+      image-name: yancobat
       repo-owner: ${{ inputs.repo-owner }}
-      build-context: ./${{ env.IMAGE_NAME }}
+      build-context: ./${{ inputs.image-name }}
