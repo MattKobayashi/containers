@@ -10,121 +10,172 @@ on:
 
 jobs:
   actions-runner:
-    if: ${{ github.ref_name == 'main' || github.head_ref == vars.GITHUB_JOB }}
-    uses: ./.github/workflows/build-and-push.yml
-    with:
-      image-name: ${{ vars.GITHUB_JOB }}
-      repo-owner: ${{ inputs.repo-owner }}
-      build-context: ./${{ vars.GITHUB_JOB }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build and push container
+        if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+        uses: ./.github/workflows/build-and-push.yml
+        with:
+          image-name: ${{ github.job }}
+          repo-owner: ${{ inputs.repo-owner }}
+          build-context: ./${{ github.job }}
   avahi:
-    if: ${{ github.ref_name == 'main' || github.head_ref == vars.GITHUB_JOB }}
-    uses: ./.github/workflows/build-and-push.yml
-    with:
-      image-name: ${{ vars.GITHUB_JOB }}
-      repo-owner: ${{ inputs.repo-owner }}
-      build-context: ./${{ vars.GITHUB_JOB }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build and push container
+        if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+        uses: ./.github/workflows/build-and-push.yml
+        with:
+          image-name: ${{ github.job }}
+          repo-owner: ${{ inputs.repo-owner }}
+          build-context: ./${{ github.job }}
   certbot-cloudflare:
-    if: ${{ github.ref_name == 'main' || github.head_ref == vars.GITHUB_JOB }}
-    uses: ./.github/workflows/build-and-push.yml
-    with:
-      image-name: ${{ vars.GITHUB_JOB }}
-      repo-owner: ${{ inputs.repo-owner }}
-      build-context: ./${{ vars.GITHUB_JOB }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build and push container
+        if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+        uses: ./.github/workflows/build-and-push.yml
+        with:
+          image-name: ${{ github.job }}
+          repo-owner: ${{ inputs.repo-owner }}
+          build-context: ./${{ github.job }}
   fullbogons:
-    if: ${{ github.ref_name == 'main' || github.head_ref == vars.GITHUB_JOB }}
-    uses: ./.github/workflows/build-and-push.yml
-    with:
-      image-name: ${{ vars.GITHUB_JOB }}
-      repo-owner: ${{ inputs.repo-owner }}
-      build-context: ./${{ vars.GITHUB_JOB }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build and push container
+        if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+        uses: ./.github/workflows/build-and-push.yml
+        with:
+          image-name: ${{ github.job }}
+          repo-owner: ${{ inputs.repo-owner }}
+          build-context: ./${{ github.job }}
   growatt-ev:
-    if: ${{ github.ref_name == 'main' || github.head_ref == vars.GITHUB_JOB }}
-    uses: ./.github/workflows/build-and-push.yml
-    with:
-      image-name: ${{ vars.GITHUB_JOB }}
-      repo-owner: ${{ inputs.repo-owner }}
-      build-context: ./${{ vars.GITHUB_JOB }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build and push container
+        if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+        uses: ./.github/workflows/build-and-push.yml
+        with:
+          image-name: ${{ github.job }}
+          repo-owner: ${{ inputs.repo-owner }}
+          build-context: ./${{ github.job }}
   iperf2:
-    if: ${{ github.ref_name == 'main' || github.head_ref == vars.GITHUB_JOB }}
-    uses: ./.github/workflows/build-and-push.yml
-    with:
-      image-name: ${{ vars.GITHUB_JOB }}
-      repo-owner: ${{ inputs.repo-owner }}
-      build-context: ./${{ vars.GITHUB_JOB }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build and push container
+        if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+        uses: ./.github/workflows/build-and-push.yml
+        with:
+          image-name: ${{ github.job }}
+          repo-owner: ${{ inputs.repo-owner }}
+          build-context: ./${{ github.job }}
   iperf3:
-    if: ${{ github.ref_name == 'main' || github.head_ref == vars.GITHUB_JOB }}
-    uses: ./.github/workflows/build-and-push.yml
-    with:
-      image-name: ${{ vars.GITHUB_JOB }}
-      repo-owner: ${{ inputs.repo-owner }}
-      build-context: ./${{ vars.GITHUB_JOB }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build and push container
+        if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+        uses: ./.github/workflows/build-and-push.yml
+        with:
+          image-name: ${{ github.job }}
+          repo-owner: ${{ inputs.repo-owner }}
+          build-context: ./${{ github.job }}
   mdns-reflector:
-    if: ${{ github.ref_name == 'main' || github.head_ref == vars.GITHUB_JOB }}
-    uses: ./.github/workflows/build-and-push.yml
-    with:
-      image-name: ${{ vars.GITHUB_JOB }}
-      repo-owner: ${{ inputs.repo-owner }}
-      build-context: ./${{ vars.GITHUB_JOB }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build and push container
+        if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+        uses: ./.github/workflows/build-and-push.yml
+        with:
+          image-name: ${{ github.job }}
+          repo-owner: ${{ inputs.repo-owner }}
+          build-context: ./${{ github.job }}
   otbr:
-    if: ${{ github.ref_name == 'main' || github.head_ref == vars.GITHUB_JOB }}
-    uses: ./.github/workflows/build-and-push.yml
-    with:
-      image-name: ${{ vars.GITHUB_JOB }}
-      repo-owner: ${{ inputs.repo-owner }}
-      build-context: ./${{ vars.GITHUB_JOB }}/ot-br-posix-conditional_avahi/etc/docker/
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build and push container
+        if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+        uses: ./.github/workflows/build-and-push.yml
+        with:
+          image-name: ${{ github.job }}
+          repo-owner: ${{ inputs.repo-owner }}
+          build-context: ./${{ github.job }}/ot-br-posix-conditional_avahi/etc/docker/
   rng-tools:
-    if: ${{ github.ref_name == 'main' || github.head_ref == vars.GITHUB_JOB }}
-    uses: ./.github/workflows/build-and-push.yml
-    with:
-      image-name: ${{ vars.GITHUB_JOB }}
-      repo-owner: ${{ inputs.repo-owner }}
-      build-context: ./${{ vars.GITHUB_JOB }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build and push container
+        if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+        uses: ./.github/workflows/build-and-push.yml
+        with:
+          image-name: ${{ github.job }}
+          repo-owner: ${{ inputs.repo-owner }}
+          build-context: ./${{ github.job }}
   speedtest:
-    if: ${{ github.ref_name == 'main' || github.head_ref == vars.GITHUB_JOB }}
-    uses: ./.github/workflows/build-and-push.yml
-    with:
-      image-name: ${{ vars.GITHUB_JOB }}
-      repo-owner: ${{ inputs.repo-owner }}
-      build-context: ./${{ vars.GITHUB_JOB }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build and push container
+        if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+        uses: ./.github/workflows/build-and-push.yml
+        with:
+          image-name: ${{ github.job }}
+          repo-owner: ${{ inputs.repo-owner }}
+          build-context: ./${{ github.job }}
   stun:
-    if: ${{ github.ref_name == 'main' || github.head_ref == vars.GITHUB_JOB }}
-    uses: ./.github/workflows/build-and-push.yml
-    with:
-      image-name: ${{ vars.GITHUB_JOB }}
-      repo-owner: ${{ inputs.repo-owner }}
-      build-context: ./${{ vars.GITHUB_JOB }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build and push container
+        if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+        uses: ./.github/workflows/build-and-push.yml
+        with:
+          image-name: ${{ github.job }}
+          repo-owner: ${{ inputs.repo-owner }}
+          build-context: ./${{ github.job }}
   telegraf:
-    if: ${{ github.ref_name == 'main' || github.head_ref == vars.GITHUB_JOB }}
-    uses: ./.github/workflows/build-and-push.yml
-    with:
-      image-name: ${{ vars.GITHUB_JOB }}
-      repo-owner: ${{ inputs.repo-owner }}
-      build-context: ./${{ vars.GITHUB_JOB }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build and push container
+        if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+        uses: ./.github/workflows/build-and-push.yml
+        with:
+          image-name: ${{ github.job }}
+          repo-owner: ${{ inputs.repo-owner }}
+          build-context: ./${{ github.job }}
   verlihub:
-    if: ${{ github.ref_name == 'main' || github.head_ref == vars.GITHUB_JOB }}
-    uses: ./.github/workflows/build-and-push.yml
-    with:
-      image-name: ${{ vars.GITHUB_JOB }}
-      repo-owner: ${{ inputs.repo-owner }}
-      build-context: ./${{ vars.GITHUB_JOB }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build and push container
+        if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+        uses: ./.github/workflows/build-and-push.yml
+        with:
+          image-name: ${{ github.job }}
+          repo-owner: ${{ inputs.repo-owner }}
+          build-context: ./${{ github.job }}
   vyos-release-alert:
-    if: ${{ github.ref_name == 'main' || github.head_ref == vars.GITHUB_JOB }}
-    uses: ./.github/workflows/build-and-push.yml
-    with:
-      image-name: ${{ vars.GITHUB_JOB }}
-      repo-owner: ${{ inputs.repo-owner }}
-      build-context: ./${{ vars.GITHUB_JOB }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build and push container
+        if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+        uses: ./.github/workflows/build-and-push.yml
+        with:
+          image-name: ${{ github.job }}
+          repo-owner: ${{ inputs.repo-owner }}
+          build-context: ./${{ github.job }}
   xteve:
-    if: ${{ github.ref_name == 'main' || github.head_ref == vars.GITHUB_JOB }}
-    uses: ./.github/workflows/build-and-push.yml
-    with:
-      image-name: ${{ vars.GITHUB_JOB }}
-      repo-owner: ${{ inputs.repo-owner }}
-      build-context: ./${{ vars.GITHUB_JOB }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build and push container
+        if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+        uses: ./.github/workflows/build-and-push.yml
+        with:
+          image-name: ${{ github.job }}
+          repo-owner: ${{ inputs.repo-owner }}
+          build-context: ./${{ github.job }}
   yancobat:
-    if: ${{ github.ref_name == 'main' || github.head_ref == vars.GITHUB_JOB }}
-    uses: ./.github/workflows/build-and-push.yml
-    with:
-      image-name: ${{ vars.GITHUB_JOB }}
-      repo-owner: ${{ inputs.repo-owner }}
-      build-context: ./${{ vars.GITHUB_JOB }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build and push container
+        if: ${{ github.ref_name == 'main' || github.head_ref == github.job }}
+        uses: ./.github/workflows/build-and-push.yml
+        with:
+          image-name: ${{ github.job }}
+          repo-owner: ${{ inputs.repo-owner }}
+          build-context: ./${{ github.job }}
