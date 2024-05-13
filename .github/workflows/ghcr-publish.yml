@@ -12,6 +12,9 @@ on:
     branches: [main]
   workflow_dispatch:
 
+env:
+  REGISTRY: ghcr.io
+
 jobs:
   build-setup:
     name: "Set up build environment"
@@ -24,8 +27,6 @@ jobs:
   build-and-push:
     name: "Build container images and push to registry"
     runs-on: ubuntu-latest
-    env:
-      REGISTRY: ghcr.io
     strategy:
       matrix:
         container: [
@@ -89,6 +90,7 @@ jobs:
           push: ${{ github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
           tags: ${{ env.REGISTRY }}/${{ env.REPO_OWNER }}/${{ matrix.container }}:latest
   build-and-push-otbr:
+    name: "Build OTBR container image and push to registry"
     runs-on: ubuntu-latest
     steps:
       # Checkout the repository
