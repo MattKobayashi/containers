@@ -71,7 +71,7 @@ jobs:
     with:
       image-name: otbr
       repo-owner: ${{ inputs.repo-owner }}
-      build-context: ./${{ inputs.image-name }}/ot-br-posix/etc/docker/
+      build-context: ./${{ inputs.image-name }}/ot-br-posix-conditional_avahi/etc/docker/
   rng-tools:
     if: ${{ github.ref_name == 'main' || contains(github.job, github.head_ref) }}
     uses: ./.github/workflows/build-and-push.yml
