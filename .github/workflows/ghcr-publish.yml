@@ -105,6 +105,16 @@ jobs:
         with:
           repository: kevinanderson1/ot-br-posix
           ref: conditional_avahi
+      # Bootstrap the build environment
+      - name: Bootstrap build environment
+        env:
+          BUILD_TARGET: "docker-check"
+        run: tests/scripts/bootstrap.sh
+        if: ${{ github.ref_name == 'main' || github.head_ref == 'otbr' }}
+      # Run checks
+      - name: Check build environment
+        run: tests/scripts/check-docker
+        if: ${{ github.ref_name == 'main' || github.head_ref == 'otbr' }}
       # Set up QEMU
       # https://github.com/docker/setup-qemu-action
       - name: Set up QEMU
