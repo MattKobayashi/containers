@@ -19,14 +19,17 @@ jobs:
   build-setup:
     name: "Set up build environment"
     runs-on: ubuntu-latest
+    outputs:
+      repo-owner: ${{ steps.repo-lowercase.outputs.REPO_OWNER }}
     steps:
       - name: Convert repository owner name to lowercase
         id: repo-lowercase
         run: |
-          echo "REPO_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_ENV
+          echo "REPO_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_OUTPUT
   build-and-push:
     name: "Build container images and push to registry"
     runs-on: ubuntu-latest
+    needs: build-setup
     strategy:
       matrix:
         container: [
@@ -88,10 +91,11 @@ jobs:
         with:
           context: ./${{ matrix.container }}
           push: ${{ github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
-          tags: ${{ env.REGISTRY }}/${{ env.REPO_OWNER }}/${{ matrix.container }}:latest
+          tags: ${{ env.REGISTRY }}/${{ needs.build-setup.outputs.repo-owner }}/${{ matrix.container }}:latest
   build-and-push-otbr:
     name: "Build OTBR container image and push to registry"
     runs-on: ubuntu-latest
+    needs: build-setup
     steps:
       # Checkout the repository
       - name: Checkout repository
@@ -129,4 +133,4 @@ jobs:
         with:
           context: ./otbr/ot-br-posix-conditional_avahi/etc/docker
           push: ${{ github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
-          tags: ${{ env.REGISTRY }}/${{ env.REPO_OWNER }}/otbr:latest
+          tags: ${{ env.REGISTRY }}/${{ needs.build-setup.outputs.repo-owner }}/otbr:latest
