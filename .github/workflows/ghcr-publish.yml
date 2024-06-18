@@ -101,8 +101,8 @@ jobs:
         uses: actions/checkout@v4
         if: ${{ github.ref_name == 'main' || github.head_ref == 'otbr' }}
         with:
-          repository: kevinanderson1/ot-br-posix
-          ref: conditional_avahi
+          repository: openthread/ot-br-posix
+          ref: main
           submodules: true
       # Bootstrap the build environment
       - name: Bootstrap build environment
