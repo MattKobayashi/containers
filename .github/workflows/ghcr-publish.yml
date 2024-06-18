@@ -41,8 +41,6 @@ jobs:
           growatt-ev,
           iperf2,
           iperf3,
-          irrd,
-          irrexplorer,
           mdns-reflector,
           rng-tools,
           speedtest,
