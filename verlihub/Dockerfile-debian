@@ -1,0 +1,82 @@
+FROM debian:12-slim as build
+
+# Install dependencies and compile
+RUN apt-get update \
+    && apt-get --yes install \
+        git \
+        build-essential \
+        cmake \
+        libpcre3-dev \
+        libssl-dev \
+        libmaxminddb-dev \
+        libicu-dev \
+        gettext \
+        libasprintf-dev \
+        mariadb-server \
+        libmariadb-dev \
+        mariadb-client \
+        libmariadb-dev-compat \
+    && git clone https://github.com/Verlihub/verlihub.git \
+    && cd verlihub/ \
+    && git checkout 1.5.0.0 \
+    && mkdir -p build \
+    && cd build/ \
+    && cmake -DWITH_PLUGINS=OFF .. \
+    && make
+
+FROM debian:12-slim
+WORKDIR /opt/verlihub/
+
+# Install runtime dependencies
+RUN apt-get update \
+    && apt-get --yes install \
+        libpcre3-dev \
+        libssl3 \
+        libmaxminddb-dev \
+        libicu-dev \
+        libasprintf-dev \
+        mariadb-client \
+        libmariadb-dev \
+        libmariadb-dev-compat
+
+# Copy files from build image
+COPY --from=build /verlihub/ /verlihub/
+
+# Install
+RUN apt-get --yes install build-essential cmake \
+    && cd /verlihub/build/ \
+    && make install \
+    && rm -r /verlihub/ \
+    && apt-get --yes remove \
+        build-essential \
+        cmake \
+        libpcre3-dev \
+        libmaxminddb-dev \
+        libicu-dev \
+        libasprintf-dev \
+        libmariadb-dev \
+        libmariadb-dev-compat \
+    && apt-get --yes autoremove \
+    && apt-get --yes clean \
+    && apt-get --yes install \
+        libpcre3 \
+        libmaxminddb0 \
+        libicu72 \
+        libasprintf0v5 \
+        libmariadb3 \
+    && useradd --system --base-dir /opt verlihub
+
+# Copy entrypoint.sh to image
+COPY entrypoint.sh .
+
+# Change to non-root user
+USER verlihub
+
+# Set persistent data volume
+VOLUME /opt/verlihub/.config/verlihub/
+
+# Set entrypoint
+ENTRYPOINT ["/opt/verlihub/entrypoint.sh"]
+CMD ["--install"]
+
+LABEL org.opencontainers.image.authors="MattKobayashi <matthew@kobayashi.au>"
