@@ -47,7 +47,7 @@ services:
       - 'POSTGRES_DB=irrd'
       - 'POSTGRES_PASSWORD=irrd'
       - 'POSTGRES_USER=irrd'
-    image: 'postgres:15-alpine'
+    image: 'postgres:16-alpine'
     logging:
       driver: syslog
       options:
