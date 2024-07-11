@@ -1,0 +1,89 @@
+---
+name: irrd
+
+services:
+
+  ## IRRd ##
+  # Ports: 43/tcp, 8000/tcp
+  irrd:
+    container_name: irrd
+    depends_on:
+      - irrd-database
+      - irrd-redis
+    image: 'irrd:latest'
+    logging:
+      driver: syslog
+      options:
+        syslog-address: 'udp://127.0.0.1:55514'
+        syslog-format: rfc5424micro
+        mode: 'non-blocking'
+        tag: '{{.Name}}'
+    networks:
+      - irrd
+    ports:
+      - target: 43
+        published: 43
+        protocol: tcp
+        mode: host
+      - target: 8000
+        published: 8000
+        protocol: tcp
+        mode: host
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: ./irrd.yaml  # Set this to the path to your irrd.yaml file
+        target: /etc/irrd.yaml
+      - type: bind
+        source: ./irrexplorer.yaml  # Set this to the path to your irrexplorer.yaml file
+        target: /etc/irrexplorer.yaml
+  ## IRRd Database ##
+  # Ports: 5432/tcp
+  irrd-database:
+    command: ['-c', 'random_page_cost=1.0', '-c', 'work_mem=50MB', '-c', 'shared_buffers=1GB', '-c', 'max_connections=1000']
+    container_name: irrd-database
+    environment:
+      - 'PGDATA=/var/lib/postgresql/data/pgdata'
+      - 'POSTGRES_DB=irrd'
+      - 'POSTGRES_PASSWORD=irrd'
+      - 'POSTGRES_USER=irrd'
+    image: 'postgres:15-alpine'
+    logging:
+      driver: syslog
+      options:
+        syslog-address: 'udp://127.0.0.1:55514'
+        syslog-format: rfc5424micro
+        mode: 'non-blocking'
+        tag: '{{.Name}}'
+    networks:
+      - irrd
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: ./irrd-database/  # Set this to your desired path for database files
+        target: /var/lib/postgresql/data/
+  ## IRRd Redis ##
+  # Ports: 6379/tcp
+  irrd-redis:
+    container_name: irrd-redis
+    image: 'redis:7-alpine'
+    logging:
+      driver: syslog
+      options:
+        syslog-address: 'udp://127.0.0.1:55514'
+        syslog-format: rfc5424micro
+        mode: 'non-blocking'
+        tag: '{{.Name}}'
+    networks:
+      - irrd
+    restart: unless-stopped
+
+networks:
+  irrd:
+    name: irrd
+    driver: bridge
+    enable_ipv6: true
+    ipam:
+      config:
+        - subnet: 10.4.0.0/24
+        - subnet: fdea:420:cafe::/64

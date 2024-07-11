@@ -8,21 +8,27 @@ Create an appropriate configuration file and mount it into the container as show
 
 ### Required `irrd.yaml` values
 
-- `irrd.database_url`: `"postgresql://irrd:irrd@/irrd"`
-- `irrd.redis_url`: `"unix:///run/redis/redis-server.sock"`
+- `irrd.database_url`: `"postgresql://irrd:irrd@irrd-database/irrd"`
+- `irrd.redis_url`: `"redis://irrd-redis"`
 - `irrd.piddir`: `/opt/irrd`
 - `irrd.user`: `irrd`
 - `irrd.group`: `irrd`
 
-## Environment Variables
+### Required `irrexplorer.yaml` values
 
-- `IRRD_HTTP_PORT` (required): The port that IRRd's HTTP service runs on, as configured in `/etc/irrd.yaml`.
+- `irrexplorer.database_url`: `"postgresql://irrexplorer:irrexplorer@irrd-database/irrexplorer"`
+- `irrexplorer.irrd_endpoint`: `"https://irrd.example.net/graphql/"`
 
 ## Running
 
 Start the daemon:
 
-`docker run -d --name irrd --env IRRD_HTTP_PORT=8080 --volume /path/to/irrd.yaml:/etc/irrd.yaml --volume irrd_database:/var/lib/postgresql/15/main ghcr.io/mattkobayashi/irrd`
+`docker run \
+	-d \
+	--name irrd \
+	--volume /path/to/irrd.yaml:/etc/irrd.yaml \
+	--volume /path/to/irrexplorer.yaml:/etc/irrexplorer.yaml \
+	ghcr.io/mattkobayashi/irrd`
 
 ## Explanatory notes
 
