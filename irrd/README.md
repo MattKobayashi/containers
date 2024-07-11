@@ -1,10 +1,10 @@
 # irrd
 
-irrd and IRR Explorer in a PyPy-based container image.
+irrd and IRR Explorer in a container image.
 
 ## Configuration
 
-Create an appropriate configuration file and mount it into the container as shown below. An example configuration file can be found [here](https://irrd.readthedocs.io/en/stable/admins/configuration/#example-configuration-file), and a list of all available configuration options can be found [here](https://irrd.readthedocs.io/en/stable/admins/configuration/#configuration-options).
+Create appropriate configuration files and mount them into the container as shown below. An example configuration file can be found [here](https://irrd.readthedocs.io/en/stable/admins/configuration/#example-configuration-file), and a list of all available configuration options can be found [here](https://irrd.readthedocs.io/en/stable/admins/configuration/#configuration-options).
 
 ### Required `irrd.yaml` values
 
