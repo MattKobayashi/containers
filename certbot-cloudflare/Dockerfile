@@ -1,4 +1,4 @@
-FROM certbot/dns-cloudflare:latest
+FROM certbot/dns-cloudflare:v2.11.0
 
 ARG TARGETPLATFORM
 ENV SUPERCRONIC_SHA1SUM_amd64=cd48d45c4b10f3f0bfdd3a57d054cd05ac96812b \
