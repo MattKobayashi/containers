@@ -1,4 +1,4 @@
-FROM alpine:3
+FROM alpine:3.20.3
 
 # Install dependencies and set timezone
 RUN apk --no-cache upgrade \
