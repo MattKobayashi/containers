@@ -1,7 +1,7 @@
 ---
 services:
   yancobat:
-    image: 'ghcr.io/mattkobayashi/yancobat:latest'
+    image: 'ghcr.io/mattkobayashi/yancobat:v2024.09.0'
     restart: unless-stopped
     environment:
       - 'TZ='
