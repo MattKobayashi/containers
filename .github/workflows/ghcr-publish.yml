@@ -97,7 +97,6 @@ jobs:
         with:
           context: ./${{ matrix.container }}
           push: ${{ github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
-          # tags: ${{ env.REGISTRY }}/${{ needs.build-setup.outputs.repo-owner }}/${{ matrix.container }}:latest
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
