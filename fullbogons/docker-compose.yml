@@ -1,7 +1,7 @@
 ---
 services:
   fullbogons:
-    image: 'ghcr.io/mattkobayashi/fullbogons:v2024.09.0'
+    image: 'ghcr.io/mattkobayashi/fullbogons:v2024.09.1'
     restart: unless-stopped
     privileged: true
     environment:
