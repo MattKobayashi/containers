@@ -1,4 +1,4 @@
-FROM alpine:3 as buildenv
+FROM alpine:3.20.3 as buildenv
 
 ENV SOURCE_FILE=iperf3.tar.gz \
     SOURCE_URL=https://github.com/esnet/iperf/archive/3.13.tar.gz \
@@ -15,7 +15,7 @@ RUN apk --no-cache upgrade \
     && make \
     && make install
 
-FROM alpine:3
+FROM alpine:3.20.3
 
 # Copy relevant compiled files to distribution image
 RUN adduser --system iperf3 \
