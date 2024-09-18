@@ -1,4 +1,4 @@
-FROM alpine:3.20 as buildenv
+FROM alpine:3.20.3 as buildenv
 
 ENV SOURCE_FILE=mdns-reflector.tar.gz \
     SOURCE_URL=https://github.com/vfreex/mdns-reflector/archive/refs/tags/v0.0.1-dev.1.tar.gz \
@@ -16,7 +16,7 @@ RUN apk --no-cache upgrade \
     && cmake -DCMAKE_BUILD_TYPE=release .. \
     && make install
 
-FROM alpine:3.20
+FROM alpine:3.20.3
 
 # Copy relevant compiled files to distribution image
 RUN adduser --system mdns-reflector \
