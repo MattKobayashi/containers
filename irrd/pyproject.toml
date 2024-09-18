@@ -8,7 +8,7 @@ package-mode = false
 [tool.poetry.dependencies]
 python = "3.12.6"
 psycopg2-binary = "2.9.9"
-PyYAML = "6.0.1"
+PyYAML = "6.0.2"
 
 [tool.poetry.dev-dependencies]
 
