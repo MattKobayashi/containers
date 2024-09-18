@@ -1,7 +1,7 @@
 ---
 services:
   certbot-cloudflare:
-    image: 'ghcr.io/mattkobayashi/certbot-cloudflare:v2024.09.0'
+    image: 'ghcr.io/mattkobayashi/certbot-cloudflare:v2024.09.1'
     restart: unless-stopped
     environment:
       - 'EMAIL='
