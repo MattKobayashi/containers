@@ -1,4 +1,4 @@
-FROM debian:12-slim as build
+FROM debian:12.7-slim as build
 
 # Install dependencies and compile
 RUN apt-get update \
@@ -24,7 +24,7 @@ RUN apt-get update \
     && cmake -DWITH_PLUGINS=OFF .. \
     && make
 
-FROM debian:12-slim
+FROM debian:12.7-slim
 WORKDIR /opt/verlihub/
 
 # Install runtime dependencies

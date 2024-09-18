@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM ubuntu:24.04
 
 ENV SOURCE_FILE=verlihub.tar.gz \
     SOURCE_URL=https://github.com/Verlihub/verlihub/archive/refs/tags/1.4.0.0.tar.gz \
