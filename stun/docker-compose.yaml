@@ -1,7 +1,7 @@
 ---
 services:
   stun:
-    image: 'ghcr.io/mattkobayashi/stun:latest'
+    image: 'ghcr.io/mattkobayashi/stun:v2024.09.0'
     restart: unless-stopped
     ports:
       - target: 3478
