@@ -1,7 +1,7 @@
 ---
 services:
   service: &actions-runner
-    image: 'ghcr.io/mattkobayashi/actions-runner:latest'
+    image: 'ghcr.io/mattkobayashi/actions-runner:v2024.09.0'
     restart: unless-stopped
     secrets:
       - TOKEN
