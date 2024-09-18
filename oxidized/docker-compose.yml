@@ -1,7 +1,7 @@
 ---
 services:
   oxidized:
-    image: "ghcr.io/mattkobayashi/oxidized:latest"
+    image: "ghcr.io/mattkobayashi/oxidized:v2024.09.0"
     restart: "unless-stopped"
     volumes:
       - type: volume
