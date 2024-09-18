@@ -3,5 +3,6 @@
   "extends": [
     "config:recommended"
   ],
-  "assignees": ["MattKobayashi"]
+  "assignees": ["MattKobayashi"],
+  "recreateWhen": "never"
 }
