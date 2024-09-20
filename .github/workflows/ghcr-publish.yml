@@ -46,7 +46,9 @@ jobs:
   build-setup:
     name: 'Set up build environment'
     runs-on: ubuntu-latest
-    strategy: false
+    strategy:
+      matrix:
+        container: []
     outputs:
       repo-owner: ${{ steps.repo-lowercase.outputs.REPO_OWNER }}
     steps:
