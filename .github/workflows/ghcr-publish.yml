@@ -19,6 +19,7 @@ jobs:
   create-runners:
     name: 'Create ephemeral GitHub Actions runners'
     uses: ./.github/workflows/create-runner.yaml
+    secrets: inherit
     strategy:
       fail-fast: false
       matrix:
@@ -41,7 +42,6 @@ jobs:
           xteve,
           yancobat
         ]
-
   build-setup:
     name: 'Set up build environment'
     runs-on: ubuntu-latest
