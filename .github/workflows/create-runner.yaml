@@ -40,6 +40,7 @@ jobs:
               --env='LABELS=linux,x64' \
               --env='REPO_URL=${{ github.server_url }}/${{ github.repository }}' \
               --env='RUNNER_NAME_PREFIX=${{ matrix.container }}' \
+              --env='RUNNER_WORKDIR=/tmp/actions-runners/${{ matrix.container }}/work' \
               --log-driver=syslog \
               --log-opt='syslog-address=udp://127.0.0.1:55514' \
               --log-opt='syslog-format=rfc5424micro' \
@@ -51,4 +52,6 @@ jobs:
               --security-opt='label=disable' \
               --stop-signal=SIGTERM \
               --stop-timeout=10 \
+              --volume /var/run/docker.sock:/var/run/docker.sock \
+              --volume /tmp/actions-runners/${{ matrix.container }}:/tmp/actions-runners/${{ matrix.container }} \
               ghcr.io/myoung34/docker-github-actions-runner:debian-bookworm
