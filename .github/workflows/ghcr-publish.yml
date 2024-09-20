@@ -1,36 +1,8 @@
 ---
 name: Publish images to GHCR.io
 
-on:
-  schedule:
-    - cron: '0 3 * * SAT'
-  push:
-    branches: [main]
-    # Publish semver tags as releases.
-    tags: ['v*.*.*']
-  pull_request:
-    branches: [main]
-  workflow_dispatch:
-
-env:
-  REGISTRY: ghcr.io
-
-jobs:
-  build-setup:
-    name: 'Set up build environment'
-    runs-on: ubuntu-latest
-    outputs:
-      repo-owner: ${{ steps.repo-lowercase.outputs.REPO_OWNER }}
-    steps:
-      - name: Convert repository owner name to lowercase
-        id: repo-lowercase
-        run: |
-          echo "REPO_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_OUTPUT
-  build-and-push:
-    name: 'Build and push'
-    runs-on: ubuntu-latest
-    needs: build-setup
-    strategy:
+defaults:
+  strategy:
       fail-fast: false
       matrix:
         container: [
@@ -52,6 +24,40 @@ jobs:
           xteve,
           yancobat
         ]
+
+on:
+  schedule:
+    - cron: '0 3 * * SAT'
+  push:
+    branches: [main]
+    # Publish semver tags as releases.
+    tags: ['v*.*.*']
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  create-runners:
+    name: 'Create ephemeral GitHub Actions runners'
+    uses: ./.github/workflows/create-runner.yaml
+  build-setup:
+    name: 'Set up build environment'
+    runs-on: ubuntu-latest
+    strategy: false
+    outputs:
+      repo-owner: ${{ steps.repo-lowercase.outputs.REPO_OWNER }}
+    steps:
+      - name: Convert repository owner name to lowercase
+        id: repo-lowercase
+        run: |
+          echo "REPO_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_OUTPUT
+  build-and-push:
+    name: 'Build and push'
+    runs-on: self-hosted
+    needs: build-setup
     steps:
       # Checkout repository
       # https://github.com/actions/checkout
