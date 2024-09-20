@@ -44,7 +44,7 @@ jobs:
             --log-opt='syslog-format=rfc5424micro' \
             --log-opt='mode=non-blocking' \
             --log-opt='tag={{.Name}}-mattflix' \
-            --networks=mattflix \
+            --network=mattflix \
             --restart=unless-stopped \
             --security-opt='label=disable' \
             --stop-signal=SIGTERM \
