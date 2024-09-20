@@ -1,8 +1,25 @@
 ---
 name: Publish images to GHCR.io
 
-defaults:
-  strategy:
+on:
+  schedule:
+    - cron: '0 3 * * SAT'
+  push:
+    branches: [main]
+    # Publish semver tags as releases.
+    tags: ['v*.*.*']
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  create-runners:
+    name: 'Create ephemeral GitHub Actions runners'
+    uses: ./.github/workflows/create-runner.yaml
+    strategy:
       fail-fast: false
       matrix:
         container: [
@@ -25,30 +42,9 @@ defaults:
           yancobat
         ]
 
-on:
-  schedule:
-    - cron: '0 3 * * SAT'
-  push:
-    branches: [main]
-    # Publish semver tags as releases.
-    tags: ['v*.*.*']
-  pull_request:
-    branches: [main]
-  workflow_dispatch:
-
-env:
-  REGISTRY: ghcr.io
-
-jobs:
-  create-runners:
-    name: 'Create ephemeral GitHub Actions runners'
-    uses: ./.github/workflows/create-runner.yaml
   build-setup:
     name: 'Set up build environment'
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        container: []
     outputs:
       repo-owner: ${{ steps.repo-lowercase.outputs.REPO_OWNER }}
     steps:
@@ -60,6 +56,28 @@ jobs:
     name: 'Build and push'
     runs-on: self-hosted
     needs: build-setup
+    strategy:
+      fail-fast: false
+      matrix:
+        container: [
+          actions-runner,
+          avahi,
+          certbot-cloudflare,
+          fullbogons,
+          growatt-ev,
+          iperf2,
+          iperf3,
+          irrd,
+          mdns-reflector,
+          rng-tools,
+          speedtest,
+          stun,
+          telegraf,
+          verlihub,
+          vyos-release-alert,
+          xteve,
+          yancobat
+        ]
     steps:
       # Checkout repository
       # https://github.com/actions/checkout
