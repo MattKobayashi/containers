@@ -29,7 +29,7 @@ jobs:
       - name: 'Start ephemeral runner container'
         run: |
           set -eux
-          ssh matthew@100.102.37.118 'docker container run \
+          ssh matthew@100.102.37.118 docker container run \
               --cgroupns=private \
               --cgroup-parent=/mattflix/actions-runners \
               --detach \
@@ -49,4 +49,4 @@ jobs:
               --security-opt='label=disable' \
               --stop-signal=SIGTERM \
               --stop-timeout=10 \
-              ghcr.io/myoung34/docker-github-actions-runner:debian-bookworm'
+              ghcr.io/myoung34/docker-github-actions-runner:debian-bookworm
