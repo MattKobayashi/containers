@@ -47,6 +47,7 @@ jobs:
               --log-opt='tag={{.Name}}-mattflix' \
               --network=mattflix \
               --restart=no \
+              --rm \
               --security-opt='label=disable' \
               --stop-signal=SIGTERM \
               --stop-timeout=10 \
