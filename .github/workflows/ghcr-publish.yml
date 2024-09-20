@@ -22,7 +22,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        container: [
+        runner-name: [
           actions-runner,
           avahi,
           certbot-cloudflare,
@@ -43,7 +43,7 @@ jobs:
         ]
     uses: ./.github/workflows/create-runner.yaml
     with:
-      container: ${{ matrix.container }}
+      runner-name: ${{ matrix.runner-name }}
   build-setup:
     name: 'Set up build environment'
     runs-on: ubuntu-latest
