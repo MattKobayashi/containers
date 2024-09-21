@@ -17,7 +17,7 @@ env:
 
 jobs:
   create-runners:
-    name: 'Create ephemeral GitHub Actions runners'
+    name: 'Create self-hosted Actions runners'
     secrets: inherit
     strategy:
       fail-fast: false
