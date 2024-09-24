@@ -141,7 +141,7 @@ jobs:
         if: ${{ github.event_name == 'pull_request' }}
         run: |
           set -ex
-          CONTAINER_ID=$(docker container run --detach --rm ${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:test)
+          CONTAINER_ID=$(docker container run --detach --rm ${{ needs.build-setup.outputs.repo-owner }}/${{ matrix.container }}:test)
           sleep 30
           docker container stop $CONTAINER_ID
       # Build and push Docker image with Buildx (don't push on PR)
