@@ -134,8 +134,11 @@ jobs:
         uses: docker/build-push-action@v6.7.0
         if: ${{ github.event_name == 'pull_request' }}
         with:
+          context: ./${{ matrix.container }}
           load: true
-          tags: "${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:test"
+          tags: "${{ needs.build-setup.outputs.repo-owner }}/${{ matrix.container }}:test"
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
       # Test the built image
       - name: Test image
         if: ${{ github.event_name == 'pull_request' }}
