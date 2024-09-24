@@ -137,8 +137,6 @@ jobs:
           context: ./${{ matrix.container }}
           load: true
           tags: "${{ needs.build-setup.outputs.repo-owner }}/${{ matrix.container }}:test"
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
       # Test the built image
       - name: Test image
         if: ${{ github.event_name == 'pull_request' }}
