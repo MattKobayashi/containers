@@ -7,9 +7,6 @@ on:
       runner-name:
         required: true
         type: string
-      workdir:
-        required: true
-        type: string
 
 jobs:
   create-runner:
@@ -38,6 +35,9 @@ jobs:
         id: start-runner
         run: |
           set -ex
+          sudo apt-get --yes update
+          sudo apt-get --yes install uuid-runtime
+          WORKDIR=/tmp/actions-runners/$(uuidgen)
           ssh matthew@100.102.37.118 docker container run \
             --cgroupns=private \
             --cgroup-parent=/mattflix/actions-runners \
@@ -49,7 +49,7 @@ jobs:
             --env=LABELS=linux,x64 \
             --env=REPO_URL=${{ github.server_url }}/${{ github.repository }} \
             --env=RUNNER_NAME_PREFIX=${{ inputs.runner-name }} \
-            --env=RUNNER_WORKDIR=${{ inputs.workdir }}/work \
+            --env=RUNNER_WORKDIR=$WORKDIR/work \
             --log-driver=syslog \
             --log-opt=syslog-address=udp://127.0.0.1:55514 \
             --log-opt=syslog-format=rfc5424micro \
@@ -62,5 +62,5 @@ jobs:
             --stop-signal=SIGTERM \
             --stop-timeout=10 \
             --volume /var/run/docker.sock:/var/run/docker.sock \
-            --volume ${{ inputs.workdir }}:${{ inputs.workdir }} \
+            --volume $WORKDIR:$WORKDIR \
               ghcr.io/myoung34/docker-github-actions-runner:debian-bookworm
