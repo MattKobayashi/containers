@@ -17,7 +17,7 @@ env:
 
 jobs:
   create-runners:
-    name: 'Create self-hosted Actions runners'
+    name: Create self-hosted Actions runners
     secrets: inherit
     strategy:
       fail-fast: false
@@ -46,7 +46,7 @@ jobs:
       runner-name: ${{ matrix.runner-name }}
       workdir: /tmp/actions-runners/${{ matrix.runner-name }}
   build-setup:
-    name: 'Set up build environment'
+    name: Set up build environment
     runs-on: ubuntu-latest
     outputs:
       repo-owner: ${{ steps.repo-lowercase.outputs.REPO_OWNER }}
@@ -56,7 +56,7 @@ jobs:
         run: |
           echo "REPO_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_OUTPUT
   build-and-push:
-    name: 'Build and push'
+    name: Build and push
     runs-on: self-hosted
     needs: [create-runners, build-setup]
     strategy:
@@ -132,14 +132,14 @@ jobs:
       # https://github.com/docker/build-push-action
       - name: Build and export to Docker
         uses: docker/build-push-action@v6.7.0
-        if: ${{ github.event_name == 'pull_request' }}
+        if: ${{ github.event_name == 'pull_request' && github.head_ref == matrix.container }}
         with:
           context: ./${{ matrix.container }}
           load: true
           tags: "${{ needs.build-setup.outputs.repo-owner }}/${{ matrix.container }}:test"
       # Test the built image
       - name: Test image
-        if: ${{ github.event_name == 'pull_request' }}
+        if: ${{ github.event_name == 'pull_request' && github.head_ref == matrix.container }}
         run: |
           set -ex
           CONTAINER_ID=$(docker container run --detach --rm ${{ needs.build-setup.outputs.repo-owner }}/${{ matrix.container }}:test)
