@@ -36,8 +36,6 @@ jobs:
           yancobat
         ]
     uses: ./.github/workflows/create-runner.yaml
-    with:
-      runner-name: ${{ matrix.runner-name }}
   build-setup:
     name: Set up build environment
     runs-on: ubuntu-latest
@@ -105,7 +103,6 @@ jobs:
           tags: "${{ needs.build-setup.outputs.repo-owner }}/${{ matrix.container }}:test"
       # Test the built image
       - name: Test image
-        if: ${{ github.head_ref == matrix.container || github.ref_name == 'staging' }}
         run: |
           set -ex
           timeout --kill-after=30s 30s docker container run --rm ${{ needs.build-setup.outputs.repo-owner }}/${{ matrix.container }}:test

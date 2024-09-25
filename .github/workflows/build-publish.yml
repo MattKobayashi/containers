@@ -40,8 +40,6 @@ jobs:
           yancobat
         ]
     uses: ./.github/workflows/create-runner.yaml
-    with:
-      runner-name: ${{ matrix.runner-name }}
   build-setup:
     name: Set up build environment
     runs-on: ubuntu-latest
