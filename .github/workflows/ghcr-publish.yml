@@ -86,17 +86,16 @@ jobs:
       # https://github.com/actions/checkout
       - name: Checkout repository
         uses: actions/checkout@v4.1.7
-        if: ${{ github.ref_name == 'main' || github.head_ref == matrix.container || github.ref_type == 'tag' }}
       # Set up QEMU
       # https://github.com/docker/setup-qemu-action
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3.2.0
-        if: ${{ github.ref_name == 'main' || github.head_ref == matrix.container || github.ref_type == 'tag' }}
+        if: ${{ github.head_ref == matrix.container }}
       # Set up Docker Buildx
       # https://github.com/docker/setup-buildx-action
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3.6.1
-        if: ${{ github.ref_name == 'main' || github.head_ref == matrix.container || github.ref_type == 'tag' }}
+        if: ${{ github.head_ref == matrix.container }}
         with:
           buildkitd-config-inline: |
             [registry."docker.io"]
@@ -112,9 +111,7 @@ jobs:
           (github.event_name == 'push' ||
           github.event_name == 'schedule' ||
           github.event_name == 'workflow_dispatch') &&
-          github.ref_name == 'main' ||
-          github.head_ref == matrix.container ||
-          github.ref_type == 'tag'
+          github.head_ref == matrix.container
         uses: docker/login-action@v3.3.0
         with:
           registry: ${{ env.REGISTRY }}
@@ -124,7 +121,7 @@ jobs:
       # https://github.com/docker/metadata-action
       - name: Extract Docker metadata
         id: meta
-        if: ${{ github.ref_name == 'main' || github.head_ref == matrix.container || github.ref_type == 'tag' }}
+        if: ${{ github.head_ref == matrix.container }}
         uses: docker/metadata-action@v5.5.1
         with:
           images: ${{ env.REGISTRY }}/${{ needs.build-setup.outputs.repo-owner }}/${{ matrix.container }}
@@ -147,7 +144,7 @@ jobs:
       # https://github.com/docker/build-push-action
       - name: Build and push Docker image
         uses: docker/build-push-action@v6.7.0
-        if: ${{ github.ref_name == 'main' || github.head_ref == matrix.container || github.ref_type == 'tag' }}
+        if: ${{ github.head_ref == matrix.container }}
         with:
           context: ./${{ matrix.container }}
           push: ${{ github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
