@@ -90,10 +90,12 @@ jobs:
       # https://github.com/docker/setup-qemu-action
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3.2.0
+        if: ${{ github.head_ref == matrix.container }}
       # Set up Docker Buildx
       # https://github.com/docker/setup-buildx-action
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3.6.1
+        if: ${{ github.head_ref == matrix.container }}
         with:
           buildkitd-config-inline: |
             [registry."docker.io"]
