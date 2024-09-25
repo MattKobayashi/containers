@@ -7,7 +7,7 @@ package-mode = false
 
 [tool.poetry.dependencies]
 python = "3.12.6"
-requests = "2.31.0"
+requests = "2.32.2"
 ansible-pylibssh = "1.2.2"
 
 [tool.poetry.dev-dependencies]
