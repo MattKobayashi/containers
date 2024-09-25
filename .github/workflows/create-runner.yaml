@@ -10,17 +10,17 @@ on:
 
 jobs:
   create-runner:
-    name: 'Create runner'
+    name: Create runner
     runs-on: ubuntu-latest
     steps:
-      - name: 'Create ephemeral Tailscale node'
+      - name: Create ephemeral Tailscale node
         uses: tailscale/github-action@v2
         with:
           oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
           tags: tag:ci
           version: 1.74.1
-      - name: 'Update SSH known hosts'
+      - name: Update SSH known hosts
         env:
           SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
         run: |
@@ -31,12 +31,10 @@ jobs:
           $SSH_KNOWN_HOSTS
           EOF
           chmod 600 ~/.ssh/known_hosts
-      - name: 'Start ephemeral runner container'
+      - name: Start ephemeral runner container
         id: start-runner
         run: |
           set -ex
-          sudo apt-get --yes update
-          sudo apt-get --yes install uuid-runtime
           WORKDIR=/tmp/actions-runners/$(uuidgen)
           ssh matthew@100.102.37.118 docker container run \
             --cgroupns=private \
