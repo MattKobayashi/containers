@@ -48,8 +48,8 @@ jobs:
         id: repo-lowercase
         run: |
           echo "REPO_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_OUTPUT
-  build-and-push:
-    name: Build and push
+  build-and-test:
+    name: Build and test image
     runs-on: self-hosted
     needs: [create-runners, build-setup]
     strategy:
