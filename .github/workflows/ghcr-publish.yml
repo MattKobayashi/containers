@@ -142,7 +142,7 @@ jobs:
         if: ${{ github.event_name == 'pull_request' && github.head_ref == matrix.container }}
         run: |
           set -ex
-          timeout --kill-after=30s 30s docker container run --detach --rm ${{ needs.build-setup.outputs.repo-owner }}/${{ matrix.container }}:test)
+          timeout --kill-after=30s 30s docker container run --detach --rm ${{ needs.build-setup.outputs.repo-owner }}/${{ matrix.container }}:test
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
       - name: Build and push Docker image
