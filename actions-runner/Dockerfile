@@ -1,4 +1,4 @@
-FROM ubuntu:24.04
+FROM debian:12.7-slim
 
 ARG TARGETPLATFORM
 ENV RUNNER_VERSION=2.319.1 \
@@ -6,12 +6,13 @@ ENV RUNNER_VERSION=2.319.1 \
     RUNNER_HASH_arm64=03d993c65e0c4daa5e3bf5a5a35ba356f363bdb5ceb6b5808fd52fdb813dd8e8 \
     RUNNER_HASH_arm=513065cd485ea3b8b445ae4e7aae95960cc094527ecf954310e819c81f7c21e2
 
-RUN apt-get update && apt-get -y install curl jq git ca-certificates gnupg sudo \
+RUN apt-get update \
+    && apt-get --yes install curl jq git ca-certificates gnupg sudo \
     && install -m 0755 -d /etc/apt/keyrings \
-    && curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg \
-    && chmod a+r /etc/apt/keyrings/docker.gpg \
-    && echo "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null \
-    && apt-get update && apt-get -y install docker-ce-cli \
+    && curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc \
+    && chmod a+r /etc/apt/keyrings/docker.asc \
+    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null \
+    && apt-get update && apt-get --yes install docker-ce-cli \
     && adduser --system --group runner \
     && echo 'runner ALL = NOPASSWD: /usr/bin/apt-get' >> /etc/sudoers
 
