@@ -1,2 +1,2 @@
 #!/command/execlineb -P
-/bin/sh -c '/opt/speedtest/speedtest' '--accept-license' '--progress=no'
+/bin/sh -c /opt/speedtest/speedtest --accept-license --progress=no
