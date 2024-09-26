@@ -28,7 +28,7 @@ RUN wget https://install.speedtest.net/app/cli/ookla-speedtest-1.2.0-linux-x86_6
     && apt-get --yes autoremove
 
 # Copy files
-COPY --chmod=0700 speedtest /opt/scripts/
+COPY speedtest.sh /opt/scripts/
 
 # Set entrypoint
 ENTRYPOINT ["/init"]
