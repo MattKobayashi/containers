@@ -3,7 +3,7 @@ FROM debian:12.7-slim
 # Install xz-utils
 RUN apt-get update \
     && apt-get --yes upgrade \
-    && apt-get --yes install xz-utils
+    && apt-get --yes install xz-utils wget
 
 # Add s6-overlay
 WORKDIR /tmp
@@ -23,7 +23,8 @@ WORKDIR /opt/speedtest/
 
 # Update image and install/extract Ookla Speedtest
 RUN wget https://install.speedtest.net/app/cli/ookla-speedtest-1.2.0-linux-x86_64.tgz \
-    && tar -xof ookla-speedtest-1.2.0-linux-x86_64.tgz
+    && tar -xof ookla-speedtest-1.2.0-linux-x86_64.tgz \
+    && apt-get --yes remove xz-utils wget
 
 # Copy files
 COPY --chmod=0700 speedtest.sh .
