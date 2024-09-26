@@ -24,10 +24,11 @@ WORKDIR /opt/speedtest/
 # Update image and install/extract Ookla Speedtest
 RUN wget https://install.speedtest.net/app/cli/ookla-speedtest-1.2.0-linux-x86_64.tgz \
     && tar -xof ookla-speedtest-1.2.0-linux-x86_64.tgz \
-    && apt-get --yes remove xz-utils wget
+    && apt-get --yes remove xz-utils wget \
+    && apt-get --yes autoremove
 
 # Copy files
-COPY --chmod=0700 speedtest.sh .
+COPY --chmod=0700 /opt/scripts/speedtest.sh .
 
 # Set entrypoint
 ENTRYPOINT ["/init"]

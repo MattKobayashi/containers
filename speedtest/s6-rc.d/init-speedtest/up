@@ -1,2 +1,2 @@
 #!/command/execlineb -P
-/opt/speedtest/speedtest.sh
+/opt/scripts/speedtest.sh
