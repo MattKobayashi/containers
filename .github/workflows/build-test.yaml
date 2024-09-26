@@ -27,7 +27,7 @@ jobs:
           speedtest,
           stun,
           telegraf,
-          verlihub,
+          # verlihub,
           vyos-release-alert,
           xteve,
           yancobat
@@ -64,7 +64,7 @@ jobs:
           speedtest,
           stun,
           telegraf,
-          verlihub,
+          # verlihub,
           vyos-release-alert,
           xteve,
           yancobat
