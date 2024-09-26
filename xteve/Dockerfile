@@ -14,7 +14,8 @@ COPY sample_*.txt /
 # Set executable permissions
 RUN chmod +x /entrypoint.sh \
     && chmod +x /cronjob.sh \
-    && chmod +x /usr/bin/xteve
+    && chmod +x /usr/bin/xteve \
+    && mkdir /config
 
 # Expose port
 EXPOSE 34400
