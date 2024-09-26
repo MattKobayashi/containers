@@ -1,2 +1,2 @@
-#!/usr/bin/env sh -e
+#!/bin/ash -e
 /opt/speedtest/speedtest --accept-license --progress=no
