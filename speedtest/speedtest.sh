@@ -1,2 +1,2 @@
-#!/bin/ash -e
-/opt/speedtest/speedtest "--accept-license --progress=no"
+#!/bin/bash
+/opt/speedtest/speedtest --accept-license --progress=no
