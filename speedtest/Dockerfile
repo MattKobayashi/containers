@@ -21,6 +21,9 @@ RUN apk --no-cache upgrade \
     && wget https://install.speedtest.net/app/cli/ookla-speedtest-1.2.0-linux-x86_64.tgz \
     && tar -xof ookla-speedtest-1.2.0-linux-x86_64.tgz
 
+# Copy files
+COPY --chmod=0700 speedtest.sh .
+
 # Set entrypoint
 ENTRYPOINT ["/init"]
 
