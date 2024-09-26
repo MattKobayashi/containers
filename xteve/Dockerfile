@@ -21,6 +21,6 @@ RUN chmod +x /entrypoint.sh \
 EXPOSE 34400
 
 # Set entrypoint
-ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT ["/init"]
 
 LABEL org.opencontainers.image.authors="MattKobayashi <matthew@kobayashi.au>, alturismo <alturismo@gmail.com>"
