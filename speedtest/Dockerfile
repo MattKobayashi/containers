@@ -1,4 +1,4 @@
-FROM alpine:3.20.3
+FROM debian:12.7-slim
 
 # Add s6-overlay
 WORKDIR /tmp
@@ -17,7 +17,8 @@ COPY s6-rc.d/ /etc/s6-overlay/s6-rc.d/
 WORKDIR /opt/speedtest/
 
 # Update image and install/extract Ookla Speedtest
-RUN apk --no-cache upgrade \
+RUN apt-get update \
+    && apt-get --yes upgrade \
     && wget https://install.speedtest.net/app/cli/ookla-speedtest-1.2.0-linux-x86_64.tgz \
     && tar -xof ookla-speedtest-1.2.0-linux-x86_64.tgz
 
