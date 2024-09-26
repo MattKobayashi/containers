@@ -95,7 +95,7 @@ jobs:
       - name: Build and export to Docker
         uses: docker/build-push-action@v6.7.0
         with:
-          context: ./${{ matrix.container }}
+          context: ${{ matrix.container }}
           load: true
           tags: "${{ needs.build-setup.outputs.repo-owner }}/${{ matrix.container }}:test"
       # Test the built image
