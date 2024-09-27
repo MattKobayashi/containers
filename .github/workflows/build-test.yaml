@@ -49,7 +49,7 @@ jobs:
     needs: [create-runners, build-setup]
     strategy:
       fail-fast: false
-      max-parallel: 2
+      max-parallel: 1
       matrix:
         container: [
           actions-runner,
@@ -98,21 +98,19 @@ jobs:
         with:
           context: ${{ matrix.container }}
           load: true
-          tags: "${{ needs.build-setup.outputs.repo-owner }}/${{ matrix.container }}:test"
+          tags: "registry-mirror:5000/${{ needs.build-setup.outputs.repo-owner }}/${{ matrix.container }}:test"
       # Test the built image
       - name: Test image
         run: |
           set -e
           echo "Starting test container..."
-          CONTAINER_ID="$(docker container run --detach --init ${{ needs.build-setup.outputs.repo-owner }}/${{ matrix.container }}:test)"
+          CONTAINER_ID="$(docker container run --detach --init registry-mirror:5000/${{ needs.build-setup.outputs.repo-owner }}/${{ matrix.container }}:test)"
           echo "Test container started!"
           sleep 60
           echo "---------------"
           echo "Container logs:"
           echo "---------------"
-          docker container logs $CONTAINER_ID & \
-            wait
+          docker container logs $CONTAINER_ID
           echo "---------------"
-          docker container stop $CONTAINER_ID & \
-            wait
+          docker container stop $CONTAINER_ID
           docker container rm $CONTAINER_ID
