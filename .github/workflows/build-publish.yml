@@ -62,7 +62,7 @@ jobs:
         run: |
           echo "REPO_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_OUTPUT
   build-publish:
-    name: Build and push
+    name: Build and publish image
     runs-on: self-hosted
     needs: [create-runners, build-setup]
     strategy:
