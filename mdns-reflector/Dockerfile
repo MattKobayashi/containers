@@ -18,19 +18,6 @@ RUN apk --no-cache upgrade \
 
 FROM alpine:3.20.3
 
-# Add s6-overlay
-WORKDIR /tmp
-ENV S6_OVERLAY_VERSION=3.2.0.0
-ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz /tmp
-ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz.sha256 /tmp
-RUN echo "$(cat s6-overlay-noarch.tar.xz.sha256)" | sha256sum -c - \
-    && tar -C / -Jxpf /tmp/s6-overlay-noarch.tar.xz
-ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-x86_64.tar.xz /tmp
-ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-x86_64.tar.xz.sha256 /tmp
-RUN echo "$(cat s6-overlay-x86_64.tar.xz.sha256)" | sha256sum -c - \
-    && tar -C / -Jxpf /tmp/s6-overlay-x86_64.tar.xz
-COPY s6-rc.d/ /etc/s6-overlay/s6-rc.d/
-
 # Copy relevant compiled files to distribution image
 RUN adduser --system mdns-reflector \
     && apk --no-cache upgrade
@@ -40,6 +27,6 @@ COPY --from=buildenv /usr/local/bin/ /usr/local/bin/
 USER mdns-reflector
 
 # Set entrypoint
-ENTRYPOINT ["/init"]
+ENTRYPOINT ["mdns-reflector"]
 
 LABEL org.opencontainers.image.authors="MattKobayashi <matthew@kobayashi.au>"

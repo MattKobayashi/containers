@@ -9,6 +9,6 @@ RUN apk --no-cache upgrade \
 COPY main.py main.py
 COPY crontab crontab
 
-ENTRYPOINT ["supercronic", "/opt/vyos-blog-alert/crontab"]
+ENTRYPOINT ["/usr/bin/supercronic", "/opt/vyos-blog-alert/crontab"]
 
 LABEL org.opencontainers.image.authors="MattKobayashi <matthew@kobayashi.au>"
