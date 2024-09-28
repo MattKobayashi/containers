@@ -3,7 +3,8 @@ name: Build and test container images
 
 on:
   pull_request:
-    branches: [main]
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
@@ -107,6 +108,7 @@ jobs:
       # Build and export image to Docker daemon
       # https://github.com/docker/build-push-action
       - name: Build and export to Docker
+        id: build-export
         uses: docker/build-push-action@v6.8.0
         with:
           context: ${{ matrix.container }}
@@ -123,7 +125,7 @@ jobs:
         if: ${{ !cancelled() }}
         run: |
           set -x
-          docker image rm ${{ needs.build-setup.outputs.repo-owner }}/${{ matrix.container }}:test
+          docker image rm --force ${{ steps.build-export.outputs.imageid }}
   build-test-noinit:
     name: Build and test image without `--init`
     runs-on: self-hosted
@@ -162,6 +164,7 @@ jobs:
         id: build-export
         uses: docker/build-push-action@v6.8.0
         with:
+          context: ${{ matrix.container }}
           load: true
           tags: "${{ needs.build-setup.outputs.repo-owner }}/${{ matrix.container }}:test"
       # Install uuid-runtime package
@@ -174,7 +177,7 @@ jobs:
         run: |
           set -x
           CONTAINER_ID="$(uuidgen)"
-          docker container run --attach=stdout --attach=stderr --init --name=$CONTAINER_ID --rm ${{ needs.build-setup.outputs.repo-owner }}/${{ matrix.container }}:test &
+          docker container run --attach=stdout --attach=stderr --name=$CONTAINER_ID --rm ${{ needs.build-setup.outputs.repo-owner }}/${{ matrix.container }}:test &
           sleep 60
           docker container stop $CONTAINER_ID
       # Remove the test image

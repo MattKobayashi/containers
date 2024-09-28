@@ -2,10 +2,14 @@
 name: Build and publish container images
 
 on:
+  release:
+    types:
+      - published
   push:
-    branches: [main]
-    # Publish semver tags as releases.
-    tags: ['v*.*.*']
+    branches:
+      - main
+    tags:
+      - 'v[0-9]+*'
   workflow_dispatch:
 
 env:
@@ -130,7 +134,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v6.8.0
         with:
-          context: ./${{ matrix.container }}
+          context: ${{ matrix.container }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
