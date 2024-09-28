@@ -159,9 +159,9 @@ jobs:
       # Build and export image to Docker daemon
       # https://github.com/docker/build-push-action
       - name: Build and export to Docker
+        id: build-export
         uses: docker/build-push-action@v6.8.0
         with:
-          context: ${{ matrix.container }}
           load: true
           tags: "${{ needs.build-setup.outputs.repo-owner }}/${{ matrix.container }}:test"
       # Install uuid-runtime package
@@ -182,4 +182,4 @@ jobs:
         if: ${{ !cancelled() }}
         run: |
           set -x
-          docker image rm --force ${{ needs.build-setup.outputs.repo-owner }}/${{ matrix.container }}:test
+          docker image rm --force ${{ steps.build-export.outputs.imageid }}
