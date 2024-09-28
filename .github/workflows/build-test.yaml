@@ -151,11 +151,15 @@ jobs:
           context: ${{ matrix.container }}
           load: true
           tags: "${{ needs.build-setup.outputs.repo-owner }}/${{ matrix.container }}:test"
+      # Install uuid-runtime package
+      - name: Install `uuid-runtime`
+        run: |
+          set -x
+          apt-get install uuid-runtime
       # Test the built image
       - name: Test image
         run: |
           set -x
-          apt-get install uuid-runtime 1> /dev/null
           CONTAINER_ID="$(uuidgen)"
           docker container run --attach stdout --attach stderr --init --name=$CONTAINER_ID --rm ${{ needs.build-setup.outputs.repo-owner }}/${{ matrix.container }}:test &
           sleep 60
