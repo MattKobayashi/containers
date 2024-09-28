@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.2](https://github.com/MattKobayashi/containers/compare/v0.1.1...v0.1.2) (2024-09-28)
+
+
+### Bug Fixes
+
+* Trigger on release publish ([#296](https://github.com/MattKobayashi/containers/issues/296)) ([1e2bf25](https://github.com/MattKobayashi/containers/commit/1e2bf25a0417347758f8e56b3213a79f107c4255))
+* Trigger on release publish ([#297](https://github.com/MattKobayashi/containers/issues/297)) ([5fbc1c6](https://github.com/MattKobayashi/containers/commit/5fbc1c6525e8ad474196a6234ce9cfdf6620744a))
+
 ## [0.1.1](https://github.com/MattKobayashi/containers/compare/v0.1.0...v0.1.1) (2024-09-28)
 
 
