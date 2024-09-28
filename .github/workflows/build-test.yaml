@@ -105,7 +105,7 @@ jobs:
         run: |
           set -x
           timeout --kill-after=30s --preserve-status 30s \
-            docker container run --init --interactive --rm --tty ${{ needs.build-setup.outputs.repo-owner }}/${{ matrix.container }}:test
+            docker container run --attach stdout --attach stderr --init --rm ${{ needs.build-setup.outputs.repo-owner }}/${{ matrix.container }}:test
       # Remove the test image
       - name: Remove test image
         run: |
