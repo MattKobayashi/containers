@@ -21,4 +21,4 @@ if [ -f /run/secrets/NOTIFY_TELEGRAM_TOKEN ]; then
 fi
 
 ansible-playbook -i /ansible/vars.yaml /ansible/yancobat-setup.yaml
-exec supercronic /ansible/crontab/ansible-cron
+exec /usr/bin/supercronic /ansible/crontab/ansible-cron

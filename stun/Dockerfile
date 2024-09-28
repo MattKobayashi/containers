@@ -6,8 +6,7 @@ ENV SOURCE_HASH=4479e1ae070651dfc4836a998267c7ac2fba4f011abcfdca3b8ccd7736d4fd26
 
 WORKDIR /stuntman
 
-RUN apk --no-cache upgrade \
-    && apk --no-cache add build-base boost-dev openssl-dev wget tar \
+RUN apk --no-cache add build-base boost-dev openssl-dev wget tar \
     && wget -O $SOURCE_FILE https://www.stunprotocol.org/stunserver-$SOURCE_VERSION.tgz \
     && echo "$SOURCE_HASH  $SOURCE_FILE" | sha256sum -c \
     && tar -xz --strip-components=1 --file="$SOURCE_FILE" \
@@ -18,7 +17,6 @@ FROM alpine:3.20.3
 WORKDIR /stuntman
 
 RUN addgroup -S stuntman && adduser -S stuntman -G stuntman \
-    && apk --no-cache upgrade \
     && apk --no-cache add libstdc++ libgcc
 
 USER stuntman

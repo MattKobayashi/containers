@@ -12,7 +12,7 @@ ADD https://dl.influxdata.com/influxdb/releases/influxdb2-client-${INFLUX_CLI_VE
 ADD https://dl.influxdata.com/influxdb/releases/influxdb2-client-${INFLUX_CLI_VERSION}-${TARGETOS}-${TARGETARCH}.tar.gz.asc /tmp/
 
 # Verify downloaded binaries
-RUN apk add gpg gpg-agent \
+RUN apk --no-cache add gpg gpg-agent \
     && curl -s https://repos.influxdata.com/influxdata-archive_compat.key | gpg --import - \
     && gpg --verify /tmp/influxdb2-${INFLUX_DB_VERSION}-${TARGETOS}-${TARGETARCH}.tar.gz.asc /tmp/influxdb2-${INFLUX_DB_VERSION}-${TARGETOS}-${TARGETARCH}.tar.gz \
     && gpg --verify /tmp/influxdb2-${INFLUX_CLI_VERSION}-${TARGETOS}-${TARGETARCH}.tar.gz.asc /tmp/influxdb2-${INFLUX_CLI_VERSION}-${TARGETOS}-${TARGETARCH}.tar.gz \

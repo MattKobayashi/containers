@@ -1,7 +1,6 @@
 FROM python:3.12.6-alpine3.20
 
 RUN adduser --system irrexplorer \
-    && apk --no-cache upgrade \
     && apk --no-cache add tar build-base python3-dev poetry npm yarn
 
 USER irrexplorer

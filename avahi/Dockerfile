@@ -1,6 +1,5 @@
 FROM alpine:3.20.3
-RUN apk --no-cache upgrade \
-    && apk add --update --no-cache avahi augeas
+RUN apk --no-cache add avahi augeas
 
 RUN mkdir /opt/avahi
 COPY entrypoint.sh /opt/avahi/
