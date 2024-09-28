@@ -6,8 +6,7 @@ ENV SOURCE_FILE=mdns-reflector.tar.gz \
 
 # Download source file, extract and compile
 WORKDIR /mdns-reflector
-RUN apk --no-cache upgrade \
-    && apk --no-cache add tar build-base cmake \
+RUN apk --no-cache add tar build-base cmake \
     && wget -O "$SOURCE_FILE" "$SOURCE_URL" \
     && echo "${SOURCE_SHA1SUM}  ${SOURCE_FILE}" | sha1sum -c - \
     && tar -xz --strip-components=1 --file="$SOURCE_FILE" \
@@ -19,8 +18,7 @@ RUN apk --no-cache upgrade \
 FROM alpine:3.20.3
 
 # Copy relevant compiled files to distribution image
-RUN adduser --system mdns-reflector \
-    && apk --no-cache upgrade
+RUN adduser --system mdns-reflector
 COPY --from=buildenv /usr/local/bin/ /usr/local/bin/
 
 # Switch to non-root user

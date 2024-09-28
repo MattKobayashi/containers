@@ -1,8 +1,7 @@
 FROM alpine:3.20.3
 
 # Install dependencies and set timezone
-RUN apk --no-cache upgrade \
-    && apk add --no-cache ca-certificates curl tzdata bash busybox-suid su-exec ffmpeg vlc \
+RUN apk add --no-cache ca-certificates curl tzdata bash busybox-suid su-exec ffmpeg vlc \
     && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
     && sed -i 's/geteuid/getppid/' /usr/bin/vlc
 

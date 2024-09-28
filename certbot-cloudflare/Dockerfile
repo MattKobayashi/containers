@@ -1,7 +1,6 @@
 FROM certbot/dns-cloudflare:v2.11.0
 
-RUN apk --no-cache upgrade \
-    && apk --no-cache add supercronic \
+RUN apk --no-cache add supercronic \
     && mkdir /crontab/ \
     && mkdir /opt/certs/
 

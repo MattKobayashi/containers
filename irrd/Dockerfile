@@ -2,8 +2,7 @@ FROM python:3.12-slim-bookworm
 
 # Install xz
 RUN apt-get update \
-    && apt-get --yes upgrade \
-    && apt-get --yes install xz-utils
+    apt-get --yes install xz-utils
 
 # Add s6-overlay
 WORKDIR /tmp

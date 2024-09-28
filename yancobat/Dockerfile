@@ -1,7 +1,6 @@
 FROM alpine:3.20.3
 
-RUN apk --no-cache upgrade \
-    && apk --no-cache add supercronic \
+RUN apk --no-cache add supercronic \
     && addgroup -S ansible && adduser -S ansible -G ansible \
     && mkdir /repo && chown -R ansible /repo \
     && apk --no-cache upgrade \

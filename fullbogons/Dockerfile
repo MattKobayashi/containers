@@ -1,7 +1,6 @@
 FROM alpine:3.20.3
 
-RUN apk --no-cache upgrade \
-    && apk --no-cache add supercronic
+RUN apk --no-cache add supercronic
 
 # Set BIRD environment variables
 ENV SOURCE_FILE=bird.tar.gz \
@@ -10,8 +9,7 @@ ENV SOURCE_FILE=bird.tar.gz \
 
 # Install BIRD
 WORKDIR /bird
-RUN apk --no-cache upgrade \
-    && apk --no-cache add tar build-base autoconf flex bison linux-headers ncurses-dev libssh-dev readline-dev \
+RUN apk --no-cache add tar build-base autoconf flex bison linux-headers ncurses-dev libssh-dev readline-dev \
     && wget -O "$SOURCE_FILE" "$SOURCE_URL" \
     && echo "${SOURCE_SHA1SUM}  ${SOURCE_FILE}" | sha1sum -c - \
     && tar -xz --strip-components=1 --file="$SOURCE_FILE" \

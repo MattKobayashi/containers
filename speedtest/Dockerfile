@@ -2,7 +2,6 @@ FROM debian:12.7-slim
 
 # Install xz-utils
 RUN apt-get update \
-    && apt-get --yes upgrade \
     && apt-get --yes install xz-utils wget
 
 # Set work directory
