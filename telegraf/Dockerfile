@@ -5,12 +5,7 @@ WORKDIR /opt/docker-telegraf
 
 # Install Python and requirements
 COPY requirements.txt .
-RUN apk --no-cache upgrade \
-    && apk --no-cache add python3 py3-requests
-
-# Install other dependencies
-RUN apk --no-cache upgrade \
-    && apk --no-cache add telegraf smartmontools jq curl lm-sensors wget
+RUN apk --no-cache add python3 py3-requests telegraf smartmontools jq curl lm-sensors wget
 
 # Install Ookla Speedtest CLI utility
 WORKDIR /opt/ookla 

@@ -7,8 +7,7 @@ ENV SOURCE_FILE=oxidized.tar.gz \
 
 # Download source file, extract and compile
 WORKDIR /tmp/oxidized
-RUN apk --no-cache upgrade \
-    && apk --no-cache add build-base cmake git libpq-dev mariadb-dev libssh2-dev icu-dev yq \
+RUN apk --no-cache add build-base cmake git libpq-dev mariadb-dev libssh2-dev icu-dev yq \
     && git clone https://github.com/ytti/oxidized.git . \
     && git checkout $VERSION \
     && gem install --no-document aws-sdk slack-ruby-client xmpp4r cisco_spark rugged \

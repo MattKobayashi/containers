@@ -12,4 +12,4 @@ domain = $DOMAIN
 email = $EMAIL
 EOF
 
-exec supercronic /crontab/certbot-cron
+exec /usr/bin/supercronic /crontab/certbot-cron
