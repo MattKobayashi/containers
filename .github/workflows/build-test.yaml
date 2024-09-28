@@ -111,7 +111,7 @@ jobs:
         id: build-export
         uses: docker/build-push-action@v6.8.0
         with:
-          context: ${{ matrix.container }}
+          context: ${{ github.workspace }}/${{ matrix.container }}
           load: true
           tags: "${{ needs.build-setup.outputs.repo-owner }}/${{ matrix.container }}:test"
       # Test the built image
@@ -164,7 +164,7 @@ jobs:
         id: build-export
         uses: docker/build-push-action@v6.8.0
         with:
-          context: ${{ matrix.container }}
+          context: ${{ github.workspace }}/${{ matrix.container }}
           load: true
           tags: "${{ needs.build-setup.outputs.repo-owner }}/${{ matrix.container }}:test"
       # Install uuid-runtime package

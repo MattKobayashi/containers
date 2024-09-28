@@ -133,7 +133,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v6.8.0
         with:
-          context: ${{ matrix.container }}
+          context: ${{ github.workspace }}/${{ matrix.container }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
