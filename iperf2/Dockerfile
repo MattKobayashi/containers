@@ -6,8 +6,7 @@ ENV SOURCE_FILE=iperf2.tar.gz \
 
 # Download source file, extract and compile
 WORKDIR /iperf2
-RUN apk --no-cache upgrade \
-    && apk --no-cache add tar build-base \
+RUN apk --no-cache add tar build-base \
     && wget -O "$SOURCE_FILE" "$SOURCE_URL" \
     && echo "${SOURCE_SHA1SUM}  ${SOURCE_FILE}" | sha1sum -c - \
     && tar -xz --strip-components=1 --file="$SOURCE_FILE" \
@@ -19,7 +18,6 @@ FROM alpine:3.20.3
 
 # Copy relevant compiled files to distribution image
 RUN adduser --system iperf2 \
-    && apk --no-cache upgrade \
     && apk --no-cache add libgcc libstdc++
 COPY --from=buildenv /usr/local/bin/ /usr/local/bin/
 COPY --from=buildenv /usr/local/share/man/ /usr/local/share/man/
