@@ -108,6 +108,7 @@ jobs:
             docker container run --attach stdout --attach stderr --init --rm ${{ needs.build-setup.outputs.repo-owner }}/${{ matrix.container }}:test
       # Remove the test image
       - name: Remove test image
+        if: ${{ !cancelled() }}
         run: |
           set -x
           docker image rm ${{ needs.build-setup.outputs.repo-owner }}/${{ matrix.container }}:test
@@ -159,6 +160,7 @@ jobs:
             docker container run --attach stdout --attach stderr --rm ${{ needs.build-setup.outputs.repo-owner }}/${{ matrix.container }}:test
       # Remove the test image
       - name: Remove test image
+        if: ${{ !cancelled() }}
         run: |
           set -x
           docker image rm ${{ needs.build-setup.outputs.repo-owner }}/${{ matrix.container }}:test
