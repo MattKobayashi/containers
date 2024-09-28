@@ -155,11 +155,14 @@ jobs:
       - name: Test image
         run: |
           set -x
-          timeout --kill-after=30s --preserve-status 30s \
-            docker container run --attach stdout --attach stderr --rm ${{ needs.build-setup.outputs.repo-owner }}/${{ matrix.container }}:test
+          apt-get install uuid-runtime
+          CONTAINER_ID="$(uuidgen)"
+          docker container run --attach stdout --attach stderr --init --name=$CONTAINER_ID --rm ${{ needs.build-setup.outputs.repo-owner }}/${{ matrix.container }}:test &
+          sleep 60
+          docker container stop $CONTAINER_ID
       # Remove the test image
       - name: Remove test image
         if: ${{ !cancelled() }}
         run: |
           set -x
-          docker image rm ${{ needs.build-setup.outputs.repo-owner }}/${{ matrix.container }}:test
+          docker image rm --force ${{ needs.build-setup.outputs.repo-owner }}/${{ matrix.container }}:test
