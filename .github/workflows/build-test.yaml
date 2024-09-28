@@ -103,16 +103,11 @@ jobs:
       # Test the built image
       - name: Test image
         run: |
-          set -e
-          echo "Starting test container..."
-          CONTAINER_ID="$(docker container run --detach --init ${{ needs.build-setup.outputs.repo-owner }}/${{ matrix.container }}:test)"
-          echo "Test container started!"
-          sleep 60
-          echo "---------------"
-          echo "Container logs:"
-          echo "---------------"
-          docker container logs $CONTAINER_ID
-          echo "---------------"
-          docker container stop $CONTAINER_ID
-          docker container rm $CONTAINER_ID
-          docker image rm --force ${{ needs.build-setup.outputs.repo-owner }}/${{ matrix.container }}:test
+          set -x
+          timeout --kill-after=30s --preserve-status 30s \
+            docker container run --init --interactive --rm --tty ${{ needs.build-setup.outputs.repo-owner }}/${{ matrix.container }}:test
+      # Remove the test image
+      - name: Remove test image
+        run: |
+          set -x
+          docker image rm ${{ needs.build-setup.outputs.repo-owner }}/${{ matrix.container }}:test
