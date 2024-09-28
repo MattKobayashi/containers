@@ -28,7 +28,7 @@ jobs:
           speedtest,
           stun,
           telegraf,
-          # verlihub,
+          verlihub,
           vyos-release-alert,
           xteve,
           yancobat
@@ -50,7 +50,7 @@ jobs:
     needs: [create-runners, build-setup]
     strategy:
       fail-fast: false
-      max-parallel: 4
+      max-parallel: 2
       matrix:
         container: [
           actions-runner,
@@ -60,7 +60,6 @@ jobs:
           growatt-ev,
           iperf2,
           iperf3,
-          # irrd,
           mdns-reflector,
           rng-tools,
           speedtest,
@@ -118,7 +117,7 @@ jobs:
     needs: [create-runners, build-setup]
     strategy:
       fail-fast: false
-      max-parallel: 4
+      max-parallel: 2
       matrix:
         container: [
           irrd
