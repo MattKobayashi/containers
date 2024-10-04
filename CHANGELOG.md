@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.3](https://github.com/MattKobayashi/containers/compare/v0.1.2...v0.1.3) (2024-10-04)
+
+
+### Bug Fixes
+
+* **deps:** update python to v3.12.7 ([#303](https://github.com/MattKobayashi/containers/issues/303)) ([5bc0ef3](https://github.com/MattKobayashi/containers/commit/5bc0ef3dbdbf41447e91988ae95146a64cc6c6cd))
+
 ## [0.1.2](https://github.com/MattKobayashi/containers/compare/v0.1.1...v0.1.2) (2024-09-28)
 
 
