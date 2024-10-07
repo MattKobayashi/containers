@@ -66,7 +66,7 @@ services:
   # Ports: 6379/tcp
   irrd-redis:
     container_name: irrd-redis
-    image: 'redis:7.4.0-alpine3.20'
+    image: 'redis:7.4.1-alpine3.20'
     logging:
       driver: syslog
       options:
