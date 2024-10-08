@@ -1,4 +1,4 @@
-FROM alpine:3.20.3 as build
+FROM alpine:3.20.3 AS build
 
 ENV SOURCE_FILE=verlihub.tar.gz \
     SOURCE_URL=https://github.com/Verlihub/verlihub/archive/baa5f6ca57742f08bab1ab577e0d58119f7e07f7.tar.gz \

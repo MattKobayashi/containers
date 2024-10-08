@@ -1,4 +1,4 @@
-FROM alpine:3.20.3 as buildenv
+FROM alpine:3.20.3 AS buildenv
 
 ENV SOURCE_FILE=mdns-reflector.tar.gz \
     SOURCE_URL=https://github.com/vfreex/mdns-reflector/archive/refs/tags/v0.0.1-dev.1.tar.gz \

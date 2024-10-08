@@ -1,4 +1,4 @@
-FROM alpine:3.20.3 as build
+FROM alpine:3.20.3 AS build
 
 ENV SOURCE_HASH=4479e1ae070651dfc4836a998267c7ac2fba4f011abcfdca3b8ccd7736d4fd26 \
     SOURCE_VERSION=1.2.16 \
