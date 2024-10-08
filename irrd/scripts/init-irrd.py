@@ -69,6 +69,7 @@ def execute_sql_command(
     print("Error: Database connection could not be established after multiple retries.")
     return False
 
+
 with open("/etc/irrd.yaml", "r", encoding="utf-8") as yaml_conf:
     irrd_conf = yaml.safe_load(yaml_conf)
 
