@@ -1,4 +1,4 @@
-FROM alpine:3.20.3 as buildenv
+FROM alpine:3.20.3 AS buildenv
 
 ENV SOURCE_FILE=iperf3.tar.gz \
     SOURCE_URL=https://github.com/esnet/iperf/archive/3.13.tar.gz \
