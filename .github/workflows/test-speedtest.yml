@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - 'containers/speedtest/**'
+      - 'speedtest/**'
   workflow_dispatch:
 
 jobs:
