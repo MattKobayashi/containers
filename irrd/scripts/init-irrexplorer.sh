@@ -1,5 +1,6 @@
 #!/usr/bin/env sh
 cd /opt/irrexplorer/
+/usr/bin/poetry lock
 /usr/bin/poetry install
 /usr/bin/poetry add psycopg2@^2.9.9
 /usr/bin/poetry run python3 init-irrexplorer.py

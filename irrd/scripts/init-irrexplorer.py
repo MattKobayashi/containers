@@ -1,22 +1,31 @@
 #!/usr/bin/env python3
-import psycopg2
 import time
-import os
-import yaml
-from dotenv import set_key
 from pathlib import Path
 
-def execute_sql_command(host, admin_database, admin_user, admin_password, sql_command, max_retries=10, retry_interval=5):
+import psycopg2  # type: ignore
+import yaml  # type: ignore
+from dotenv import set_key  # type: ignore
+
+
+def execute_sql_command(
+        db_host,
+        db_admin_database,
+        db_admin_user,
+        db_admin_password,
+        sql_cmd,
+        max_retries=10,
+        retry_interval=5
+        ):
     """Executes an SQL command (like CREATE DATABASE) on a PostgreSQL server,
        waiting for the database to be ready.
 
     Args:
         host: Hostname or IP of the PostgreSQL server.
-        admin_database: Name of an existing database for the initial connection
-                        (typically 'postgres' or a similar administrative database).
-        admin_user: Username with sufficient privileges to create databases.
-        admin_password: Password for the admin_user.
-        sql_command: The SQL command to execute.
+        admin_db: Name of an existing database for the initial connection
+            (typically 'postgres' or a similar administrative database).
+        db_admin_user: Username with sufficient privileges to create databases.
+        db_admin_password: Password for the admin_user.
+        sql_cmd: The SQL command to execute.
         max_retries: Maximum number of connection attempts (default 10).
         retry_interval: Time in seconds between retries (default 5).
 
@@ -29,38 +38,44 @@ def execute_sql_command(host, admin_database, admin_user, admin_password, sql_co
         try:
             # Attempt connection to the admin database
             conn = psycopg2.connect(
-                host=host,
-                database=admin_database,
-                user=admin_user,
-                password=admin_password
+                host=db_host,
+                database=db_admin_database,
+                user=db_admin_user,
+                password=db_admin_password
             )
             conn.set_session(autocommit=True)
             cur = conn.cursor()
 
             # Execute the SQL command
-            cur.execute(sql_command)
+            cur.execute(sql_cmd)
             print("SQL command executed successfully.")
             return True
 
-        except psycopg2.OperationalError as e:
-            print(f"Database not ready yet. Retrying in {retry_interval} seconds... (Attempt {retries + 1}/{max_retries})")
+        except psycopg2.OperationalError:
+            print(
+                f"Database not ready yet. Retrying in {retry_interval} seconds..."
+                f"(Attempt {retries + 1}/{max_retries})"
+                )
             time.sleep(retry_interval)  # Wait before retrying
             retries += 1
 
-        except psycopg2.errors.DuplicateDatabase as e:
+        except psycopg2.errors.DuplicateDatabase:
             print("Database already exists, skipping...")
             return True
 
-        except psycopg2.errors.DuplicateObject as e:
+        except psycopg2.errors.DuplicateObject:
             print("Object already exists, skipping...")
             return True
 
     # Max retries reached
-    print("Error: Database connection could not be established after multiple retries.")
+    print(
+        "Error: Database connection could not be established after multiple retries."
+        )
     return False
 
+
 # Example Usage (replace with your actual credentials and command)
-with open("/etc/irrexplorer.yaml", "r") as yaml_conf:
+with open("/etc/irrexplorer.yaml", "r", encoding="utf-8") as yaml_conf:
     irrexplorer_conf = yaml.safe_load(yaml_conf)
 
 host = irrexplorer_conf["irrexplorer"]["database_url"].split("/")[2].split("@")[1]
@@ -75,7 +90,13 @@ password = irrexplorer_conf["irrexplorer"]["database_url"].split("/")[2].split("
 sql_command = f"""
 CREATE DATABASE {database};
 """
-execute_sql_command(host, admin_database, admin_user, admin_password, sql_command)
+execute_sql_command(
+    db_host=host,
+    db_admin_database=admin_database,
+    db_admin_user=admin_user,
+    db_admin_password=admin_password,
+    sql_cmd=sql_command
+    )
 
 # Do the rest
 sql_command = f"""
@@ -88,5 +109,11 @@ execute_sql_command(host, database, admin_user, admin_password, sql_command)
 # Export environment variables
 env_file = Path("/opt/irrexplorer/.env")
 env_file.touch(mode=0o600, exist_ok=True)
-set_key(dotenv_path=env_file, key_to_set="DATABASE_URL", value_to_set=irrexplorer_conf["irrexplorer"]["database_url"])
-set_key(dotenv_path=env_file, key_to_set="IRRD_ENDPOINT", value_to_set=irrexplorer_conf["irrexplorer"]["irrd_endpoint"])
+set_key(
+    dotenv_path=env_file, key_to_set="DATABASE_URL",
+    value_to_set=irrexplorer_conf["irrexplorer"]["database_url"]
+    )
+set_key(
+    dotenv_path=env_file, key_to_set="IRRD_ENDPOINT",
+    value_to_set=irrexplorer_conf["irrexplorer"]["irrd_endpoint"]
+    )
