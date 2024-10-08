@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+"""Script to start the IRR Explorer web application."""
+
 import uvicorn  # type: ignore
 
 if __name__ == "__main__":

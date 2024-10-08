@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
+"""Script to initialize the IRRd database."""
+
 import time
+import sys
 
 import psycopg2  # type: ignore
 import yaml  # type: ignore
@@ -66,17 +69,26 @@ def execute_sql_command(
             return True
 
     # Max retries reached
-    print("Error: Database connection could not be established after multiple retries.")
+    print(
+        "Error: Database connection could not be established "
+        "after multiple retries."
+    )
     return False
 
 
-with open("/etc/irrd.yaml", "r", encoding="utf-8") as yaml_conf:
-    irrd_conf = yaml.safe_load(yaml_conf)
+try:
+    with open("/etc/irrd.yaml", "r", encoding="utf-8") as yaml_conf:
+        irrd_conf = yaml.safe_load(yaml_conf)
+except FileNotFoundError:
+    print("Error: Could not find the configuration file at /etc/irrd.yaml.")
+    sys.exit(1)
 
 host = irrd_conf["irrd"]["database_url"].split("/")[2].split("@")[1]
 admin_database = irrd_conf["irrd"]["database_url"].split("/")[3]
-admin_user = irrd_conf["irrd"]["database_url"].split("/")[2].split("@")[0].split(":")[0]
-admin_password = irrd_conf["irrd"]["database_url"].split("/")[2].split("@")[0].split(":")[1]
+db_url = irrd_conf["irrd"]["database_url"].split("/")
+db_credentials = db_url[2].split("@")[0].split(":")
+admin_user = db_credentials[0]
+admin_password = db_credentials[1]
 
 # Create the database first
 sql_command = f"""

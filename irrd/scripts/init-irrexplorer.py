@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
+"""Script to initialize the IRR Explorer database."""
+
 import time
+import sys
 from pathlib import Path
 
 import psycopg2  # type: ignore
@@ -53,8 +56,8 @@ def execute_sql_command(
 
         except psycopg2.OperationalError:
             print(
-                f"Database not ready yet. Retrying in {retry_interval} seconds..."
-                f"(Attempt {retries + 1}/{max_retries})"
+                f"Database not ready yet. Retrying in {retry_interval} "
+                f"seconds...\n(Attempt {retries + 1}/{max_retries})"
                 )
             time.sleep(retry_interval)  # Wait before retrying
             retries += 1
@@ -69,22 +72,29 @@ def execute_sql_command(
 
     # Max retries reached
     print(
-        "Error: Database connection could not be established after multiple retries."
+        "Error: Database connection could not be established after multiple "
+        "retries."
         )
     return False
 
 
-# Example Usage (replace with your actual credentials and command)
-with open("/etc/irrexplorer.yaml", "r", encoding="utf-8") as yaml_conf:
-    irrexplorer_conf = yaml.safe_load(yaml_conf)
+try:
+    with open("/etc/irrexplorer.yaml", "r", encoding="utf-8") as yaml_conf:
+        irrexplorer_conf = yaml.safe_load(yaml_conf)
+except FileNotFoundError:
+    print("Error: Configuration file /etc/irrexplorer.yaml not found.")
+    sys.exit(1)
 
-host = irrexplorer_conf["irrexplorer"]["database_url"].split("/")[2].split("@")[1]
+db_url = irrexplorer_conf["irrexplorer"]["database_url"]
+host = db_url.split("/")[2].split("@")[1]
 admin_database = irrexplorer_conf["irrexplorer"]["admin_database"]
 admin_user = irrexplorer_conf["irrexplorer"]["admin_user"]
 admin_password = irrexplorer_conf["irrexplorer"]["admin_password"]
 database = irrexplorer_conf["irrexplorer"]["database_url"].split("/")[3]
-user = irrexplorer_conf["irrexplorer"]["database_url"].split("/")[2].split("@")[0].split(":")[0]
-password = irrexplorer_conf["irrexplorer"]["database_url"].split("/")[2].split("@")[0].split(":")[1]
+db_url_parts = irrexplorer_conf["irrexplorer"]["database_url"].split("/")
+db_user_info = db_url_parts[2].split("@")[0].split(":")
+user = db_user_info[0]
+password = db_user_info[1]
 
 # Create the database first
 sql_command = f"""
