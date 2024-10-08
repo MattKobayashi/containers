@@ -11,7 +11,7 @@ ENV SOURCE_FILE=irrexplorer.tar.gz \
 
 # Download source file, extract and compile
 WORKDIR /irrexplorer
-COPY --chmod=700 entrypoint.sh .
+COPY --chmod=700 --chown=irrexplorer entrypoint.sh .
 RUN wget -O "$SOURCE_FILE" "$SOURCE_URL" \
     && echo "${SOURCE_SHA1SUM}  ${SOURCE_FILE}" | sha1sum -c - \
     && tar -xz --strip-components=1 --file="$SOURCE_FILE" \
