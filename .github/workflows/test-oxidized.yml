@@ -1,5 +1,5 @@
 ---
-name: Build and test container image
+name: Build and test `oxidized` container image
 
 on:
   pull_request:
