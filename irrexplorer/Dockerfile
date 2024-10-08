@@ -6,8 +6,8 @@ RUN adduser --system irrexplorer \
 USER irrexplorer
 
 ENV SOURCE_FILE=irrexplorer.tar.gz \
-    SOURCE_URL=https://github.com/NLNOG/irrexplorer/archive/c4eb6599c1bd359f1464834bf5e07828aec1769a.tar.gz \
-    SOURCE_SHA1SUM=cd031821503510b35346be06f9f38dc736c9ff2a
+    SOURCE_URL=https://github.com/NLNOG/irrexplorer/archive/28f61d29041caf23c03fafcc50ff4e02453e5b69.tar.gz \
+    SOURCE_SHA1SUM=d638a350655953ac048e4fdfa8700ff433ae98fd
 
 # Download source file, extract and compile
 WORKDIR /irrexplorer
