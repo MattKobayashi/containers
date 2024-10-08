@@ -39,8 +39,8 @@ RUN adduser --gecos '' --disabled-password irrexplorer \
     && npm install --global yarn
 USER irrexplorer
 WORKDIR /opt/irrexplorer
-ENV IRRE_SOURCE_SHA1SUM=29eae66e26021342fcc67e7f71883beafe90c0c7
-ADD --chown=irrexplorer:irrexplorer https://github.com/NLNOG/irrexplorer/archive/ab995b3dd2b6f868153e5b612ee08e8458dd7ada.tar.gz /tmp/irrexplorer.tar.gz
+ENV IRRE_SOURCE_SHA1SUM=d638a350655953ac048e4fdfa8700ff433ae98fd
+ADD --chown=irrexplorer:irrexplorer https://github.com/NLNOG/irrexplorer/archive/28f61d29041caf23c03fafcc50ff4e02453e5b69.tar.gz /tmp/irrexplorer.tar.gz
 RUN echo "${IRRE_SOURCE_SHA1SUM}  /tmp/irrexplorer.tar.gz" | sha1sum -c - \
     && tar -xz --strip-components=1 --file="/tmp/irrexplorer.tar.gz"
 COPY --chown=irrexplorer:irrexplorer --chmod=700 ./scripts/init-irrexplorer.sh /opt/irrexplorer/init-irrexplorer.sh
