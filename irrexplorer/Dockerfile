@@ -15,6 +15,7 @@ COPY entrypoint.sh .
 RUN wget -O "$SOURCE_FILE" "$SOURCE_URL" \
     && echo "${SOURCE_SHA1SUM}  ${SOURCE_FILE}" | sha1sum -c - \
     && tar -xz --strip-components=1 --file="$SOURCE_FILE" \
+    && poetry lock \
     && poetry install \
     && poetry run frontend-install \
     && poetry run frontend-build
