@@ -1,5 +1,5 @@
 ---
-name: Build and test container image
+name: Build and test `growatt-ev` container image
 
 on:
   pull_request:

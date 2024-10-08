@@ -1,5 +1,5 @@
 ---
-name: Build and test container image
+name: Build and test `iperf2` container image
 
 on:
   pull_request:
