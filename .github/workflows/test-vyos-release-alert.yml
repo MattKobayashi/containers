@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - 'containers/vyos-release-alert/**'
+      - 'vyos-release-alert/**'
   workflow_dispatch:
 
 jobs:

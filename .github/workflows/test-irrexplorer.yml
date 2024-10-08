@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - 'containers/irrexplorer/**'
+      - 'irrexplorer/**'
   workflow_dispatch:
 
 jobs:

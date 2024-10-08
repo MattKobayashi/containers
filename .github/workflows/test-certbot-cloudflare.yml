@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - 'containers/certbot-cloudflare/**'
+      - 'certbot-cloudflare/**'
   workflow_dispatch:
 
 jobs:
