@@ -17,6 +17,7 @@ RUN wget -O "$SOURCE_FILE" "$SOURCE_URL" \
     && tar -xz --strip-components=1 --file="$SOURCE_FILE" \
     && poetry lock \
     && poetry install \
+    && poetry run npx update-browserslist-db@latest \
     && poetry run frontend-install \
     && poetry run frontend-build
 
