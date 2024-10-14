@@ -1,93 +1,103 @@
-FROM alpine:3.20.3 AS build
+FROM debian:12.7-slim AS build
 
-ENV SOURCE_FILE=verlihub.tar.gz \
-    SOURCE_URL=https://github.com/Verlihub/verlihub/archive/baa5f6ca57742f08bab1ab577e0d58119f7e07f7.tar.gz \
-    SOURCE_SHA1SUM=13cd61773642af497c941804f091200fcce0db88
+# Install dependencies and compile
+RUN apt-get update \
+    && apt-get --yes install \
+    git \
+    build-essential \
+    cmake \
+    libpcre3-dev \
+    libssl-dev \
+    libmaxminddb-dev \
+    libicu-dev \
+    gettext \
+    libasprintf-dev \
+    mariadb-server \
+    libmariadb-dev \
+    mariadb-client \
+    libmariadb-dev-compat \
+    && git clone https://github.com/Verlihub/verlihub.git \
+    && cd verlihub/ \
+    && git checkout 1.5.0.0 \
+    && mkdir -p build \
+    && cd build/ \
+    && cmake -DWITH_PLUGINS=OFF .. \
+    && make
 
-# Download source file, extract and compile
-WORKDIR /verlihub/
-RUN apk --no-cache add bash build-base cmake gettext gettext-dev icu-dev libmaxminddb-dev mariadb-dev openssl-dev pcre-dev \
-    && apk --no-cache add libexecinfo-dev --repository=https://dl-cdn.alpinelinux.org/alpine/v3.16/main/ \
-    && wget -O "$SOURCE_FILE" "$SOURCE_URL" \
-    && echo "${SOURCE_SHA1SUM}  ${SOURCE_FILE}" | sha1sum -c - \
-    && tar -xz --strip-components=1 --file="$SOURCE_FILE" \
-    && mkdir build \
-    && cd build \
-    && cmake .. \
-    && make \
-    && make install \
-    && rm -R /verlihub/*
+FROM debian:12.7-slim
+WORKDIR /opt/verlihub/
 
-# Copy compiled files to final image
-FROM alpine:3.20.3
+# Install s6-overlay installation dependencies
+RUN apt-get update \
+    && apt-get --yes install \
+    xz-utils
+
+# Add s6-overlay
+WORKDIR /tmp
+ENV S6_OVERLAY_VERSION=3.2.0.2
+ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz /tmp
+ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz.sha256 /tmp
+RUN echo "$(cat s6-overlay-noarch.tar.xz.sha256)" | sha256sum -c - \
+    && tar -C / -Jxpf /tmp/s6-overlay-noarch.tar.xz
+ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-x86_64.tar.xz /tmp
+ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-x86_64.tar.xz.sha256 /tmp
+RUN echo "$(cat s6-overlay-x86_64.tar.xz.sha256)" | sha256sum -c - \
+    && tar -C / -Jxpf /tmp/s6-overlay-x86_64.tar.xz
+COPY s6-rc.d/ /etc/s6-overlay/s6-rc.d/
 
 # Install runtime dependencies
-RUN apk --no-cache add bash icu-data-full mariadb-connector-c mysql-client ncurses \
-    && adduser -Su 1000 verlihub
+RUN apt-get --yes install \
+    libpcre3-dev \
+    libssl3 \
+    libmaxminddb-dev \
+    libicu-dev \
+    libasprintf-dev \
+    mariadb-client \
+    libmariadb-dev \
+    libmariadb-dev-compat
 
-# Copy /usr/bin/
-COPY --from=build \
-    /usr/bin/msgmerge \
-    /usr/bin/
+# Copy files from build image
+COPY --from=build /verlihub/ /verlihub/
 
-# Copy /usr/local/bin/
-COPY --from=build \
-    /usr/local/bin/verlihub* \
-    /usr/local/bin/vh* \
-    /usr/local/bin/
+# Run make install
+RUN apt-get --yes install build-essential cmake \
+    && cd /verlihub/build/ \
+    && make install \
+    && mkdir -p /opt/verlihub/sql/ \
+    && cp /verlihub/share/sql/default_reglist.sql /opt/verlihub/sql/ \
+    && rm -r /verlihub/
 
-# Copy /usr/local/include/
-COPY --from=build \
-    /usr/local/include/verlihub/ \
-    /usr/local/include/verlihub/
+# Remove build dependencies
+RUN apt-get --yes purge \
+    build-essential \
+    cmake \
+    libpcre3-dev \
+    libmaxminddb-dev \
+    libicu-dev \
+    libasprintf-dev \
+    libmariadb-dev \
+    libmariadb-dev-compat \
+    xz-utils \
+    && apt-get --yes autoremove \
+    && apt-get --yes clean
 
-# Copy /lib/
-COPY --from=build \
-    /lib/ld-musl-x86_64.so* \
-    /lib/libssl.so* \
-    /lib/libz.so* \
-    /lib/
+# Install runtime dependencies
+RUN apt-get --yes install \
+    libpcre3 \
+    libmaxminddb0 \
+    libicu72 \
+    libasprintf0v5 \
+    libmariadb3 \
+    pip \
+    && pip3 install --break-system-packages mysql-connector-python \
+    && useradd --system --base-dir /opt verlihub \
+    && mkdir -p /opt/verlihub/.config/verlihub/ \
+    && chown -R verlihub:verlihub /opt/verlihub/
 
-# Copy /usr/lib/
-COPY --from=build \
-    /usr/lib/libasprintf.so* \
-    /usr/lib/libcrypto.so* \
-    /usr/lib/libexecinfo.so* \
-    /usr/lib/libgcc_s.so* \
-    /usr/lib/libicudata.so* \
-    /usr/lib/libicui18n.so* \
-    /usr/lib/libicuuc.so* \
-    /usr/lib/libintl.so* \
-    /usr/lib/libmaxminddb.so* \
-    /usr/lib/libpcre.so* \
-    /usr/lib/libstdc++.so* \
-    /usr/lib/
-
-COPY --from=build \
-    /usr/local/lib/libplug_pi.so \
-    /usr/local/lib/libverlihub.so \
-    /usr/local/lib/libvhapi.so \
-    /usr/local/lib/
-
-# Copy /usr/local/share/locale/
-COPY --from=build \
-    /usr/local/share/locale/ \
-    /usr/local/share/locale/
-
-# Copy share
-COPY --from=build \
-    /usr/local/share/verlihub/ \
-    /usr/local/share/verlihub/
-
-# Copy entrypoint.sh to image
-WORKDIR /verlihub/
-COPY entrypoint.sh .
-
-# Change to non-root user
-USER verlihub
+# Copy files to image
+COPY --chmod=700 --chown=verlihub:verlihub scripts/setup.py /opt/verlihub/scripts/setup.py
 
 # Set entrypoint
-ENTRYPOINT ["/verlihub/entrypoint.sh"]
-CMD ["--install"]
+ENTRYPOINT ["/init"]
 
 LABEL org.opencontainers.image.authors="MattKobayashi <matthew@kobayashi.au>"

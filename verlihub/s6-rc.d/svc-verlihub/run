@@ -1,0 +1,4 @@
+#!/command/execlineb -P
+with-contenv
+s6-setuidgid verlihub
+envfile /opt/verlihub/verlihub.env /usr/local/bin/verlihub
