@@ -58,9 +58,9 @@ services:
         target: /var/lib/mysql
         type: volume
 secrets:
-  MYSQL_PASSWORD:
+  VH_MYSQL_PASSWORD:
     file: secrets/VH_MYSQL_PASSWORD
-  VH_MASTER_PASSWORD:
+  VH_HUB_MASTER_PASSWORD:
     file: secrets/VH_HUB_MASTER_PASSWORD
 volumes:
   verlihub-data:
