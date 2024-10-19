@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.3](https://github.com/MattKobayashi/containers/compare/v0.2.2...v0.2.3) (2024-10-19)
+
+
+### Bug Fixes
+
+* **verlihub:** Default to port 4111 ([#331](https://github.com/MattKobayashi/containers/issues/331)) ([e222036](https://github.com/MattKobayashi/containers/commit/e222036a41787140545ff140fe0b374191e7fe74))
+
 ## [0.2.2](https://github.com/MattKobayashi/containers/compare/v0.2.1...v0.2.2) (2024-10-19)
 
 
