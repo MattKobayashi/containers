@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.4](https://github.com/MattKobayashi/containers/compare/v0.2.3...v0.2.4) (2024-10-19)
+
+
+### Bug Fixes
+
+* **verlihub:** Refactor setup.py ([#333](https://github.com/MattKobayashi/containers/issues/333)) ([fae6dbd](https://github.com/MattKobayashi/containers/commit/fae6dbd1eab4ab2a275873df69e58c99757c0cff))
+
 ## [0.2.3](https://github.com/MattKobayashi/containers/compare/v0.2.2...v0.2.3) (2024-10-19)
 
 
