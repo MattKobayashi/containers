@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/MattKobayashi/containers/compare/v0.2.0...v0.2.1) (2024-10-19)
+
+
+### Bug Fixes
+
+* Reference correct env vars ([#327](https://github.com/MattKobayashi/containers/issues/327)) ([8049476](https://github.com/MattKobayashi/containers/commit/8049476ca46c9b888410b2b53f99c6511d7b63ae))
+
 ## [0.2.0](https://github.com/MattKobayashi/containers/compare/v0.1.4...v0.2.0) (2024-10-19)
 
 
