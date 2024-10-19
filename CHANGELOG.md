@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.2](https://github.com/MattKobayashi/containers/compare/v0.2.1...v0.2.2) (2024-10-19)
+
+
+### Bug Fixes
+
+* **verlihub:** Create reglist table on startup ([#329](https://github.com/MattKobayashi/containers/issues/329)) ([4a6712e](https://github.com/MattKobayashi/containers/commit/4a6712e1f4134a6d3bb2a0d1d4a1b69faf69f3bb))
+
 ## [0.2.1](https://github.com/MattKobayashi/containers/compare/v0.2.0...v0.2.1) (2024-10-19)
 
 
