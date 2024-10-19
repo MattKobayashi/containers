@@ -55,9 +55,9 @@ db_charset = utf8mb4
 
 # Get the configuration from environment variables and secrets
 try:
-    VH_MYSQL_DB_HOST = os.environ['MYSQL_DB_HOST']
-    VH_MYSQL_DB_NAME = os.environ.get('MYSQL_DB_NAME', 'verlihub')
-    VH_MYSQL_USER = os.environ.get('MYSQL_USER', 'verlihub')
+    VH_MYSQL_DB_HOST = os.environ['VH_MYSQL_DB_HOST']
+    VH_MYSQL_DB_NAME = os.environ.get('VH_MYSQL_DB_NAME', 'verlihub')
+    VH_MYSQL_USER = os.environ.get('VH_MYSQL_USER', 'verlihub')
     try:
         with open(
             '/run/secrets/VH_MYSQL_PASSWORD', 'r', encoding='utf-8'
