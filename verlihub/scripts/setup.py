@@ -70,7 +70,7 @@ try:
         'VH_HUB_CONFIG_DIR', '/opt/verlihub/.config/verlihub'
     ).rstrip('/')
     VH_HUB_HOST = os.environ['VH_HUB_HOST']
-    VH_HUB_PORT = os.environ.get('VH_HUB_PORT', '411')
+    VH_HUB_PORT = os.environ.get('VH_HUB_PORT', '4111')
     VH_HUB_NAME = os.environ.get('VH_HUB_NAME', 'Verlihub')
     VH_HUB_MASTER_NAME = os.environ['VH_HUB_MASTER_NAME']
     try:

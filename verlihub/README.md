@@ -19,7 +19,7 @@ This image is configured using environment variables and Docker secrets.
 |`VH_MYSQL_USER`|❌|The username of the database user with full permissions over the `MYSQL_DB_NAME` database (defaults to `verlihub`)|
 |`VH_HUB_CONFIG_DIR`|❌|The directory where Verlihub stores configuration data (defaults to `/opt/verlihub/.config/verlihub`)|
 |`VH_HUB_HOST`|✅|The hostname of the Verlihub server|
-|`VH_HUB_PORT`|❌|The port that the Verlihub server runs on (defaults to `411` when `NET_BIND_SERVICE` capability is added, otherwise `4111`)|
+|`VH_HUB_PORT`|❌|The port that the Verlihub server runs on (defaults to `4111`)|
 |`VH_HUB_NAME`|❌|The name of the Verlihub server (defaults to `Verlihub`)|
 |`VH_HUB_MASTER_NAME`|✅|The username of the master user on the Verlihub server|
 
