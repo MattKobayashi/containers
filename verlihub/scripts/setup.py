@@ -95,9 +95,47 @@ generate_config_file(VH_HUB_CONFIG_DIR + "/dbconfig")
 
 # Define the configuration queries
 config_queries = [
-    f"CREATE TABLE IF NOT EXISTS {VH_MYSQL_DB_NAME}.SetupList (file varchar(30), var varchar(50), val text, primary key(file, var));",
+    f"""CREATE TABLE IF NOT EXISTS {VH_MYSQL_DB_NAME}.SetupList (
+        file varchar(30),
+        var varchar(50),
+        val text,
+        PRIMARY KEY(file, var)
+    );""",
     f"UPDATE SetupList SET val='{VH_HUB_HOST}:{VH_HUB_PORT}' WHERE var='hub_host';",
-    f"UPDATE SetupList SET val='{VH_HUB_PORT}' WHERE var='listen_port';"
+    f"UPDATE SetupList SET val='{VH_HUB_PORT}' WHERE var='listen_port';",
+    f"""CREATE TABLE IF NOT EXISTS {VH_MYSQL_DB_NAME}.reglist (
+        nick varchar(64) NOT NULL,
+        class int(2) DEFAULT 1,
+        class_protect int(2) DEFAULT 0,
+        class_hidekick int(2) DEFAULT 0,
+        hide_kick tinyint(1) DEFAULT 0,
+        hide_keys tinyint(1) DEFAULT 0,
+        show_keys tinyint(1) DEFAULT 0,
+        hide_share tinyint(1) DEFAULT 0,
+        hide_chat tinyint(1) DEFAULT 0,
+        hide_ctmmsg tinyint(1) DEFAULT 0,
+        reg_date int(11),
+        reg_op varchar(64),
+        pwd_change tinyint(1) DEFAULT 1,
+        pwd_crypt tinyint(1) DEFAULT 1,
+        login_pwd varchar(60),
+        login_last int(11) DEFAULT 0,
+        logout_last int(11) DEFAULT 0,
+        login_cnt int(11) DEFAULT 0,
+        login_ip varchar(15),
+        error_last int(11),
+        error_cnt int(11) DEFAULT 0,
+        error_ip varchar(15),
+        enabled tinyint(1) DEFAULT 1,
+        note_op varchar(255),
+        note_usr varchar(255),
+        auth_ip varchar(15),
+        alternate_ip varchar(15),
+        fake_ip varchar(15),
+        PRIMARY KEY(nick),
+        INDEX login_index (login_last),
+        INDEX logout_index (logout_last)
+    );"""
 ]
 
 # Execute the configuration queries
