@@ -1,28 +1,9 @@
 #!/usr/bin/env python3
 """Script for initialising the Verlihub server."""
-import mysql.connector
-from mysql.connector import Error
 import os
 import sys
-import time
-
-
-def create_connection(host_name, user_name, user_password, db_name):
-    """Creates a connection to the MySQL database."""
-    new_connection = None
-    try:
-        new_connection = mysql.connector.connect(
-            host=host_name,
-            user=user_name,
-            passwd=user_password,
-            database=db_name,
-            charset='utf8mb4',
-            collation='utf8mb4_general_ci'
-        )
-        print("Connection to MySQL DB successful")
-    except Error as e:
-        print(f"The error '{e}' occurred")
-    return new_connection
+import mysql.connector
+from mysql.connector import Error
 
 
 def execute_query(query_connection, query):
@@ -34,23 +15,6 @@ def execute_query(query_connection, query):
         print("Query executed successfully")
     except Error as e:
         print(f"The error '{e}' occurred")
-
-
-def generate_config_file(file_path):
-    """Generates a configuration file with predefined contents."""
-    config_content = f"""
-db_host = {VH_MYSQL_DB_HOST}
-db_data = {VH_MYSQL_DB_NAME}
-db_user = {VH_MYSQL_USER}
-db_pass = {VH_MYSQL_PASSWORD}
-db_charset = utf8mb4
-        """
-    try:
-        with open(file_path, 'w', encoding='utf-8') as config_file:
-            config_file.write(config_content)
-        print(f"Configuration file created at {file_path}")
-    except IOError as e:
-        print(f"An error occurred while writing to the file: {e}")
 
 
 # Get the configuration from environment variables and secrets
@@ -86,12 +50,19 @@ except KeyError:
     sys.exit(1)
 
 # Connect to the MySQL database
-connection = create_connection(
-    VH_MYSQL_DB_HOST, VH_MYSQL_USER, VH_MYSQL_PASSWORD, VH_MYSQL_DB_NAME
-)
-
-# Generate the configuration file
-generate_config_file(VH_HUB_CONFIG_DIR + "/dbconfig")
+try:
+    connection = mysql.connector.connect(
+        host=VH_MYSQL_DB_HOST,
+        user=VH_MYSQL_USER,
+        passwd=VH_MYSQL_PASSWORD,
+        database=VH_MYSQL_DB_NAME,
+        charset='utf8mb4',
+        collation='utf8mb4_general_ci'
+    )
+    print("Connection to MySQL DB successful")
+except mysql.connector.Error as e:
+    print(f"The error '{e}' occurred")
+    sys.exit(1)
 
 # Define the configuration queries
 config_queries = [
@@ -139,8 +110,8 @@ config_queries = [
 ]
 
 # Execute the configuration queries
-for query in config_queries:
-    execute_query(connection, query)
+for config_query in config_queries:
+    execute_query(connection, config_query)
 
 # Create the master user
 master_query = f"""
@@ -164,9 +135,38 @@ except IOError as e:
 except Error as e:
     print(f"The error '{e}' occurred")
 
+# Close the MySQL database connection
+connection.close()
+
+# Generate the configuration file
+try:
+    with open(
+        VH_HUB_CONFIG_DIR + "/dbconfig",
+        'w',
+        encoding='utf-8'
+    ) as config_file:
+        config_content = f"""
+db_host = {VH_MYSQL_DB_HOST}
+db_data = {VH_MYSQL_DB_NAME}
+db_user = {VH_MYSQL_USER}
+db_pass = {VH_MYSQL_PASSWORD}
+db_charset = utf8mb4
+        """
+        config_file.write(config_content)
+    print(f"Configuration file created at {VH_HUB_CONFIG_DIR}/dbconfig")
+except IOError as e:
+    print(
+        "An error occurred while writing to the file",
+        f"{VH_HUB_CONFIG_DIR}/dbconfig: {e}"
+    )
+
 # Export the configuration directory as an environment variable
 try:
-    with open('/opt/verlihub/verlihub.env', 'w', encoding='utf-8') as file:
-        file.write(f"VERLIHUB_CFG={VH_HUB_CONFIG_DIR}")
+    with open('/opt/verlihub/verlihub.env', 'w', encoding='utf-8') as env_file:
+        env_file.write(f"VERLIHUB_CFG={VH_HUB_CONFIG_DIR}")
+    print("Environment file created at /opt/verlihub/verlihub.env")
 except IOError as e:
-    print(f"An error occurred while writing to the file: {e}")
+    print(
+        "An error occurred while writing to the file",
+        f"/opt/verlihub/verlihub.env: {e}"
+    )
