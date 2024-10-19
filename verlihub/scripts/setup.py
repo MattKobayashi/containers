@@ -91,7 +91,7 @@ connection = create_connection(
 )
 
 # Generate the configuration file
-generate_config_file(VH_CONFIG_DIR + "/dbconfig")
+generate_config_file(VH_HUB_CONFIG_DIR + "/dbconfig")
 
 # Define the configuration queries
 config_queries = [
