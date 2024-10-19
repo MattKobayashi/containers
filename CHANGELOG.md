@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.2.0](https://github.com/MattKobayashi/containers/compare/v0.1.4...v0.2.0) (2024-10-19)
+
+
+### Features
+
+* Complete refactor of `verlihub` image ([#321](https://github.com/MattKobayashi/containers/issues/321)) ([59340c4](https://github.com/MattKobayashi/containers/commit/59340c472ccfaab8ded2e9e1a4f5ddcc145e0cd4))
+
+
+### Bug Fixes
+
+* **deps:** update dependency psycopg2-binary to v2.9.10 ([#324](https://github.com/MattKobayashi/containers/issues/324)) ([caf27b1](https://github.com/MattKobayashi/containers/commit/caf27b15c2e8a2ed52d1af5b537848a6a941bff7))
+* Prefix all env vars and secrets ([#325](https://github.com/MattKobayashi/containers/issues/325)) ([50e180a](https://github.com/MattKobayashi/containers/commit/50e180a6814f94bd0ce0e9a4191f1df2023dafd6))
+* Update missed variable ([#326](https://github.com/MattKobayashi/containers/issues/326)) ([36633f2](https://github.com/MattKobayashi/containers/commit/36633f2a7ae4177d9be7ae891c2a58e87f5516a5))
+
 ## [0.1.4](https://github.com/MattKobayashi/containers/compare/v0.1.3...v0.1.4) (2024-10-10)
 
 
