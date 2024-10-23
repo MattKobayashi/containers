@@ -91,7 +91,7 @@ jobs:
       # Checkout repository
       # https://github.com/actions/checkout
       - name: Checkout repository
-        uses: actions/checkout@v4.2.1
+        uses: actions/checkout@v4.2.2
       # Set up QEMU
       # https://github.com/docker/setup-qemu-action
       - name: Set up QEMU
