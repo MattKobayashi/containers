@@ -10,7 +10,27 @@ updates:
     commit-message:
       prefix: "fix(deps)"
   - package-ecosystem: "docker"
-    directory: "/"
+    directories:
+      - "/actions-runner"
+      - "/avahi"
+      - "/certbot-cloudflare"
+      - "/fullbogons"
+      - "/growatt-ev"
+      - "/influx"
+      - "/iperf2"
+      - "/iperf3"
+      - "/irrd"
+      - "/irrexplorer"
+      - "/mdns-reflector"
+      - "/oxidized"
+      - "/rng-tools"
+      - "/speedtest"
+      - "/stun"
+      - "/telegraf"
+      - "/verlihub"
+      - "/vyos-release-alert"
+      - "/xteve"
+      - "/yancobat"
     schedule:
       interval: "daily"
     assignees: 
@@ -18,7 +38,11 @@ updates:
     commit-message:
       prefix: "fix(deps)"
   - package-ecosystem: "pip"
-    directory: "/"
+    directories:
+      - "/fullbogons"
+      - "/irrd"
+      - "/vyos-release-alert"
+      - "/yancobat"
     schedule:
       interval: "daily"
     assignees: 
