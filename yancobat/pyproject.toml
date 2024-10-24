@@ -17,7 +17,7 @@ requires = ["poetry-core==1.9.1"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.black]
-target-version = ['py312']
+target-version = ['py313']
 line-length = 120
 include = '\.pyi?$'
 exclude = '''
