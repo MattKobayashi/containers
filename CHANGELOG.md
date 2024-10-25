@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.2.5](https://github.com/MattKobayashi/containers/compare/v0.2.4...v0.2.5) (2024-10-25)
+
+
+### Bug Fixes
+
+* **deps:** Revert to Python 3.11 ([#339](https://github.com/MattKobayashi/containers/issues/339)) ([bdce911](https://github.com/MattKobayashi/containers/commit/bdce911263a2e431da86aa97eb34d047b9123310))
+* **deps:** Update black to py313 ([#340](https://github.com/MattKobayashi/containers/issues/340)) ([a060976](https://github.com/MattKobayashi/containers/commit/a06097615103a66311e0ec32c4548915d891e27d))
+* **deps:** Update black to py313 ([#341](https://github.com/MattKobayashi/containers/issues/341)) ([85bc78a](https://github.com/MattKobayashi/containers/commit/85bc78a7328290320ede480f3fd9737aaf62a64f))
+
 ## [0.2.4](https://github.com/MattKobayashi/containers/compare/v0.2.3...v0.2.4) (2024-10-19)
 
 
