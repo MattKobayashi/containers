@@ -11,26 +11,7 @@ updates:
       prefix: "fix(deps)"
   - package-ecosystem: "docker"
     directories:
-      - "/actions-runner"
-      - "/avahi"
-      - "/certbot-cloudflare"
-      - "/fullbogons"
-      - "/growatt-ev"
-      - "/influx"
-      - "/iperf2"
-      - "/iperf3"
-      - "/irrd"
-      - "/irrexplorer"
-      - "/mdns-reflector"
-      - "/oxidized"
-      - "/rng-tools"
-      - "/speedtest"
-      - "/stun"
-      - "/telegraf"
-      - "/verlihub"
-      - "/vyos-release-alert"
-      - "/xteve"
-      - "/yancobat"
+      - "**/*"
     schedule:
       interval: "daily"
     assignees: 
@@ -39,10 +20,7 @@ updates:
       prefix: "fix(deps)"
   - package-ecosystem: "pip"
     directories:
-      - "/fullbogons"
-      - "/irrd"
-      - "/vyos-release-alert"
-      - "/yancobat"
+      - "**/*"
     schedule:
       interval: "daily"
     assignees: 
