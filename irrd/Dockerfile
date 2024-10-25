@@ -1,4 +1,4 @@
-FROM python:3.11.10-slim-bookworm
+FROM python:3.12.7-slim-bookworm
 
 # Install xz
 RUN apt-get update \
