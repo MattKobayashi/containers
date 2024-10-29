@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.2](https://github.com/MattKobayashi/containers/compare/v0.3.1...v0.3.2) (2024-10-29)
+
+
+### Bug Fixes
+
+* **irrd:** Various bug fixes ([#352](https://github.com/MattKobayashi/containers/issues/352)) ([b1bf97a](https://github.com/MattKobayashi/containers/commit/b1bf97a79728eacff266f721921798a18cfabd6a))
+
 ## [0.3.1](https://github.com/MattKobayashi/containers/compare/v0.3.0...v0.3.1) (2024-10-29)
 
 
