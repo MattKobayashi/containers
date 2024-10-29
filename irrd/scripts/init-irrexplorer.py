@@ -106,8 +106,107 @@ execute_sql_command(host, database, admin_user, admin_password, sql_command)
 # Export environment variables
 env_file = Path("/opt/irrexplorer/.env")
 env_file.touch(mode=0o600, exist_ok=True)
-set_key(dotenv_path=env_file, key_to_set="DATABASE_URL", value_to_set=irrexplorer_conf["irrexplorer"]["database_url"])
-set_key(dotenv_path=env_file, key_to_set="IRRD_ENDPOINT", value_to_set=irrexplorer_conf["irrexplorer"]["irrd_endpoint"])
+try:
+    set_key(
+        dotenv_path=env_file, key_to_set="DATABASE_URL", value_to_set=irrexplorer_conf["irrexplorer"]["database_url"]
+    )
+except KeyError:
+    print(
+        "Error: Could not find 'irrexplorer.database_url' in the configuration file at /opt/irrexplorer/irrexplorer.yaml."
+    )
+    sys.exit(1)
+try:
+    set_key(
+        dotenv_path=env_file, key_to_set="IRRD_ENDPOINT", value_to_set=irrexplorer_conf["irrexplorer"]["irrd_endpoint"]
+    )
+except KeyError:
+    print(
+        "Error: Could not find 'irrexplorer.irrd_endpoint' in the configuration file at /opt/irrexplorer/irrexplorer.yaml."
+    )
+    sys.exit(1)
+set_key(
+    dotenv_path=env_file,
+    key_to_set="HTTP_PORT",
+    value_to_set=str(irrexplorer_conf["irrexplorer"].get("http_port", 8000)),
+)
+set_key(
+    dotenv_path=env_file,
+    key_to_set="HTTP_WORKERS",
+    value_to_set=str(irrexplorer_conf["irrexplorer"].get("http_workers", 4)),
+)
+set_key(dotenv_path=env_file, key_to_set="DEBUG", value_to_set=irrexplorer_conf["irrexplorer"].get("debug", "False"))
+set_key(
+    dotenv_path=env_file,
+    key_to_set="BGP_SOURCE",
+    value_to_set=irrexplorer_conf["irrexplorer"].get("bgp_source", "https://bgp.tools/table.jsonl"),
+)
+set_key(
+    dotenv_path=env_file,
+    key_to_set="BGP_SOURCE_MINIMUM_HITS",
+    value_to_set=str(irrexplorer_conf["irrexplorer"].get("bgp_source_minimum_hits", 250)),
+)
+set_key(
+    dotenv_path=env_file,
+    key_to_set="RIRSTATS_URL_AFRINIC",
+    value_to_set=irrexplorer_conf["irrexplorer"].get(
+        "rirstats_url_afrinic", "https://ftp.afrinic.net/pub/stats/afrinic/delegated-afrinic-latest"
+    ),
+)
+set_key(
+    dotenv_path=env_file,
+    key_to_set="RIRSTATS_URL_APNIC",
+    value_to_set=irrexplorer_conf["irrexplorer"].get(
+        "rirstats_url_apnic", "https://ftp.apnic.net/stats/apnic/delegated-apnic-latest"
+    ),
+)
+set_key(
+    dotenv_path=env_file,
+    key_to_set="RIRSTATS_URL_ARIN",
+    value_to_set=irrexplorer_conf["irrexplorer"].get(
+        "rirstats_url_arin", "https://ftp.arin.net/pub/stats/arin/delegated-arin-extended-latest"
+    ),
+)
+set_key(
+    dotenv_path=env_file,
+    key_to_set="RIRSTATS_URL_LACNIC",
+    value_to_set=irrexplorer_conf["irrexplorer"].get(
+        "rirstats_url_lacnic", "https://ftp.lacnic.net/pub/stats/lacnic/delegated-lacnic-latest"
+    ),
+)
+set_key(
+    dotenv_path=env_file,
+    key_to_set="RIRSTATS_URL_RIPE",
+    value_to_set=irrexplorer_conf["irrexplorer"].get(
+        "rirstats_url_ripe", "https://ftp.ripe.net/ripe/stats/delegated-ripencc-latest"
+    ),
+)
+set_key(
+    dotenv_path=env_file,
+    key_to_set="REGISTROBR_URL",
+    value_to_set=irrexplorer_conf["irrexplorer"].get(
+        "registrobr_url", "https://ftp.registro.br/pub/numeracao/origin/nicbr-asn-blk-latest.txt"
+    ),
+)
+set_key(
+    dotenv_path=env_file,
+    key_to_set="BGP_IPV4_LENGTH_CUTOFF",
+    value_to_set=str(irrexplorer_conf["irrexplorer"].get("bgp_ipv4_length_cutoff", 29)),
+)
+set_key(
+    dotenv_path=env_file,
+    key_to_set="BGP_IPV6_LENGTH_CUTOFF",
+    value_to_set=str(irrexplorer_conf["irrexplorer"].get("bgp_ipv6_length_cutoff", 124)),
+)
+set_key(
+    dotenv_path=env_file,
+    key_to_set="MINIMUM_PREFIX_SIZE_IPV4",
+    value_to_set=str(irrexplorer_conf["irrexplorer"].get("minimum_prefix_size_ipv4", 9)),
+)
+set_key(
+    dotenv_path=env_file,
+    key_to_set="MINIMUM_PREFIX_SIZE_IPV6",
+    value_to_set=str(irrexplorer_conf["irrexplorer"].get("minimum_prefix_size_ipv6", 29)),
+)
 
 # Create supercronic file
 cron_dir = Path("/opt/irrexplorer/cron")

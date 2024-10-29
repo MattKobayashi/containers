@@ -1,3 +1,4 @@
 #!/usr/bin/env sh
 cd /opt/irrexplorer/ \
-&& su irrexplorer -c '/opt/irrexplorer/bin/poetry run python3 svc-irrexplorer.py'
+&& export $(cat .env | xargs) \
+&& su irrexplorer --preserve-environment --command "/opt/irrexplorer/bin/poetry run uvicorn irrexplorer.app:app --host 0.0.0.0 --port $HTTP_PORT --workers $HTTP_WORKERS --log-level info"
