@@ -19,4 +19,4 @@ irrexplorer:
   # rirstats_url_arin: ""
   # rirstats_url_lacnic: ""
   # rirstats_url_ripe: ""
-  import_data_cron: "*/30 * * * *"
+  import_data_cron: "*/15 * * * *"
