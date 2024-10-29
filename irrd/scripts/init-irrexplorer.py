@@ -4,21 +4,14 @@
 import time
 import sys
 from pathlib import Path
-
-import psycopg2  # type: ignore
-import yaml  # type: ignore
-from dotenv import set_key  # type: ignore
+import psycopg2
+import yaml
+from dotenv import set_key
 
 
 def execute_sql_command(
-        db_host,
-        db_admin_database,
-        db_admin_user,
-        db_admin_password,
-        sql_cmd,
-        max_retries=10,
-        retry_interval=5
-        ):
+    db_host, db_admin_database, db_admin_user, db_admin_password, sql_cmd, max_retries=10, retry_interval=5
+):
     """Executes an SQL command (like CREATE DATABASE) on a PostgreSQL server,
        waiting for the database to be ready.
 
@@ -41,10 +34,7 @@ def execute_sql_command(
         try:
             # Attempt connection to the admin database
             conn = psycopg2.connect(
-                host=db_host,
-                database=db_admin_database,
-                user=db_admin_user,
-                password=db_admin_password
+                host=db_host, database=db_admin_database, user=db_admin_user, password=db_admin_password
             )
             conn.set_session(autocommit=True)
             cur = conn.cursor()
@@ -58,7 +48,7 @@ def execute_sql_command(
             print(
                 f"Database not ready yet. Retrying in {retry_interval} "
                 f"seconds...\n(Attempt {retries + 1}/{max_retries})"
-                )
+            )
             time.sleep(retry_interval)  # Wait before retrying
             retries += 1
 
@@ -71,10 +61,7 @@ def execute_sql_command(
             return True
 
     # Max retries reached
-    print(
-        "Error: Database connection could not be established after multiple "
-        "retries."
-        )
+    print("Error: Database connection could not be established after multiple " "retries.")
     return False
 
 
@@ -105,8 +92,8 @@ execute_sql_command(
     db_admin_database=admin_database,
     db_admin_user=admin_user,
     db_admin_password=admin_password,
-    sql_cmd=sql_command
-    )
+    sql_cmd=sql_command,
+)
 
 # Do the rest
 sql_command = f"""
@@ -119,11 +106,12 @@ execute_sql_command(host, database, admin_user, admin_password, sql_command)
 # Export environment variables
 env_file = Path("/opt/irrexplorer/.env")
 env_file.touch(mode=0o600, exist_ok=True)
-set_key(
-    dotenv_path=env_file, key_to_set="DATABASE_URL",
-    value_to_set=irrexplorer_conf["irrexplorer"]["database_url"]
-    )
-set_key(
-    dotenv_path=env_file, key_to_set="IRRD_ENDPOINT",
-    value_to_set=irrexplorer_conf["irrexplorer"]["irrd_endpoint"]
-    )
+set_key(dotenv_path=env_file, key_to_set="DATABASE_URL", value_to_set=irrexplorer_conf["irrexplorer"]["database_url"])
+set_key(dotenv_path=env_file, key_to_set="IRRD_ENDPOINT", value_to_set=irrexplorer_conf["irrexplorer"]["irrd_endpoint"])
+
+# Create supercronic file
+cron_file = Path("/opt/irrexplorer/cron/import-data")
+cron_file.touch(mode=0o600, exist_ok=True)
+cron_file.write_text(
+    f"{irrexplorer_conf['irrexplorer']['import_data_cron']} /usr/bin/poetry run import-data\n", encoding="utf-8"
+)

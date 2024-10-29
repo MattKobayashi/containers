@@ -2,7 +2,6 @@
 name: irrd
 
 services:
-
   ## IRRd ##
   # Ports: 43/tcp, 8000/tcp
   irrd:
@@ -10,16 +9,10 @@ services:
     depends_on:
       - irrd-database
       - irrd-redis
-    image: 'irrd:latest'
-    logging:
-      driver: syslog
-      options:
-        syslog-address: 'udp://127.0.0.1:55514'
-        syslog-format: rfc5424micro
-        mode: 'non-blocking'
-        tag: '{{.Name}}'
+    image: "ghcr.io/mattkobayashi/irrd:v0.2.5"
     networks:
       - irrd
+    platform: "linux/amd64"
     ports:
       - target: 43
         published: 43
@@ -32,52 +25,47 @@ services:
     restart: unless-stopped
     volumes:
       - type: bind
-        source: ./irrd.yaml  # Set this to the path to your irrd.yaml file
+        source: ./irrd.yaml
         target: /etc/irrd.yaml
       - type: bind
-        source: ./irrexplorer.yaml  # Set this to the path to your irrexplorer.yaml file
+        source: ./irrexplorer.yaml
         target: /etc/irrexplorer.yaml
   ## IRRd Database ##
   # Ports: 5432/tcp
   irrd-database:
-    command: ['-c', 'random_page_cost=1.0', '-c', 'work_mem=50MB', '-c', 'shared_buffers=1GB', '-c', 'max_connections=1000']
+    command:
+      [
+        "-c",
+        "random_page_cost=1.0",
+        "-c",
+        "work_mem=50MB",
+        "-c",
+        "shared_buffers=1GB",
+        "-c",
+        "max_connections=1000",
+      ]
     container_name: irrd-database
     environment:
-      - 'PGDATA=/var/lib/postgresql/data/pgdata'
-      - 'POSTGRES_DB=irrd'
-      - 'POSTGRES_PASSWORD=irrd'
-      - 'POSTGRES_USER=irrd'
-    image: 'postgres:15.8-alpine3.20'
-    logging:
-      driver: syslog
-      options:
-        syslog-address: 'udp://127.0.0.1:55514'
-        syslog-format: rfc5424micro
-        mode: 'non-blocking'
-        tag: '{{.Name}}'
+      - "PGDATA=/var/lib/postgresql/data/pgdata"
+      - "POSTGRES_DB=irrd"
+      - "POSTGRES_PASSWORD=irrd"
+      - "POSTGRES_USER=irrd"
+    image: "postgres:15.8-alpine3.20"
     networks:
       - irrd
     restart: unless-stopped
     volumes:
-      - type: bind
-        source: ./irrd-database/  # Set this to your desired path for database files
+      - type: volume
+        source: irrd-database_data
         target: /var/lib/postgresql/data/
   ## IRRd Redis ##
   # Ports: 6379/tcp
   irrd-redis:
     container_name: irrd-redis
-    image: 'redis:7.4.1-alpine3.20'
-    logging:
-      driver: syslog
-      options:
-        syslog-address: 'udp://127.0.0.1:55514'
-        syslog-format: rfc5424micro
-        mode: 'non-blocking'
-        tag: '{{.Name}}'
+    image: "redis:7.4.1-alpine3.20"
     networks:
       - irrd
     restart: unless-stopped
-
 networks:
   irrd:
     name: irrd
@@ -85,5 +73,8 @@ networks:
     enable_ipv6: true
     ipam:
       config:
-        - subnet: 10.4.0.0/24
+        - subnet: 10.12.0.0/24
         - subnet: fdea:420:cafe::/64
+volumes:
+  irrd-database_data:
+    name: irrd-database_data
