@@ -58,7 +58,8 @@ RUN echo "${IRRE_SOURCE_SHA1SUM}  /tmp/irrexplorer.tar.gz" | sha1sum -c - \
     && tar -xz --strip-components=1 --file="/tmp/irrexplorer.tar.gz" \
     && pip install python-dotenv==1.0.1 \
     && pipx ensurepath \
-    && pipx install poetry==1.8.4
+    && pipx install poetry==1.8.4 \
+    && /opt/irrexplorer/bin/poetry install
 COPY --chown=irrexplorer:irrexplorer --chmod=700 ./scripts/init-irrexplorer.sh /opt/irrexplorer/init-irrexplorer.sh
 COPY --chown=irrexplorer:irrexplorer --chmod=700 ./scripts/init-irrexplorer.py /opt/irrexplorer/init-irrexplorer.py
 COPY --chown=irrexplorer:irrexplorer --chmod=700 ./scripts/svc-irrexplorer.py /opt/irrexplorer/svc-irrexplorer.py

@@ -1,3 +1,3 @@
 #!/usr/bin/env sh
 cd /opt/irrexplorer/ \
-&& su irrexplorer -c '/usr/bin/poetry run python3 svc-irrexplorer.py'
+&& su irrexplorer -c '/opt/irrexplorer/bin/poetry run python3 svc-irrexplorer.py'

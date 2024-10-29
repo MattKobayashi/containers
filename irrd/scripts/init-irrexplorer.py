@@ -110,6 +110,8 @@ set_key(dotenv_path=env_file, key_to_set="DATABASE_URL", value_to_set=irrexplore
 set_key(dotenv_path=env_file, key_to_set="IRRD_ENDPOINT", value_to_set=irrexplorer_conf["irrexplorer"]["irrd_endpoint"])
 
 # Create supercronic file
+cron_dir = Path("/opt/irrexplorer/cron")
+cron_dir.mkdir(parents=True, exist_ok=True)
 cron_file = Path("/opt/irrexplorer/cron/import-data")
 cron_file.touch(mode=0o600, exist_ok=True)
 cron_file.write_text(
