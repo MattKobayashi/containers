@@ -10,7 +10,7 @@ irrexplorer:
   # debug: False
   # http_port: 8000
   # http_workers: 4
-  irrd_endpoint: "https://irrd.example.net/graphql/"
+  irrd_endpoint: "http://localhost:8080/graphql/"
   # minimum_prefix_size_ipv4: 9
   # minimum_prefix_size_ipv6: 29
   # regisrobr_url: ""
