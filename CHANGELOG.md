@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/MattKobayashi/containers/compare/v0.3.3...v0.4.0) (2024-10-29)
+
+
+### Features
+
+* **irrd:** Respect all irrexplorer config options ([#357](https://github.com/MattKobayashi/containers/issues/357)) ([491dbe4](https://github.com/MattKobayashi/containers/commit/491dbe4677819ea8e3b200a0cbb73e0e72db5829))
+
 ## [0.3.3](https://github.com/MattKobayashi/containers/compare/v0.3.2...v0.3.3) (2024-10-29)
 
 
