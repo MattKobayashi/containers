@@ -5,23 +5,29 @@ services:
   ## IRRd ##
   # Ports: 43/tcp, 8000/tcp
   irrd:
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: irrd
     depends_on:
       - irrd-database
       - irrd-redis
-    image: "ghcr.io/mattkobayashi/irrd:v0.3.1"
     networks:
       - irrd
     platform: "linux/amd64"
     ports:
-      - target: 43
+      - mode: host
+        protocol: tcp
         published: 43
+        target: 43
+      - mode: host
         protocol: tcp
-        mode: host
-      - target: 8000
         published: 8000
+        target: 8000
+      - mode: host
         protocol: tcp
-        mode: host
+        published: 8080
+        target: 8080
     restart: unless-stopped
     volumes:
       - type: bind
