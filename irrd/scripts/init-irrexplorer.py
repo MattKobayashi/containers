@@ -61,15 +61,15 @@ def execute_sql_command(
             return True
 
     # Max retries reached
-    print("Error: Database connection could not be established after multiple " "retries.")
+    print("Error: Database connection could not be established after multiple retries.")
     return False
 
 
 try:
-    with open("/etc/irrexplorer.yaml", "r", encoding="utf-8") as yaml_conf:
+    with open("/opt/irrexplorer/irrexplorer.yaml", "r", encoding="utf-8") as yaml_conf:
         irrexplorer_conf = yaml.safe_load(yaml_conf)
 except FileNotFoundError:
-    print("Error: Configuration file /etc/irrexplorer.yaml not found.")
+    print("Error: Could not find the configuration file at /opt/irrexplorer/irrexplorer.yaml.")
     sys.exit(1)
 
 db_url = irrexplorer_conf["irrexplorer"]["database_url"]

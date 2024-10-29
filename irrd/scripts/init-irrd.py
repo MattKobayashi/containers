@@ -64,10 +64,10 @@ def execute_sql_command(
 
 
 try:
-    with open("/etc/irrd.yaml", "r", encoding="utf-8") as yaml_conf:
+    with open("/opt/irrd/irrd.yaml", "r", encoding="utf-8") as yaml_conf:
         irrd_conf = yaml.safe_load(yaml_conf)
 except FileNotFoundError:
-    print("Error: Could not find the configuration file at /etc/irrd.yaml.")
+    print("Error: Could not find the configuration file at /opt/irrd/irrd.yaml.")
     sys.exit(1)
 
 host = irrd_conf["irrd"]["database_url"].split("/")[2].split("@")[1]
