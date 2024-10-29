@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/MattKobayashi/containers/compare/v0.3.0...v0.3.1) (2024-10-29)
+
+
+### Bug Fixes
+
+* **irrd:** Fix references to pipx apps ([#350](https://github.com/MattKobayashi/containers/issues/350)) ([0c67e0e](https://github.com/MattKobayashi/containers/commit/0c67e0ec715575fca207fd6587c7d80759800b48))
+
 ## [0.3.0](https://github.com/MattKobayashi/containers/compare/v0.2.5...v0.3.0) (2024-10-29)
 
 
