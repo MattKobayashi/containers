@@ -6,7 +6,7 @@ RUN apt-get update \
 
 # Add s6-overlay
 WORKDIR /tmp
-ENV S6_OVERLAY_VERSION=3.2.0.0
+ENV S6_OVERLAY_VERSION=3.2.0.2
 ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz /tmp
 ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz.sha256 /tmp
 RUN echo "$(cat s6-overlay-noarch.tar.xz.sha256)" | sha256sum -c - \
@@ -26,7 +26,7 @@ RUN adduser --gecos '' --disabled-password irrd \
 USER irrd
 WORKDIR /opt/irrd
 RUN python3 -m venv /opt/irrd/irrd-venv \
-    && /opt/irrd/irrd-venv/bin/pip3 install psycopg2 irrd==4.4.4
+    && /opt/irrd/irrd-venv/bin/pip3 install psycopg2==2.9.10 irrd==4.4.4
 COPY --chown=irrd:irrd --chmod=700 ./scripts/init-irrd.sh /opt/irrd/init-irrd.sh
 COPY --chown=irrd:irrd --chmod=700 ./scripts/init-irrd.py /opt/irrd/init-irrd.py
 
