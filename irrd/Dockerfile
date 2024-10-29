@@ -25,7 +25,7 @@ RUN adduser --gecos '' --disabled-password irrd \
 USER irrd
 WORKDIR /opt/irrd
 RUN python3 -m venv /opt/irrd/irrd-venv \
-    && /opt/irrd/irrd-venv/bin/pip3 install psycopg2-binary==2.9.10 irrd==4.4.4
+    && /opt/irrd/irrd-venv/bin/pip3 install irrd==4.4.4
 COPY --chown=irrd:irrd --chmod=700 ./scripts/init-irrd.sh /opt/irrd/init-irrd.sh
 COPY --chown=irrd:irrd --chmod=700 ./scripts/init-irrd.py /opt/irrd/init-irrd.py
 
