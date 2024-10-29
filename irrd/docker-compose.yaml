@@ -72,6 +72,10 @@ services:
     networks:
       - irrd
     restart: unless-stopped
+    volumes:
+      - source: redis_data
+        target: /data
+        type: volume
 networks:
   irrd:
     name: irrd
@@ -84,3 +88,5 @@ networks:
 volumes:
   irrd-database_data:
     name: irrd-database_data
+  redis_data:
+    name: redis_data
