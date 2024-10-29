@@ -3,20 +3,13 @@
 
 import time
 import sys
-
-import psycopg2  # type: ignore
-import yaml  # type: ignore
+import psycopg2
+import yaml
 
 
 def execute_sql_command(
-        db_host,
-        db_admin_database,
-        db_admin_user,
-        db_admin_password,
-        db_sql_command,
-        max_retries=10,
-        retry_interval=5
-        ):
+    db_host, db_admin_database, db_admin_user, db_admin_password, db_sql_command, max_retries=10, retry_interval=5
+):
     """Executes an SQL command (like CREATE DATABASE) on a PostgreSQL server,
        waiting for the database to be ready.
 
@@ -39,10 +32,7 @@ def execute_sql_command(
         try:
             # Attempt connection to the admin database
             conn = psycopg2.connect(
-                host=db_host,
-                database=db_admin_database,
-                user=db_admin_user,
-                password=db_admin_password
+                host=db_host, database=db_admin_database, user=db_admin_user, password=db_admin_password
             )
             conn.set_session(autocommit=True)
             cur = conn.cursor()
@@ -69,10 +59,7 @@ def execute_sql_command(
             return True
 
     # Max retries reached
-    print(
-        "Error: Database connection could not be established "
-        "after multiple retries."
-    )
+    print("Error: Database connection could not be established " "after multiple retries.")
     return False
 
 
@@ -94,13 +81,7 @@ admin_password = db_credentials[1]
 sql_command = f"""
 CREATE DATABASE {admin_database};
 """
-execute_sql_command(
-    host,
-    admin_database,
-    admin_user,
-    admin_password,
-    sql_command
-    )
+execute_sql_command(host, admin_database, admin_user, admin_password, sql_command)
 
 # Do the rest
 sql_command = f"""
@@ -109,10 +90,4 @@ GRANT ALL PRIVILEGES ON DATABASE {admin_database} TO {admin_user};
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 GRANT ALL ON SCHEMA public TO {admin_user};
 """
-execute_sql_command(
-    host,
-    admin_database,
-    admin_user,
-    admin_password,
-    sql_command
-    )
+execute_sql_command(host, admin_database, admin_user, admin_password, sql_command)
