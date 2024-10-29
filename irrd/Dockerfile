@@ -1,10 +1,10 @@
 FROM python:3.11.10-slim-bookworm
 
-# Install curl and xz-utils
+# Misc dependencies
 RUN apt-get update \
-    && apt-get --yes install curl xz-utils
+    && apt-get --no-install-recommends --yes install build-essential curl python3-dev pipx xz-utils
 
-# Install Node.js and NPM
+# Node.js and NPM
 WORKDIR /tmp
 ENV NODE_VERSION=22.10.0 \
     NODE_PLATFORM=linux-x64
@@ -15,7 +15,7 @@ RUN curl -O https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-${NOD
     && node --version \
     && npm --version
 
-# Add s6-overlay
+# s6-overlay
 WORKDIR /tmp
 ENV S6_OVERLAY_VERSION=3.2.0.2
 ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz /tmp
@@ -32,12 +32,12 @@ COPY s6-rc.d/ /etc/s6-overlay/s6-rc.d/
 USER root
 RUN adduser --gecos '' --disabled-password irrd \
     && mkdir -p /opt/irrd \
-    && chown -R irrd:irrd /opt/irrd \
-    && apt-get --yes install build-essential
+    && chown -R irrd:irrd /opt/irrd
 USER irrd
 WORKDIR /opt/irrd
-RUN python3 -m venv /opt/irrd/irrd-venv \
-    && /opt/irrd/irrd-venv/bin/pip3 install irrd==4.4.4
+ENV PIPX_BIN_DIR=/opt/irrd/bin
+RUN pipx ensurepath \
+    && pipx install irrd==4.4.4
 COPY --chown=irrd:irrd --chmod=700 ./scripts/init-irrd.sh /opt/irrd/init-irrd.sh
 COPY --chown=irrd:irrd --chmod=700 ./scripts/init-irrd.py /opt/irrd/init-irrd.py
 
@@ -46,14 +46,17 @@ USER root
 RUN adduser --gecos '' --disabled-password irrexplorer \
     && mkdir -p /opt/irrexplorer \
     && chown -R irrexplorer:irrexplorer /opt/irrexplorer \
-    && apt-get --yes install python3-poetry python3-dotenv \
     && npm install --global yarn
 USER irrexplorer
 WORKDIR /opt/irrexplorer
+ENV PIPX_BIN_DIR=/opt/irrexplorer/bin
 ENV IRRE_SOURCE_SHA1SUM=d638a350655953ac048e4fdfa8700ff433ae98fd
 ADD --chown=irrexplorer:irrexplorer https://github.com/NLNOG/irrexplorer/archive/28f61d29041caf23c03fafcc50ff4e02453e5b69.tar.gz /tmp/irrexplorer.tar.gz
 RUN echo "${IRRE_SOURCE_SHA1SUM}  /tmp/irrexplorer.tar.gz" | sha1sum -c - \
-    && tar -xz --strip-components=1 --file="/tmp/irrexplorer.tar.gz"
+    && tar -xz --strip-components=1 --file="/tmp/irrexplorer.tar.gz" \
+    && pipx ensurepath \
+    && pipx install poetry \
+    && pipx install python-dotenv
 COPY --chown=irrexplorer:irrexplorer --chmod=700 ./scripts/init-irrexplorer.sh /opt/irrexplorer/init-irrexplorer.sh
 COPY --chown=irrexplorer:irrexplorer --chmod=700 ./scripts/init-irrexplorer.py /opt/irrexplorer/init-irrexplorer.py
 COPY --chown=irrexplorer:irrexplorer --chmod=700 ./scripts/svc-irrexplorer.py /opt/irrexplorer/svc-irrexplorer.py
