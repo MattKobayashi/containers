@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.3](https://github.com/MattKobayashi/containers/compare/v0.3.2...v0.3.3) (2024-10-29)
+
+
+### Bug Fixes
+
+* **irrd:** Change config file locations ([e4c25a6](https://github.com/MattKobayashi/containers/commit/e4c25a6b61dc482e22623cffdb44cbb86964e6c1))
+
 ## [0.3.2](https://github.com/MattKobayashi/containers/compare/v0.3.1...v0.3.2) (2024-10-29)
 
 
