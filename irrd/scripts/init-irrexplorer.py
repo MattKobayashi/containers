@@ -113,5 +113,6 @@ set_key(dotenv_path=env_file, key_to_set="IRRD_ENDPOINT", value_to_set=irrexplor
 cron_file = Path("/opt/irrexplorer/cron/import-data")
 cron_file.touch(mode=0o600, exist_ok=True)
 cron_file.write_text(
-    f"{irrexplorer_conf['irrexplorer']['import_data_cron']} /usr/bin/poetry run import-data\n", encoding="utf-8"
+    f"{irrexplorer_conf['irrexplorer']['import_data_cron']} /opt/irrexplorer/bin/poetry run import-data\n",
+    encoding="utf-8",
 )
