@@ -21,7 +21,8 @@ COPY s6-rc.d/ /etc/s6-overlay/s6-rc.d/
 USER root
 RUN adduser --gecos '' --disabled-password irrd \
     && mkdir -p /opt/irrd \
-    && chown -R irrd:irrd /opt/irrd
+    && chown -R irrd:irrd /opt/irrd \
+    && apt-get --yes install build-essential
 USER irrd
 WORKDIR /opt/irrd
 RUN python3 -m venv /opt/irrd/irrd-venv \
@@ -57,7 +58,7 @@ RUN apt-get --yes install curl \
     && chmod +x "$SUPERCRONIC" \
     && mv "$SUPERCRONIC" "/usr/local/bin/${SUPERCRONIC}" \
     && ln -s "/usr/local/bin/${SUPERCRONIC}" /usr/local/bin/supercronic \
-    && apt-get --yes --autoremove remove curl
+    && apt-get --yes --autoremove remove curl build-essential
 
 # Set expose ports and entrypoint
 EXPOSE 43/tcp
