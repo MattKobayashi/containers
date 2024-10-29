@@ -21,14 +21,11 @@ COPY s6-rc.d/ /etc/s6-overlay/s6-rc.d/
 USER root
 RUN adduser --gecos '' --disabled-password irrd \
     && mkdir -p /opt/irrd \
-    && chown -R irrd:irrd /opt/irrd \
-    && apt-get --yes install build-essential rustc libpq-dev postgresql-client
+    && chown -R irrd:irrd /opt/irrd
 USER irrd
 WORKDIR /opt/irrd
 RUN python3 -m venv /opt/irrd/irrd-venv \
-    && /opt/irrd/irrd-venv/bin/pip3 install psycopg2==2.9.10 irrd==4.4.4
-USER root
-RUN apt-get --yes --autoremove remove build-essential rustc libpq-dev postgresql-client
+    && /opt/irrd/irrd-venv/bin/pip3 install psycopg2-binary==2.9.10 irrd==4.4.4
 COPY --chown=irrd:irrd --chmod=700 ./scripts/init-irrd.sh /opt/irrd/init-irrd.sh
 COPY --chown=irrd:irrd --chmod=700 ./scripts/init-irrd.py /opt/irrd/init-irrd.py
 
@@ -37,7 +34,7 @@ USER root
 RUN adduser --gecos '' --disabled-password irrexplorer \
     && mkdir -p /opt/irrexplorer \
     && chown -R irrexplorer:irrexplorer /opt/irrexplorer \
-    && apt-get --yes install nodejs npm python3-poetry python3-dotenv \
+    && apt-get --yes install npm python3-poetry python3-dotenv \
     && npm install --global yarn
 USER irrexplorer
 WORKDIR /opt/irrexplorer
