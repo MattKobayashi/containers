@@ -108,3 +108,10 @@ env_file = Path("/opt/irrexplorer/.env")
 env_file.touch(mode=0o600, exist_ok=True)
 set_key(dotenv_path=env_file, key_to_set="DATABASE_URL", value_to_set=irrexplorer_conf["irrexplorer"]["database_url"])
 set_key(dotenv_path=env_file, key_to_set="IRRD_ENDPOINT", value_to_set=irrexplorer_conf["irrexplorer"]["irrd_endpoint"])
+
+# Create supercronic file
+cron_file = Path("/opt/irrexplorer/cron/import-data")
+cron_file.touch(mode=0o600, exist_ok=True)
+cron_file.write_text(
+    f"{irrexplorer_conf['irrexplorer']['import_data_cron']} /usr/bin/poetry run import-data\n", encoding="utf-8"
+)
