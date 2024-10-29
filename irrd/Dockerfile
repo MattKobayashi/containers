@@ -1,8 +1,19 @@
 FROM python:3.11.10-slim-bookworm
 
-# Install xz
+# Install curl and xz-utils
 RUN apt-get update \
-    && apt-get --yes install xz-utils
+    && apt-get --yes install curl xz-utils
+
+# Install Node.js and NPM
+WORKDIR /tmp
+ENV NODE_VERSION=22.10.0 \
+    NODE_PLATFORM=linux-x64
+RUN curl -O https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-${NODE_PLATFORM}.tar.gz \
+    && curl -O https://nodejs.org/dist/v${NODE_VERSION}/SHASUMS256.txt \
+    && grep node-v${NODE_VERSION}-${NODE_PLATFORM}.tar.gz SHASUMS256.txt | sha256sum -c \
+    && tar -C /usr --strip-components=1 -xzf node-v${NODE_VERSION}-${NODE_PLATFORM}.tar.gz \
+    && node --version \
+    && npm --version
 
 # Add s6-overlay
 WORKDIR /tmp
@@ -35,7 +46,7 @@ USER root
 RUN adduser --gecos '' --disabled-password irrexplorer \
     && mkdir -p /opt/irrexplorer \
     && chown -R irrexplorer:irrexplorer /opt/irrexplorer \
-    && apt-get --yes install npm python3-poetry python3-dotenv \
+    && apt-get --yes install python3-poetry python3-dotenv \
     && npm install --global yarn
 USER irrexplorer
 WORKDIR /opt/irrexplorer
@@ -57,8 +68,11 @@ RUN apt-get --yes install curl \
     && echo "${SUPERCRONIC_SHA1SUM}  ${SUPERCRONIC}" | sha1sum -c - \
     && chmod +x "$SUPERCRONIC" \
     && mv "$SUPERCRONIC" "/usr/local/bin/${SUPERCRONIC}" \
-    && ln -s "/usr/local/bin/${SUPERCRONIC}" /usr/local/bin/supercronic \
-    && apt-get --yes --autoremove remove curl build-essential
+    && ln -s "/usr/local/bin/${SUPERCRONIC}" /usr/local/bin/supercronic
+
+# Cleanup
+USER root
+RUN apt-get --yes --autoremove remove build-essential curl xz-utils
 
 # Set expose ports and entrypoint
 EXPOSE 43/tcp
