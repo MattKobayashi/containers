@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/MattKobayashi/containers/compare/v0.2.5...v0.3.0) (2024-10-29)
+
+
+### Features
+
+* **irrd:** Refactor Docker image ([#348](https://github.com/MattKobayashi/containers/issues/348)) ([c0da855](https://github.com/MattKobayashi/containers/commit/c0da8559c1397e035fc80f9c353a863ca3a6ad8a))
+
 ## [0.2.5](https://github.com/MattKobayashi/containers/compare/v0.2.4...v0.2.5) (2024-10-25)
 
 
