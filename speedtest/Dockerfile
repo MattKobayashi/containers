@@ -1,4 +1,4 @@
-FROM debian:12.7-slim
+FROM debian:12.8-slim
 
 # Install xz-utils
 RUN apt-get update \
