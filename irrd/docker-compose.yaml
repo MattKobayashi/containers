@@ -56,7 +56,7 @@ services:
       - "POSTGRES_DB=irrd"
       - "POSTGRES_PASSWORD=irrd"
       - "POSTGRES_USER=irrd"
-    image: "postgres:15.9-alpine3.20"
+    image: "postgres:15.10-alpine3.20"
     networks:
       - irrd
     restart: unless-stopped
