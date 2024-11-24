@@ -75,7 +75,7 @@ jobs:
       - name: Install `uuid-runtime`
         run: |
           set -x
-          apt-get --yes install uuid-runtime
+          sudo apt-get --yes install uuid-runtime
       # Test the built image
       - name: Test image
         run: |
