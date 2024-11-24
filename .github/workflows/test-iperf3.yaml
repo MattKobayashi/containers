@@ -1,12 +1,12 @@
 ---
-name: Build and test `iperf2` container image
+name: Build and test `iperf3` container image
 
 on:
   pull_request:
     branches:
       - main
     paths:
-      - 'iperf2/**'
+      - 'iperf3/**'
   workflow_dispatch:
 
 jobs:
@@ -17,15 +17,14 @@ jobs:
       fail-fast: false
       max-parallel: 1
       matrix:
-        container: [iperf2]
+        container: [iperf3]
     steps:
       - name: Create self-hosted runner
-        uses: MattKobayashi/tailscale-runner-action@v1.2.5
+        uses: MattKobayashi/tailscale-qemu-runner-action@v1.1.0
         with:
-          gh-app-id: ${{ secrets.GH_APP_ID }}
-          gh-app-login: MattKobayashi
-          gh-app-private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
-          runner-network: mattflix
+          gh-api-token: ${{ secrets.GH_API_TOKEN }}
+          gha-runner-apt-mirror: http://au.archive.ubuntu.com/ubuntu/
+          gha-runner-tz: Australia/Brisbane
           ssh-host: 100.102.37.118
           ssh-user: matthew
           ts-oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
@@ -49,7 +48,7 @@ jobs:
       fail-fast: false
       max-parallel: 1
       matrix:
-        container: [iperf2]
+        container: [iperf3]
     steps:
       # Checkout repository
       # https://github.com/actions/checkout
@@ -63,14 +62,6 @@ jobs:
       # https://github.com/docker/setup-buildx-action
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3.7.1
-        with:
-          buildkitd-config-inline: |
-            [registry."docker.io"]
-              mirrors = ["registry-mirror:5000"]
-            [registry."registry-mirror:5000"]
-              http = true
-          driver-opts: |
-            network=mattflix
       # Build and export image to Docker daemon
       # https://github.com/docker/build-push-action
       - name: Build and export to Docker
