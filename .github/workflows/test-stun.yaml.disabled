@@ -43,7 +43,7 @@ jobs:
   build-test:
     name: Build and test image
     runs-on: self-hosted
-    needs: [create-runners, build-setup]
+    needs: [build-setup]
     strategy:
       fail-fast: false
       max-parallel: 1

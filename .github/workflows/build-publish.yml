@@ -63,7 +63,7 @@ jobs:
   build-publish:
     name: Build and publish image
     runs-on: self-hosted
-    needs: [create-runners, build-setup]
+    needs: [build-setup]
     strategy:
       fail-fast: false
       max-parallel: 1
