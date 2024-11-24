@@ -1,12 +1,12 @@
 ---
-name: Build and test `xteve` container image
+name: Build and test `avahi` container image
 
 on:
   pull_request:
     branches:
       - main
     paths:
-      - 'xteve/**'
+      - 'avahi/**'
   workflow_dispatch:
 
 jobs:
@@ -17,15 +17,14 @@ jobs:
       fail-fast: false
       max-parallel: 1
       matrix:
-        container: [xteve]
+        container: [avahi]
     steps:
       - name: Create self-hosted runner
-        uses: MattKobayashi/tailscale-runner-action@v1.2.5
+        uses: MattKobayashi/tailscale-qemu-runner-action@v1.1.0
         with:
-          gh-app-id: ${{ secrets.GH_APP_ID }}
-          gh-app-login: MattKobayashi
-          gh-app-private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
-          runner-network: mattflix
+          gh-api-token: ${{ secrets.GH_API_TOKEN }}
+          gha-runner-apt-mirror: http://au.archive.ubuntu.com/ubuntu/
+          gha-runner-tz: Australia/Brisbane
           ssh-host: 100.102.37.118
           ssh-user: matthew
           ts-oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
@@ -49,7 +48,7 @@ jobs:
       fail-fast: false
       max-parallel: 1
       matrix:
-        container: [xteve]
+        container: [avahi]
     steps:
       # Checkout repository
       # https://github.com/actions/checkout
