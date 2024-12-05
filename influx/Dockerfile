@@ -1,4 +1,4 @@
-FROM lscr.io/linuxserver/baseimage-alpine:3.20
+FROM lscr.io/linuxserver/baseimage-alpine:3.21
 ARG TARGETPLATFORM
 ARG TARGETOS
 ARG TARGETARCH
