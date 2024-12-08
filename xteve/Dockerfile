@@ -1,4 +1,4 @@
-FROM alpine:3.20.3
+FROM alpine:3.21.0
 
 # Install dependencies and set timezone
 RUN apk add --no-cache ca-certificates curl tzdata bash busybox-suid su-exec ffmpeg vlc \
