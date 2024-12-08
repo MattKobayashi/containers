@@ -1,4 +1,4 @@
-FROM alpine:3.20.3
+FROM alpine:3.21.0
 
 # Uprade and install packages to image
 RUN apk --no-cache add rng-tools
