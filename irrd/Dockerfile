@@ -36,7 +36,7 @@ RUN adduser --gecos '' --disabled-password irrd \
 USER irrd
 WORKDIR /opt/irrd
 ENV PIPX_BIN_DIR=/opt/irrd/bin
-RUN pip install psycopg2-binary==2.9.7 \
+RUN pip install psycopg2-binary==2.9.10 \
     && pip install pyyaml==6.0.2 \
     && pipx ensurepath \
     && pipx install irrd==4.4.4
