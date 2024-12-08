@@ -1,4 +1,4 @@
-FROM python:3.13.0-alpine3.19
+FROM python:3.13.1-alpine3.19
 
 RUN adduser --system irrexplorer \
     && apk --no-cache add tar build-base python3-dev poetry npm yarn
