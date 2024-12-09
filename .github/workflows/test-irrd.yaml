@@ -54,6 +54,7 @@ jobs:
         run: |
           set -x
           docker compose up --detach
+        working-directory: irrd
       # Wait for container to start and run
       - name: Wait for container to start and run
         run: |
@@ -64,8 +65,10 @@ jobs:
         run: |
           set -x
           docker compose logs irrd
+        working-directory: irrd
       # Stop and remove containers
       - name: Stop and remove container
         run: |
           set -x
           docker compose down
+        working-directory: irrd
