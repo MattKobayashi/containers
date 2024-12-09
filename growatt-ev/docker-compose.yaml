@@ -1,0 +1,22 @@
+---
+name: growatt-ev
+
+services:
+  ## growatt-ev ##
+  growatt-ev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: growatt-ev
+    networks:
+      - growatt-ev
+    restart: unless-stopped
+networks:
+  growatt-ev:
+    name: growatt-ev
+    driver: bridge
+    enable_ipv6: true
+    ipam:
+      config:
+        - subnet: 10.12.0.0/24
+        - subnet: fdea:420:cafe::/64
