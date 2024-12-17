@@ -10,24 +10,25 @@ on:
   workflow_dispatch:
 
 jobs:
-  create-runner:
-    name: Create self-hosted Actions runner
-    runs-on: ubuntu-latest
-    steps:
-      - name: Create runner
-        uses: MattKobayashi/tailscale-qemu-runner-action@v1.5.1
-        with:
-          gh-api-token: ${{ secrets.GH_API_TOKEN }}
-          gha-runner-apt-mirror: http://mirror.overthewire.com.au/ubuntu/
-          gha-runner-tz: Australia/Brisbane
-          ssh-host: 100.102.37.118
-          ssh-user: matthew
-          ts-oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
-          ts-oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
-          ts-tag: ci
+  # create-runner:
+  #   name: Create self-hosted Actions runner
+  #   runs-on: ubuntu-24.04
+  #   steps:
+  #     - name: Create runner
+  #       uses: MattKobayashi/tailscale-qemu-runner-action@v1.5.1
+  #       with:
+  #         gh-api-token: ${{ secrets.GH_API_TOKEN }}
+  #         gha-runner-apt-mirror: http://mirror.overthewire.com.au/ubuntu/
+  #         gha-runner-labels: xteve
+  #         gha-runner-tz: Australia/Brisbane
+  #         ssh-host: 100.102.37.118
+  #         ssh-user: matthew
+  #         ts-oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+  #         ts-oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+  #         ts-tag: ci
   build-setup:
     name: Set up build environment
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     outputs:
       repo-owner: ${{ steps.repo-lowercase.outputs.REPO_OWNER }}
     steps:
@@ -37,7 +38,8 @@ jobs:
           echo "REPO_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_OUTPUT
   build-test:
     name: Build and test image
-    runs-on: self-hosted
+    # runs-on: xteve
+    runs-on: ubuntu-24.04
     needs: [build-setup]
     strategy:
       fail-fast: false
