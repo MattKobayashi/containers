@@ -1,4 +1,4 @@
-FROM alpine:3.21.0 AS buildenv
+FROM alpine:3.21.2 AS buildenv
 
 ENV SOURCE_FILE=iperf2.tar.gz \
     SOURCE_URL=https://downloads.sourceforge.net/project/iperf2/iperf-2.1.9.tar.gz \
@@ -14,7 +14,7 @@ RUN apk --no-cache add tar build-base \
     && make \
     && make install
 
-FROM alpine:3.21.0
+FROM alpine:3.21.2
 
 # Copy relevant compiled files to distribution image
 RUN adduser --system iperf2 \
