@@ -51,21 +51,25 @@ jobs:
       # https://github.com/actions/checkout
       - name: Checkout repository
         uses: actions/checkout@v4.2.2
+      # Generate test secrets
+      - name: Generate test secrets
+        run: |
+          set -x
+          mkdir secrets
+          echo "sqlpw123" > secrets/VH_MYSQL_PASSWORD
+          echo "hubpw123" > secrets/VH_HUB_MASTER_PASSWORD
+        working-directory: verlihub
       # Build and start image
       - name: Build and start image
         run: |
           set -x
           docker compose up --detach
         working-directory: verlihub
-      # Wait for container to start and run
-      - name: Wait for container to start and run
-        run: |
-          set -x
-          sleep 60
       # Grab the container logs
       - name: Grab container logs
         run: |
           set -x
+          sleep 10
           docker compose logs verlihub
         working-directory: verlihub
       # Stop and remove containers
