@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.4.1](https://github.com/MattKobayashi/containers/compare/v0.4.0...v0.4.1) (2025-01-16)
+
+
+### Bug Fixes
+
+* **deps:** update python to v3.13.1 ([#380](https://github.com/MattKobayashi/containers/issues/380)) ([e372c0e](https://github.com/MattKobayashi/containers/commit/e372c0eb57d2a0a1913e9c0799b72fd7e6ce0462))
+* **growatt-ev:** Linting ([#392](https://github.com/MattKobayashi/containers/issues/392)) ([cd54076](https://github.com/MattKobayashi/containers/commit/cd5407635dbc6bfb4568c15139ca5d77138a92be))
+* **verlihub:** Reduce image size ([#415](https://github.com/MattKobayashi/containers/issues/415)) ([f29c731](https://github.com/MattKobayashi/containers/commit/f29c73168a561287d11dec1571beb1ad0b565242))
+
 ## [0.4.0](https://github.com/MattKobayashi/containers/compare/v0.3.3...v0.4.0) (2024-10-29)
 
 
