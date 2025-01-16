@@ -1,4 +1,4 @@
-FROM debian:12.8-slim
+FROM debian:12.9-slim
 
 ARG TARGETPLATFORM
 ENV RUNNER_VERSION=2.319.1 \
