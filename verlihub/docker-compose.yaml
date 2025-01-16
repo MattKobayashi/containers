@@ -4,19 +4,21 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      platforms:
+        - linux/amd64
     container_name: verlihub
     depends_on:
       verlihub-mysql:
         condition: service_healthy
     environment:
-      - 'VH_MYSQL_DB_HOST=verlihub-mysql'
-      - 'VH_MYSQL_DB_NAME=verlihub'
-      - 'VH_MYSQL_USER=verlihub'
-      - 'VH_HUB_CONFIG_DIR=/opt/verlihub/.config/verlihub'
-      - 'VH_HUB_HOST=verlihub'
-      - 'VH_HUB_PORT=411'
-      - 'VH_HUB_NAME=Verlihub Test'
-      - 'VH_HUB_MASTER_NAME=MattK'
+      - "VH_MYSQL_DB_HOST=verlihub-mysql"
+      - "VH_MYSQL_DB_NAME=verlihub"
+      - "VH_MYSQL_USER=verlihub"
+      - "VH_HUB_CONFIG_DIR=/opt/verlihub/.config/verlihub"
+      - "VH_HUB_HOST=verlihub"
+      - "VH_HUB_PORT=411"
+      - "VH_HUB_NAME=Verlihub Test"
+      - "VH_HUB_MASTER_NAME=MattK"
     ports:
       - mode: host
         protocol: tcp
@@ -37,10 +39,10 @@ services:
   verlihub-mysql:
     container_name: verlihub-mysql
     environment:
-      - 'MYSQL_ROOT_PASSWORD_FILE=/run/secrets/VH_MYSQL_PASSWORD'
-      - 'MYSQL_DATABASE=verlihub'
-      - 'MYSQL_USER=verlihub'
-      - 'MYSQL_PASSWORD_FILE=/run/secrets/VH_MYSQL_PASSWORD'
+      - "MYSQL_ROOT_PASSWORD_FILE=/run/secrets/VH_MYSQL_PASSWORD"
+      - "MYSQL_DATABASE=verlihub"
+      - "MYSQL_USER=verlihub"
+      - "MYSQL_PASSWORD_FILE=/run/secrets/VH_MYSQL_PASSWORD"
     healthcheck:
       interval: 10s
       retries: 3

@@ -1,39 +1,46 @@
-FROM debian:12.8-slim AS build
+ARG DEBIAN_FRONTEND=noninteractive
+FROM debian:12.9-slim AS build
 
 # Install dependencies and compile
 RUN apt-get update \
-    && apt-get --yes install \
+    && apt-get --no-install-recommends --yes install \
     git \
     build-essential \
+    ca-certificates \
     cmake \
+    libicu-dev \
     libpcre3-dev \
     libssl-dev \
     libmaxminddb-dev \
-    libicu-dev \
     gettext \
     libasprintf-dev \
     mariadb-server \
     libmariadb-dev \
     mariadb-client \
-    libmariadb-dev-compat \
-    && git clone https://github.com/Verlihub/verlihub.git \
-    && cd verlihub/ \
-    && git checkout 1.5.0.0 \
-    && mkdir -p build \
-    && cd build/ \
+    python3 \
+    libmariadb-dev-compat
+# RUN git clone --depth 1 --branch release-72-1 https://github.com/unicode-org/icu.git \
+#     && cd icu/icu4c/source \
+#     && CFLAGS="-fPIC" CXXFLAGS="-fPIC" ./runConfigureICU Linux --enable-shared \
+#     && make \
+#     && make install
+RUN git clone --depth 1 --branch 1.5.0.0 https://github.com/Verlihub/verlihub.git \
+    && mkdir -p verlihub/build \
+    && cd verlihub/build \
     && cmake -DWITH_PLUGINS=OFF .. \
-    && make
+    && make \
+    && make install
 
-FROM debian:12.8-slim
+FROM debian:12.9-slim
 WORKDIR /opt/verlihub/
 
 # Install s6-overlay installation dependencies
 RUN apt-get update \
-    && apt-get --yes install \
+    && apt-get --no-install-recommends --yes install \
     xz-utils
 
 # Add s6-overlay
-WORKDIR /tmp
+WORKDIR /tmp/
 ENV S6_OVERLAY_VERSION=3.2.0.2
 ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz /tmp
 ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz.sha256 /tmp
@@ -46,43 +53,7 @@ RUN echo "$(cat s6-overlay-x86_64.tar.xz.sha256)" | sha256sum -c - \
 COPY s6-rc.d/ /etc/s6-overlay/s6-rc.d/
 
 # Install runtime dependencies
-RUN apt-get --yes install \
-    libpcre3-dev \
-    libssl3 \
-    libmaxminddb-dev \
-    libicu-dev \
-    libasprintf-dev \
-    mariadb-client \
-    libmariadb-dev \
-    libmariadb-dev-compat
-
-# Copy files from build image
-COPY --from=build /verlihub/ /verlihub/
-
-# Run make install
-RUN apt-get --yes install build-essential cmake \
-    && cd /verlihub/build/ \
-    && make install \
-    && mkdir -p /opt/verlihub/sql/ \
-    && cp /verlihub/share/sql/default_reglist.sql /opt/verlihub/sql/ \
-    && rm -r /verlihub/
-
-# Remove build dependencies
-RUN apt-get --yes purge \
-    build-essential \
-    cmake \
-    libpcre3-dev \
-    libmaxminddb-dev \
-    libicu-dev \
-    libasprintf-dev \
-    libmariadb-dev \
-    libmariadb-dev-compat \
-    xz-utils \
-    && apt-get --yes autoremove \
-    && apt-get --yes clean
-
-# Install runtime dependencies
-RUN apt-get --yes install \
+RUN apt-get --no-install-recommends --yes install \
     libpcre3 \
     libmaxminddb0 \
     libicu72 \
@@ -93,6 +64,44 @@ RUN apt-get --yes install \
     && useradd --system --base-dir /opt verlihub \
     && mkdir -p /opt/verlihub/.config/verlihub/ \
     && chown -R verlihub:verlihub /opt/verlihub/
+
+# Copy files from build image
+COPY --from=build /usr/local/lib/libvhapi.so /usr/local/lib/libvhapi.so
+COPY --from=build /usr/local/lib/libverlihub.so /usr/local/lib/libverlihub.so
+COPY --from=build /usr/local/bin/verlihub /usr/local/bin/verlihub
+COPY --from=build /usr/local/bin/verlihub_config /usr/local/bin/verlihub_config
+COPY --from=build /usr/local/include/verlihub/ /usr/local/include/verlihub/
+COPY --from=build /usr/local/share/verlihub/ /usr/local/share/verlihub/
+COPY --from=build /usr/local/bin/vh_daemon /usr/local/bin/vh_daemon
+COPY --from=build /usr/local/bin/vh_lib /usr/local/bin/vh_lib
+COPY --from=build /usr/local/bin/vh_gui /usr/local/bin/vh_gui
+COPY --from=build /usr/local/bin/vh /usr/local/bin/vh
+COPY --from=build /usr/local/bin/vhm /usr/local/bin/vhm
+COPY --from=build /usr/local/bin/vh_regimporter /usr/local/bin/vh_regimporter
+COPY --from=build /usr/local/bin/vh_migration_0.9.8eto1.0 /usr/local/bin/vh_migration_0.9.8eto1.0
+COPY --from=build /usr/local/share/locale/cs_CZ/LC_MESSAGES/verlihub.mo /usr/local/share/locale/cs_CZ/LC_MESSAGES/verlihub.mo
+COPY --from=build /usr/local/share/locale/hu_HU/LC_MESSAGES/verlihub.mo /usr/local/share/locale/hu_HU/LC_MESSAGES/verlihub.mo
+COPY --from=build /usr/local/share/locale/pl_PL/LC_MESSAGES/verlihub.mo /usr/local/share/locale/pl_PL/LC_MESSAGES/verlihub.mo
+COPY --from=build /usr/local/share/locale/ro_RO/LC_MESSAGES/verlihub.mo /usr/local/share/locale/ro_RO/LC_MESSAGES/verlihub.mo
+COPY --from=build /usr/local/share/locale/sk_SK/LC_MESSAGES/verlihub.mo /usr/local/share/locale/sk_SK/LC_MESSAGES/verlihub.mo
+COPY --from=build /usr/local/share/locale/bg_BG/LC_MESSAGES/verlihub.mo /usr/local/share/locale/bg_BG/LC_MESSAGES/verlihub.mo
+COPY --from=build /usr/local/share/locale/ru_RU/LC_MESSAGES/verlihub.mo /usr/local/share/locale/ru_RU/LC_MESSAGES/verlihub.mo
+COPY --from=build /usr/local/share/locale/de_DE/LC_MESSAGES/verlihub.mo /usr/local/share/locale/de_DE/LC_MESSAGES/verlihub.mo
+COPY --from=build /usr/local/share/locale/es_ES/LC_MESSAGES/verlihub.mo /usr/local/share/locale/es_ES/LC_MESSAGES/verlihub.mo
+COPY --from=build /usr/local/share/locale/fr_FR/LC_MESSAGES/verlihub.mo /usr/local/share/locale/fr_FR/LC_MESSAGES/verlihub.mo
+COPY --from=build /usr/local/share/locale/it_IT/LC_MESSAGES/verlihub.mo /usr/local/share/locale/it_IT/LC_MESSAGES/verlihub.mo
+COPY --from=build /usr/local/share/locale/nl_NL/LC_MESSAGES/verlihub.mo /usr/local/share/locale/nl_NL/LC_MESSAGES/verlihub.mo
+COPY --from=build /usr/local/share/locale/sv_SE/LC_MESSAGES/verlihub.mo /usr/local/share/locale/sv_SE/LC_MESSAGES/verlihub.mo
+COPY --from=build /usr/local/share/locale/tr_TR/LC_MESSAGES/verlihub.mo /usr/local/share/locale/tr_TR/LC_MESSAGES/verlihub.mo
+COPY --from=build /usr/local/share/locale/lt_LT/LC_MESSAGES/verlihub.mo /usr/local/share/locale/lt_LT/LC_MESSAGES/verlihub.mo
+COPY --from=build /usr/local/share/locale/zh_CN/LC_MESSAGES/verlihub.mo /usr/local/share/locale/zh_CN/LC_MESSAGES/verlihub.mo
+COPY --from=build /usr/local/share/man/man1/verlihub.1 /usr/local/share/man/man1/verlihub.1
+COPY --from=build /usr/local/share/man/man1/vh.1 /usr/local/share/man/man1/vh.1
+COPY --from=build /usr/local/share/man/man1/vh_regimporter.1 /usr/local/share/man/man1/vh_regimporter.1
+COPY --from=build /usr/local/share/man/man1/vhm.1 /usr/local/share/man/man1/vhm.1
+
+# Run ldconfig
+RUN ldconfig
 
 # Copy files to image
 COPY --chmod=700 --chown=verlihub:verlihub scripts/setup.py /opt/verlihub/scripts/setup.py

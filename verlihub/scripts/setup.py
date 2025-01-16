@@ -122,7 +122,7 @@ execute_query(connection, master_query)
 # Import the contents of default_reglist.sql
 try:
     with open(
-        '/opt/verlihub/sql/default_reglist.sql',
+        '/usr/local/share/verlihub/sql/default_reglist.sql',
         'r',
         encoding='utf-8'
     ) as sql_file:
