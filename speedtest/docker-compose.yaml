@@ -1,0 +1,9 @@
+---
+services:
+  speedtest:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: speedtest
+    network_mode: host
+    restart: "no"
