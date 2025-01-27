@@ -1,0 +1,23 @@
+---
+services:
+  iperf2-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ["--server"]
+    container_name: iperf2-server
+    networks:
+      - iperf2
+  iperf2-client:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ["--client", "iperf2-server"]
+    container_name: iperf2-client
+    depends_on:
+      - iperf2-server
+    networks:
+      - iperf2
+    restart: "no"
+networks:
+  iperf2:
