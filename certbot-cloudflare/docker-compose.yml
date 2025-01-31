@@ -1,14 +1,42 @@
 ---
 services:
-  certbot-cloudflare:
-    image: 'ghcr.io/mattkobayashi/certbot-cloudflare:v2024.09.1'
-    restart: unless-stopped
+  pebble:
+    image: ghcr.io/letsencrypt/pebble:latest
+    command: -config test/config/pebble-config.json -strict -dnsserver 10.30.50.3:8053
     environment:
-      - 'EMAIL='
-      - 'DOMAIN='
-    secrets:
-      - CERTBOT_CF_DNS_API_TOKEN
-
-secrets:
-  CERTBOT_CF_DNS_API_TOKEN:
-    file: ${PWD}/secrets/CERTBOT_CF_DNS_API_TOKEN  # Set this to the path on the host to your CERTBOT_CF_DNS_API_TOKEN secret file
+      - "PEBBLE_VA_ALWAYS_VALID=1"
+    ports:
+      - 14000:14000 # HTTPS ACME API
+      - 15000:15000 # HTTPS Management API
+    networks:
+      acmenet:
+        ipv4_address: 10.30.50.2
+  challtestsrv:
+    image: ghcr.io/letsencrypt/pebble-challtestsrv:latest
+    command: -defaultIPv6 "" -defaultIPv4 10.30.50.3
+    ports:
+      - 8055:8055 # HTTP Management API
+    networks:
+      acmenet:
+        ipv4_address: 10.30.50.3
+  certbot-cloudflare:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - pebble
+      - challtestsrv
+    entrypoint: ["./entrypoint_test.sh"]
+    environment:
+      - "EMAIL=thisis@test.test"
+      - "DOMAIN=thisisa.test"
+    networks:
+      acmenet:
+        ipv4_address: 10.30.50.5
+networks:
+  acmenet:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.30.50.0/24
