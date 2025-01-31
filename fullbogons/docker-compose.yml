@@ -1,12 +1,23 @@
 ---
 services:
   fullbogons:
-    image: 'ghcr.io/mattkobayashi/fullbogons:v2024.09.1'
-    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
     privileged: true
     environment:
-      - 'BIRD_ROUTER_ID='
-      - 'BIRD_ASN='
-      - 'BIRD_PEERS='
-      - 'BIRD_EXCLUDED_PREFIXES='
-    network_mode: host
+      - "BIRD_ROUTER_ID=10.1.2.3"
+      - "BIRD_ASN=64666"
+      - "BIRD_PEERS=fake_host,10.3.2.1"
+      - "BIRD_EXCLUDED_PREFIXES=10.0.0.0/8;172.16.0.0/12;192.168.0.0/16"
+    networks:
+      - fullbogons
+  test:
+    command: /bin/bash -c "sleep 60 && apt-get update && apt-get --no-install-recommends --yes install netcat-openbsd && nc -zv fullbogons 179"
+    depends_on:
+      - fullbogons
+    image: "debian:12-slim"
+    networks:
+      - fullbogons
+networks:
+  fullbogons:
