@@ -5,7 +5,7 @@ RUN apk --no-cache add supercronic \
     && mkdir /opt/certs/
 
 COPY certbot-cron /crontab/
-COPY --chmod=0744 entrypoint.sh .
+COPY --chmod=0744 entry*.sh .
 
 ENTRYPOINT ["./entrypoint.sh"]
 
