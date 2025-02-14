@@ -1,4 +1,4 @@
-FROM alpine:3.21.2
+FROM alpine:3.21.3
 
 # Set working directory
 WORKDIR /opt/docker-telegraf
