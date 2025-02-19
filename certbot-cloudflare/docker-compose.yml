@@ -1,7 +1,7 @@
 ---
 services:
   pebble:
-    image: ghcr.io/letsencrypt/pebble:latest
+    image: ghcr.io/letsencrypt/pebble:latest@sha256:c156cabea562e43ed0060bddc03539c07de40e311b52c6b0e5ea710a496e56b8
     command: -config test/config/pebble-config.json -strict -dnsserver 10.30.50.3:8053
     environment:
       - "PEBBLE_VA_ALWAYS_VALID=1"
@@ -12,7 +12,7 @@ services:
       acmenet:
         ipv4_address: 10.30.50.2
   challtestsrv:
-    image: ghcr.io/letsencrypt/pebble-challtestsrv:latest
+    image: ghcr.io/letsencrypt/pebble-challtestsrv:latest@sha256:26789c714fc40ab2de771fb34c06d13232b8ca4f96f77995483d5dfe8744f276
     command: -defaultIPv6 "" -defaultIPv4 10.30.50.3
     ports:
       - 8055:8055 # HTTP Management API
