@@ -1,4 +1,4 @@
-FROM alpine:3.21.3 AS build
+FROM alpine:3.21.3@sha256:a8560b36e8b8210634f77d9f7f9efd7ffa463e380b75e2e74aff4511df3ef88c AS build
 
 ENV SOURCE_HASH=4479e1ae070651dfc4836a998267c7ac2fba4f011abcfdca3b8ccd7736d4fd26 \
     SOURCE_VERSION=1.2.16 \
@@ -12,7 +12,7 @@ RUN apk --no-cache add build-base boost-dev openssl-dev wget tar \
     && tar -xz --strip-components=1 --file="$SOURCE_FILE" \
     && make
 
-FROM alpine:3.21.3
+FROM alpine:3.21.3@sha256:a8560b36e8b8210634f77d9f7f9efd7ffa463e380b75e2e74aff4511df3ef88c
 
 WORKDIR /stuntman
 

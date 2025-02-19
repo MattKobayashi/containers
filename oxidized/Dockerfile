@@ -1,4 +1,4 @@
-FROM ruby:3.4.2-alpine3.20
+FROM ruby:3.4.2-alpine3.20@sha256:9c38d78b060ff6fd97e6e2a0ea1cd3a9d35468f8d97ca162d3bf202baa6e5205
 
 ENV SOURCE_FILE=oxidized.tar.gz \
     SOURCE_URL=https://github.com/ytti/oxidized/archive/refs/tags/0.29.1.tar.gz \

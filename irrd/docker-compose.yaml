@@ -56,7 +56,7 @@ services:
       - "POSTGRES_DB=irrd"
       - "POSTGRES_PASSWORD=irrd"
       - "POSTGRES_USER=irrd"
-    image: "postgres:15.11-alpine3.20"
+    image: "postgres:15.11-alpine3.20@sha256:0683b6aec25dc3a8f77432ce0dce72c224195a93ebfb34a74caa4211294df289"
     networks:
       - irrd
     restart: unless-stopped
@@ -68,7 +68,7 @@ services:
   # Ports: 6379/tcp
   irrd-redis:
     container_name: irrd-redis
-    image: "redis:7.4.1-alpine3.20"
+    image: "redis:7.4.1-alpine3.20@sha256:c1e88455c85225310bbea54816e9c3f4b5295815e6dbf80c34d40afc6df28275"
     networks:
       - irrd
     restart: unless-stopped
