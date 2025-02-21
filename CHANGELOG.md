@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.2](https://github.com/MattKobayashi/containers/compare/v0.4.1...v0.4.2) (2025-02-19)
+
+
+### Bug Fixes
+
+* **deps:** update python to v3.13.2 ([#426](https://github.com/MattKobayashi/containers/issues/426)) ([5ed2819](https://github.com/MattKobayashi/containers/commit/5ed2819a6d063fedc11f5c84e9d1d56d879afc5e))
+
 ## [0.4.1](https://github.com/MattKobayashi/containers/compare/v0.4.0...v0.4.1) (2025-01-16)
 
 
