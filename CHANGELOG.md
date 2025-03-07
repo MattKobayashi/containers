@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.3](https://github.com/MattKobayashi/containers/compare/v0.4.2...v0.4.3) (2025-03-07)
+
+
+### Bug Fixes
+
+* Use uv to run main.py ([#454](https://github.com/MattKobayashi/containers/issues/454)) ([b05af21](https://github.com/MattKobayashi/containers/commit/b05af21d28b7396e4bf0c1ffc3dd078d51afb23a))
+
 ## [0.4.2](https://github.com/MattKobayashi/containers/compare/v0.4.1...v0.4.2) (2025-02-19)
 
 
