@@ -1,9 +1,17 @@
+# /// script
+# requires-python = ">=3.12"
+# dependencies = [
+#     "paho-mqtt==2.1.0",
+#     "tuya-connector-python==0.1.2",
+# ]
+# ///
+
 #!/usr/bin/env python3
 import os
 import sys
 import json
-from tuya_connector import TuyaOpenAPI
 import paho.mqtt.client as mqtt
+from tuya_connector import TuyaOpenAPI
 
 # Check that env vars are set
 if (
@@ -28,7 +36,9 @@ else:
 
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, reason_code):
-    print(f"growatt-ev: Connected to MQTT broker with result code: {reason_code}")
+    print(
+        f"growatt-ev: Connected to MQTT broker with result code: {reason_code}"
+    )
     # Subscribing in on_connect() means that if we lose the connection and
     # reconnect then subscriptions will be renewed.
     client.subscribe(os.environ["MQTT_TOPIC"])
@@ -38,9 +48,17 @@ def on_connect(client, reason_code):
 def on_message(msg):
     inverter_data = json.loads(msg.payload.decode("utf-8"))
     inverter_watts = inverter_data["values"]["pvpowerout"] / 10
-    print("growatt-ev: Solar system is currently producing", round(inverter_watts, 2), "W")
+    print(
+        "growatt-ev: Solar system is currently producing",
+        round(inverter_watts, 2),
+        "W"
+    )
     # Connect to Tuya API
-    openapi = TuyaOpenAPI("https://openapi.tuyaeu.com", os.environ["TUYA_CLIENT_ID"], os.environ["TUYA_CLIENT_SECRET"])
+    openapi = TuyaOpenAPI(
+        "https://openapi.tuyaeu.com",
+        os.environ["TUYA_CLIENT_ID"],
+        os.environ["TUYA_CLIENT_SECRET"]
+    )
     if not openapi.is_connect():
         openapi.connect()
 
@@ -51,7 +69,13 @@ def on_message(msg):
     )
     if ev_charger_props["success"] is True:
         ev_charger_status = next(
-            (props["value"] for props in ev_charger_props["result"]["properties"] if props["code"] == "switch_1"), True
+            (
+                props["value"]
+                for props
+                in ev_charger_props["result"]["properties"]
+                if props["code"] == "switch_1"
+            ),
+            True
         )
     else:
         print("growatt-ev: Cannot get status of EV charger...")
