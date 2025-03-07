@@ -1,14 +1,14 @@
-FROM python:3.13.2-alpine3.20@sha256:e885b40c1ed9f3134030e99a27bd61e98e376bf6d6709cccfb3c0aa6e856f56a
+FROM python:3.13.2-alpine3.21@sha256:323a717dc4a010fee21e3f1aac738ee10bb485de4e7593ce242b36ee48d6b352
 
 WORKDIR /opt/growatt-ev/
 
 RUN adduser --system growatt-ev \
-	&& python3 -m pip install --break-system-packages paho-mqtt tuya-connector-python
+	&& apk --no-cache add py3-uv
 
 COPY --chown=growatt-ev main.py main.py
 
 USER growatt-ev
 
-ENTRYPOINT ["python3", "-u", "main.py"]
+ENTRYPOINT ["/usr/bin/uv", "run", "main.py"]
 
 LABEL org.opencontainers.image.authors="MattKobayashi <matthew@kobayashi.au>"
