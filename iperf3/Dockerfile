@@ -1,15 +1,15 @@
 FROM alpine:3.21.3@sha256:a8560b36e8b8210634f77d9f7f9efd7ffa463e380b75e2e74aff4511df3ef88c AS buildenv
 
-ENV SOURCE_FILE=iperf3.tar.gz \
-    SOURCE_URL=https://github.com/esnet/iperf/archive/3.13.tar.gz \
-    SOURCE_SHA1SUM=57504ea15f392d9d69723933aa8f0ad891f7e786
+ENV SOURCE_URL=https://github.com/esnet/iperf/releases/download/3.18/iperf-3.18.tar.gz \
+    SOURCE_SHA256SUM_URL=https://github.com/esnet/iperf/releases/download/3.18/iperf-3.18.tar.gz.sha256
 
 # Download source file, extract and compile
 WORKDIR /iperf3
 RUN apk --no-cache add tar build-base \
-    && wget -O "$SOURCE_FILE" "$SOURCE_URL" \
-    && echo "${SOURCE_SHA1SUM}  ${SOURCE_FILE}" | sha1sum -c - \
-    && tar -xz --strip-components=1 --file="$SOURCE_FILE" \
+    && wget ${SOURCE_URL} \
+    && wget ${SOURCE_SHA256SUM_URL} \
+    && sha256sum -c *.sha256 \
+    && for tarfile in *.tar.gz; do tar -xz --strip-components=1 --file="$tarfile"; done \
     && ./configure \
     && make \
     && make install
