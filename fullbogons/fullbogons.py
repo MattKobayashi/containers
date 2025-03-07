@@ -112,4 +112,3 @@ birdconf_file = open(
 )
 birdconf_file.write(birdconf)
 birdconf_file.close()
-
