@@ -1,6 +1,6 @@
 #!/bin/sh
 
-su bird -s /usr/bin/python3 fullbogons.py
+su bird -s /usr/bin/uv run fullbogons.py
 
 cleanup() {
     echo "Shutting down BIRD..."
