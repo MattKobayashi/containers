@@ -52,13 +52,13 @@ RUN adduser --gecos '' --disabled-password irrexplorer \
 USER irrexplorer
 WORKDIR /opt/irrexplorer
 ENV PIPX_BIN_DIR=/opt/irrexplorer/bin
-ENV IRRE_SOURCE_SHA1SUM=d638a350655953ac048e4fdfa8700ff433ae98fd
-ADD --chown=irrexplorer:irrexplorer https://github.com/NLNOG/irrexplorer/archive/28f61d29041caf23c03fafcc50ff4e02453e5b69.tar.gz /tmp/irrexplorer.tar.gz
+ENV IRRE_SOURCE_SHA1SUM=56402efa8deb8b7fb865d88a5f9895c52f79a1fe
+ADD --chown=irrexplorer:irrexplorer https://github.com/NLNOG/irrexplorer/archive/db76b42d96e5baea47548248d7d3b9528bcc63da.tar.gz /tmp/irrexplorer.tar.gz
 RUN echo "${IRRE_SOURCE_SHA1SUM}  /tmp/irrexplorer.tar.gz" | sha1sum -c - \
     && tar -xz --strip-components=1 --file="/tmp/irrexplorer.tar.gz" \
     && pip install python-dotenv==1.0.1 \
     && pipx ensurepath \
-    && pipx install poetry==1.8.5 \
+    && pipx install poetry==2.1.1 \
     && /opt/irrexplorer/bin/poetry install
 COPY --chown=irrexplorer:irrexplorer --chmod=700 ./scripts/init-irrexplorer.sh /opt/irrexplorer/init-irrexplorer.sh
 COPY --chown=irrexplorer:irrexplorer --chmod=700 ./scripts/init-irrexplorer.py /opt/irrexplorer/init-irrexplorer.py
