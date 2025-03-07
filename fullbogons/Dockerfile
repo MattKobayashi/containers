@@ -4,8 +4,8 @@ RUN apk --no-cache add supercronic
 
 # Set BIRD environment variables
 ENV SOURCE_FILE=bird.tar.gz \
-    SOURCE_URL=https://gitlab.nic.cz/labs/bird/-/archive/v2.13.1/bird-v2.13.1.tar.gz \
-    SOURCE_SHA1SUM=b2da703ea2fc68fec1e07c635a3c3301ccf291e4
+    SOURCE_URL=https://gitlab.nic.cz/labs/bird/-/archive/v2.16.1/bird-v2.16.1.tar.gz \
+    SOURCE_SHA1SUM=cc6e5e7d0dcb05fafca48c38e2a46fd8a05dfaba
 
 # Install BIRD
 WORKDIR /bird
@@ -33,7 +33,7 @@ COPY entrypoint.sh .
 RUN adduser -D bird \
     && chown -R bird /bird/ \
     && apk --no-cache upgrade \
-    && apk add python3 py3-requests py3-jinja2
+    && apk add py3-uv
 
 # Set expose ports
 # BGP: 179/tcp

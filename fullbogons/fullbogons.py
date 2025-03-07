@@ -1,9 +1,17 @@
+# /// script
+# requires-python = ">=3.12"
+# dependencies = [
+#     "jinja2==3.1.6",
+#     "requests==2.32.3",
+# ]
+# ///
+
 #!/usr/bin/env python3
 
-import requests
 from ipaddress import ip_network
-import jinja2
 import os
+import jinja2
+import requests
 
 options = {}
 
@@ -23,8 +31,12 @@ templateEnv = jinja2.Environment(
 
 # Download and process raw fullbogon lists
 print("Downloading and processing raw fullbogon lists...")
-fullbogons_ipv4_raw = requests.get('https://www.team-cymru.org/Services/Bogons/fullbogons-ipv4.txt').text
-fullbogons_ipv6_raw = requests.get('https://www.team-cymru.org/Services/Bogons/fullbogons-ipv6.txt').text
+fullbogons_ipv4_raw = requests.get(
+    'https://www.team-cymru.org/Services/Bogons/fullbogons-ipv4.txt'
+).text
+fullbogons_ipv6_raw = requests.get(
+    'https://www.team-cymru.org/Services/Bogons/fullbogons-ipv6.txt'
+).text
 
 # Import BIRD peers
 options["bird_peers"] = {}
@@ -33,7 +45,10 @@ for peer in os.environ['BIRD_PEERS'].split(";"):
         if ip_network(peer.split(",")[1]):
             options["bird_peers"][peer.split(",")[0]] = peer.split(",")[1]
     except ValueError:
-        print(peer.split(",")[1], 'is not a valid IP address or prefix, skipping...')
+        print(
+            peer.split(",")[1],
+            'is not a valid IP address or prefix, skipping...'
+        )
         continue
 
 # Import excluded prefixes
@@ -51,11 +66,11 @@ print("Creating IPv4 fullbogons list...")
 options["fullbogons_ipv4"] = []
 for line in fullbogons_ipv4_raw.split('\n'):
     try:
-        remove = False
+        REMOVE = False
         for excluded_prefix in excluded_prefixes:
             if ip_network(excluded_prefix).overlaps(ip_network(line)):
-                remove = True
-        if remove is True:
+                REMOVE = True
+        if REMOVE is True:
             print(line, "overlaps with an excluded IPv4 prefix, skipping...")
             continue
         else:
@@ -69,11 +84,11 @@ print("Creating IPv6 fullbogons list...")
 options["fullbogons_ipv6"] = []
 for line in fullbogons_ipv6_raw.split('\n'):
     try:
-        remove = False
+        REMOVE = False
         for excluded_prefix in excluded_prefixes:
             if ip_network(excluded_prefix).overlaps(ip_network(line)):
-                remove = True
-        if remove is True:
+                REMOVE = True
+        if REMOVE is True:
             print(line, "overlaps with an excluded IPv6 prefix, skipping...")
             continue
         else:
@@ -90,6 +105,11 @@ birdconf = template.render(options)
 
 # Save BIRD config to file
 print("Saving BIRD configuration to bird.conf...")
-birdconf_file = open("./bird.conf", "w")
+birdconf_file = open(
+    "./bird.conf",
+    "w",
+    encoding="utf-8"
+)
 birdconf_file.write(birdconf)
 birdconf_file.close()
+
