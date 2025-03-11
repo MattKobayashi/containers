@@ -1,4 +1,4 @@
-FROM certbot/dns-cloudflare:v3.2.0@sha256:3c3eca6a6476d1fc2cd67de0ebc1e7b9b8c6775fcfaadb7098aad76e9cade5e3
+FROM certbot/dns-cloudflare:v3.3.0@sha256:7a7043ab7b9fdb4c2b1016685d379c4bf28ce13821e12c10f51747c2eb3aacb2
 
 RUN apk --no-cache add supercronic \
     && mkdir /crontab/ \
