@@ -1,4 +1,4 @@
-FROM ubuntu:24.04@sha256:45243615f4992816784f678ce6c31b34bd07ba09279f740d8d014a9b855c531d as build
+FROM ubuntu:24.04@sha256:1e622c5f073b4f6bfad6632f2616c7f59ef256e96fe78bf6a595d1dc4376ac02 as build
 
 ENV SOURCE_FILE=verlihub.tar.gz \
     SOURCE_URL=https://github.com/Verlihub/verlihub/archive/refs/tags/1.4.0.0.tar.gz \
