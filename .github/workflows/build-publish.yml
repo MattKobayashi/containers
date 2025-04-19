@@ -78,7 +78,7 @@ jobs:
             growatt-ev,
             iperf2,
             iperf3,
-            irrd,
+            #irrd,
             #irrexplorer,
             #mdns-reflector,
             #rng-tools,
